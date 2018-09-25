@@ -39,7 +39,7 @@ namespace ActionLanguage
 
         public bool ConfigurationMenu(Form parent, ActionCoreController cp, List<string> eventvars, ref ConditionLists jf)
         {
-            ConditionFilterForm frm = new ConditionFilterForm();
+            ExtendedConditionsForms.ConditionFilterForm frm = new ExtendedConditionsForms.ConditionFilterForm();
             frm.InitCondition("Define condition", cp.Icon, eventvars, jf);
 
             if (frm.ShowDialog(parent) == DialogResult.OK)
@@ -505,7 +505,7 @@ namespace ActionLanguage
             string promptValue = ExtendedControls.PromptSingleLine.ShowDialog(parent, "Program to call (use set::prog if req)", progname, "Configure Call Command", cp.Icon);
             if (promptValue != null)
             {
-                ConditionVariablesForm avf = new ConditionVariablesForm();
+                ExtendedConditionsForms.ConditionVariablesForm avf = new ExtendedConditionsForms.ConditionVariablesForm();
                 avf.Init("Variables to pass into called program", cp.Icon, cond, showone: true, allownoexpand: true, altops: altops);
 
                 if (avf.ShowDialog(parent) == DialogResult.OK)

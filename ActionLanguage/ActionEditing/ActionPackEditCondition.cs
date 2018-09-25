@@ -149,7 +149,7 @@ namespace ActionLanguage
 
         private void Condition_Click(object sender, EventArgs e)
         {
-            ConditionFilterForm frm = new ConditionFilterForm();
+            ExtendedConditionsForms.ConditionFilterForm frm = new ExtendedConditionsForms.ConditionFilterForm();
 
             frm.InitCondition("Action condition", this.Icon, onAdditionalNames(), cd);
             frm.TopMost = this.FindForm().TopMost;

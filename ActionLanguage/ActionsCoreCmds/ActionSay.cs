@@ -86,7 +86,7 @@ namespace ActionLanguage
             ConditionVariables vars;
             FromString(userdata, out saying, out vars);
 
-            SpeechConfigure cfg = new SpeechConfigure();
+            ExtendedAudioForms.SpeechConfigure cfg = new ExtendedAudioForms.SpeechConfigure();
             cfg.Init(cp.AudioQueueSpeech, cp.SpeechSynthesizer,
                         "Set Text to say (use ; to separate randomly selectable phrases and {} to group)", "Configure Say Command", cp.Icon,
                         saying,

@@ -45,7 +45,7 @@ namespace ActionLanguage
             Dictionary<string, string> operations;
             FromString(userdata, out av, out operations);
 
-            ConditionVariablesForm avf = new ConditionVariablesForm();
+            ExtendedConditionsForms.ConditionVariablesForm avf = new ExtendedConditionsForms.ConditionVariablesForm();
             avf.Init("Define Variable:", cp.Icon, av, showone: true, allowadd: allowaddv, allownoexpand: allownoexpandv, altops:operations, allowmultiple:false);
 
             if (avf.ShowDialog(parent) == DialogResult.OK)

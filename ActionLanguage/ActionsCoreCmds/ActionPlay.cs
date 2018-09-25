@@ -81,7 +81,7 @@ namespace ActionLanguage
             ConditionVariables vars;
             FromString(userdata, out path, out vars);
 
-            WaveConfigureDialog cfg = new WaveConfigureDialog();
+            ExtendedAudioForms.WaveConfigureDialog cfg = new ExtendedAudioForms.WaveConfigureDialog();
             cfg.Init(cp.AudioQueueWave, false, "Select file, volume and effects", "Configure Play Command", cp.Icon,
                         path,
                         vars.Exists(waitname),
