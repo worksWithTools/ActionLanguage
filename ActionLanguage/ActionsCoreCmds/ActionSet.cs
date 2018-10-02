@@ -112,10 +112,18 @@ namespace ActionLanguage
                 }
                 else
                 {
-                    if (!res.Eval(out res))
+                    Eval ev = new Eval(res, checkend: true, allowfp: true, allowstrings: false);
+
+                    Object ret = ev.Evaluate();
+
+                    if (ev.InError)
                     {
-                        ap.ReportError(res);
+                        ap.ReportError(ev.ToString(System.Globalization.CultureInfo.InvariantCulture));
                         break;
+                    }
+                    else
+                    {
+                        res = ev.ToString(System.Globalization.CultureInfo.InvariantCulture);
                     }
                 }
 
