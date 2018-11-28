@@ -35,6 +35,13 @@ namespace ActionLanguage
         // normally pack names are case sensitive, except when we are checking it can be written to a file.. then we would want a case insensitive version
         public ActionFile Get(string name, StringComparison c = StringComparison.InvariantCulture) { return actionfiles.Find(x => x.name.Equals(name,c)); }
 
+        // find all which match any name in []
+        public ActionFile[] Get(string[] name, StringComparison c = StringComparison.InvariantCulture)
+        {
+            return (from x in actionfiles where Array.Find(name, (n)=>n.Equals(x.name,c)) != null select x).ToArray();
+        }
+
+
         public void CreateSet(string s, string appfolder)
         {
             ActionFile af = new ActionFile(appfolder + "\\\\" + s + ".act", s);
