@@ -38,7 +38,12 @@ namespace ActionLanguage
         // find all which match any name in []
         public ActionFile[] Get(string[] name, StringComparison c = StringComparison.InvariantCulture)
         {
-            return (from x in actionfiles where Array.Find(name, (n)=>n.Equals(x.name,c)) != null select x).ToArray();
+            return (from x in actionfiles where Array.Find(name, (n) => n.Equals(x.name, c)) != null select x).ToArray();
+        }
+
+        public ActionFile[] Get(string[] name, bool enablestate, StringComparison c = StringComparison.InvariantCulture)
+        {
+            return (from x in actionfiles where Array.Find(name, (n) => n.Equals(x.name, c) && x.enabled == enablestate) != null select x).ToArray();
         }
 
 
