@@ -502,7 +502,7 @@ namespace ActionLanguage
             string promptValue = ExtendedControls.PromptSingleLine.ShowDialog(parent, "Program to call (use set::prog if req)", progname, "Configure Call Command", cp.Icon);
             if (promptValue != null)
             {
-                ExtendedConditionsForms.ConditionVariablesForm avf = new ExtendedConditionsForms.ConditionVariablesForm();
+                ExtendedConditionsForms.VariablesForm avf = new ExtendedConditionsForms.VariablesForm();
                 avf.Init("Variables to pass into called program", cp.Icon, cond, showone: true, allownoexpand: true, altops: altops);
 
                 if (avf.ShowDialog(parent) == DialogResult.OK)

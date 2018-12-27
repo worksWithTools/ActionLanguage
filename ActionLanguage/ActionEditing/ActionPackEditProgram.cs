@@ -255,7 +255,7 @@ namespace ActionLanguage
                 cond.FromActionDataString(paras.Text, out flag);
             }
 
-            ExtendedConditionsForms.ConditionVariablesForm avf = new ExtendedConditionsForms.ConditionVariablesForm();
+            ExtendedConditionsForms.VariablesForm avf = new ExtendedConditionsForms.VariablesForm();
             avf.Init("Input parameters and flags to pass to program on run", this.Icon, cond, showone: true, showrefresh: true, showrefreshstate: flag.Equals(Variables.flagRunAtRefresh));
 
             if (avf.ShowDialog(FindForm()) == DialogResult.OK)
