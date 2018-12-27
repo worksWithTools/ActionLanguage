@@ -15,7 +15,6 @@
  */
 
 using BaseUtils;
-using Conditions;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -248,7 +247,7 @@ namespace ActionLanguage
 
         private void Paras_Click(object sender, EventArgs e)        // FULL
         {
-            ConditionVariables cond = new ConditionVariables();
+            Variables cond = new Variables();
             string flag = "";
 
             if (paras.Text.Length > 0)
@@ -257,11 +256,11 @@ namespace ActionLanguage
             }
 
             ExtendedConditionsForms.ConditionVariablesForm avf = new ExtendedConditionsForms.ConditionVariablesForm();
-            avf.Init("Input parameters and flags to pass to program on run", this.Icon, cond, showone: true, showrefresh: true, showrefreshstate: flag.Equals(ConditionVariables.flagRunAtRefresh));
+            avf.Init("Input parameters and flags to pass to program on run", this.Icon, cond, showone: true, showrefresh: true, showrefreshstate: flag.Equals(Variables.flagRunAtRefresh));
 
             if (avf.ShowDialog(FindForm()) == DialogResult.OK)
             {
-                cd.actiondata = paras.Text = avf.result.ToActionDataString(avf.result_refresh ? ConditionVariables.flagRunAtRefresh : "");
+                cd.actiondata = paras.Text = avf.result.ToActionDataString(avf.result_refresh ? Variables.flagRunAtRefresh : "");
             }
         }
 

@@ -15,12 +15,8 @@
  */
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using BaseUtils;
-using Conditions;
 
 namespace ActionLanguage
 {
@@ -60,7 +56,7 @@ namespace ActionLanguage
             {
                 List<string> exp;
 
-                if (ap.functions.ExpandStrings(ctrl, out exp) != ConditionFunctions.ExpandResult.Failed)
+                if (ap.functions.ExpandStrings(ctrl, out exp) != Functions.ExpandResult.Failed)
                 {
                     string caption = (exp.Count>=2) ? exp[1] : "EDDiscovery Program Message";
 
@@ -128,7 +124,7 @@ namespace ActionLanguage
             {
                 List<string> exp;
 
-                if (ap.functions.ExpandStrings(ctrl, out exp) != ConditionFunctions.ExpandResult.Failed)
+                if (ap.functions.ExpandStrings(ctrl, out exp) != Functions.ExpandResult.Failed)
                 {
                     string caption = (exp[1].Length>0) ? exp[1]: "EDDiscovery Program Message";
 
@@ -164,7 +160,7 @@ namespace ActionLanguage
         public override bool ExecuteAction(ActionProgramRun ap)
         {
             string res;
-            if (ap.functions.ExpandString(UserData, out res) != ConditionFunctions.ExpandResult.Failed)
+            if (ap.functions.ExpandString(UserData, out res) != Functions.ExpandResult.Failed)
             {
                 StringParser sp = new StringParser(res);
                 string cmdname = sp.NextWordLCInvariant(", ");
@@ -306,7 +302,7 @@ namespace ActionLanguage
             {
                 List<string> exp;
 
-                if (ap.functions.ExpandStrings(ctrl, out exp) != ConditionFunctions.ExpandResult.Failed)
+                if (ap.functions.ExpandStrings(ctrl, out exp) != Functions.ExpandResult.Failed)
                 {
                     string[] prompts = exp[1].Split(';');
                     string[] def = (exp.Count >= 3) ? exp[2].Split(';') : null;
@@ -373,9 +369,9 @@ namespace ActionLanguage
             {
                 List<string> exp;
 
-                if (ap.functions.ExpandStrings(ctrl, out exp) != ConditionFunctions.ExpandResult.Failed)
+                if (ap.functions.ExpandStrings(ctrl, out exp) != Functions.ExpandResult.Failed)
                 {
-                    ConditionVariables cv = ap.variables.FilterVars(exp[3] + "*");
+                    Variables cv = ap.variables.FilterVars(exp[3] + "*");
 
                     ExtendedControls.ConfigurableForm cd = new ExtendedControls.ConfigurableForm();
 
@@ -439,7 +435,7 @@ namespace ActionLanguage
             }
             else
             {
-                apr.actioncontroller.ActionRun(ActionEvent.onNonModalDialog, new Conditions.ConditionVariables(new string[] { "Dialog", lname, "Control", controlname }));
+                apr.actioncontroller.ActionRun(ActionEvent.onNonModalDialog, new BaseUtils.Variables(new string[] { "Dialog", lname, "Control", controlname }));
             }
         }
     }
@@ -471,7 +467,7 @@ namespace ActionLanguage
         public override bool ExecuteAction(ActionProgramRun ap)
         {
             string exp;
-            if (ap.functions.ExpandString(UserData, out exp) != ConditionFunctions.ExpandResult.Failed)
+            if (ap.functions.ExpandString(UserData, out exp) != Functions.ExpandResult.Failed)
             {
                 StringParser sp = new StringParser(exp);
                 string handle = sp.NextWordComma();

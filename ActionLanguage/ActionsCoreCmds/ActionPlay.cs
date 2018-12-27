@@ -15,12 +15,8 @@
  */
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using AudioExtensions;
-using Conditions;
 using BaseUtils;
 
 namespace ActionLanguage
@@ -38,9 +34,9 @@ namespace ActionLanguage
         static string startname = "StartEvent";
         static string finishname = "FinishEvent";
 
-        public bool FromString(string s, out string path, out ConditionVariables vars)
+        public bool FromString(string s, out string path, out Variables vars)
         {
-            vars = new ConditionVariables();
+            vars = new Variables();
 
             if (s.IndexOfAny(",\"'".ToCharArray()) == -1)
             {
@@ -52,7 +48,7 @@ namespace ActionLanguage
                 StringParser p = new StringParser(s);
                 path = p.NextQuotedWord(", ");        // stop at space or comma..
 
-                if (path != null && (p.IsEOL || (p.IsCharMoveOn(',') && vars.FromString(p, ConditionVariables.FromMode.MultiEntryComma))))   // normalise variable names (true)
+                if (path != null && (p.IsEOL || (p.IsCharMoveOn(',') && vars.FromString(p, Variables.FromMode.MultiEntryComma))))   // normalise variable names (true)
                     return true;
 
                 path = "";
@@ -60,7 +56,7 @@ namespace ActionLanguage
             }
         }
 
-        public string ToString(string path, ConditionVariables cond)
+        public string ToString(string path, Variables cond)
         {
             if (cond.Count > 0)
                 return path.QuoteString(comma: true) + ", " + cond.ToString();
@@ -71,14 +67,14 @@ namespace ActionLanguage
         public override string VerifyActionCorrect()
         {
             string path;
-            ConditionVariables vars;
+            Variables vars;
             return FromString(userdata, out path, out vars) ? null : "Play command line not in correct format";
         }
 
         public override bool ConfigurationMenu(Form parent, ActionCoreController cp , List<string> eventvars)
         {
             string path;
-            ConditionVariables vars;
+            Variables vars;
             FromString(userdata, out path, out vars);
 
             ExtendedAudioForms.WaveConfigureDialog cfg = new ExtendedAudioForms.WaveConfigureDialog();
@@ -93,7 +89,7 @@ namespace ActionLanguage
 
             if (cfg.ShowDialog(parent) == DialogResult.OK)
             {
-                ConditionVariables cond = new ConditionVariables(cfg.Effects);// add on any effects variables (and may add in some previous variables, since we did not purge)
+                Variables cond = new Variables(cfg.Effects);// add on any effects variables (and may add in some previous variables, since we did not purge)
                 cond.SetOrRemove(cfg.Wait, waitname, "1");
                 cond.SetOrRemove(cfg.Priority != AudioQueue.Priority.Normal, priorityname, cfg.Priority.ToString());
                 cond.SetOrRemove(cfg.StartEvent.Length > 0, startname, cfg.StartEvent);
@@ -117,16 +113,16 @@ namespace ActionLanguage
         public override bool ExecuteAction(ActionProgramRun ap)
         {
             string pathunexpanded;
-            ConditionVariables statementvars;
+            Variables statementvars;
             if (FromString(userdata, out pathunexpanded, out statementvars))
             {
                 string errlist = null;
-                ConditionVariables vars = ap.functions.ExpandVars(statementvars,out errlist);
+                Variables vars = ap.functions.ExpandVars(statementvars,out errlist);
 
                 if (errlist == null)
                 {
                     string path;
-                    if (ap.functions.ExpandString(pathunexpanded, out path) != ConditionFunctions.ExpandResult.Failed)
+                    if (ap.functions.ExpandString(pathunexpanded, out path) != Functions.ExpandResult.Failed)
                     {
                         if (System.IO.File.Exists(path))
                         {
@@ -139,7 +135,7 @@ namespace ActionLanguage
                             if (vol == -999)
                                 vol = ap.variables.GetInt(globalvarplayvolume, 60);
 
-                            ConditionVariables globalsettings = ap.VarExist(globalvarplayeffects) ? new ConditionVariables(ap[globalvarplayeffects], ConditionVariables.FromMode.MultiEntryComma) : null;
+                            Variables globalsettings = ap.VarExist(globalvarplayeffects) ? new Variables(ap[globalvarplayeffects], Variables.FromMode.MultiEntryComma) : null;
                             SoundEffectSettings ses = SoundEffectSettings.Set(globalsettings, vars);        // work out the settings
                             
                             AudioQueue.AudioSample audio = ap.actioncontroller.AudioQueueWave.Generate(path, ses);
@@ -184,7 +180,7 @@ namespace ActionLanguage
             AudioEvent af = tag as AudioEvent;
 
             if (af.eventname != null && af.eventname.Length>0)
-                af.apr.actioncontroller.ActionRun(af.ev, new ConditionVariables("EventName", af.eventname), now: false);    // queue at end an event
+                af.apr.actioncontroller.ActionRun(af.ev, new Variables("EventName", af.eventname), now: false);    // queue at end an event
 
             if (af.wait)
                 af.apr.ResumeAfterPause();

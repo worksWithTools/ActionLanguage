@@ -20,7 +20,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Conditions;
+using BaseUtils;
 
 namespace ActionLanguage
 {
@@ -97,10 +97,10 @@ namespace ActionLanguage
         // cls = object from which to get any needed values from, can be null
         // if se is set passed enabled string expansion of arguments in condition of event..
 
-        public int CheckActions(List<ActionFileList.MatchingSets> ale, Object cls, ConditionVariables othervars,
-                                            ConditionFunctions se = null)
+        public int CheckActions(List<ActionFileList.MatchingSets> ale, Object cls, Variables othervars,
+                                            Functions se = null)
         {
-            ConditionVariables valuesneeded = new ConditionVariables();
+            Variables valuesneeded = new Variables();
 
             if (cls != null)
             {
@@ -117,7 +117,7 @@ namespace ActionLanguage
 
             int progs = 0;
 
-            ConditionFunctions cf = new ConditionFunctions(valuesneeded, null);
+            Functions cf = new Functions(valuesneeded, null);
 
             foreach (MatchingSets ae in ale)       // for all files
             {
@@ -135,7 +135,7 @@ namespace ActionLanguage
         }
 
         // now = true run immediately, else defer to current programs
-        public void RunActions(bool now, List<ActionFileList.MatchingSets> ale, ActionRun run, ConditionVariables inputparas)
+        public void RunActions(bool now, List<ActionFileList.MatchingSets> ale, ActionRun run, Variables inputparas)
         {
             foreach (ActionFileList.MatchingSets ae in ale)          // for every file which passed..
             {
@@ -145,7 +145,7 @@ namespace ActionLanguage
 
                     if (ap != null)     // program got,
                     {
-                        ConditionVariables adparas = new ConditionVariables();
+                        Variables adparas = new Variables();
                         string flags;
                         adparas.FromActionDataString(fe.actiondata, out flags);
 

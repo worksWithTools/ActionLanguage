@@ -15,13 +15,9 @@
  */
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using BaseUtils;
 using AudioExtensions;
-using Conditions;
 
 namespace ActionLanguage
 {
@@ -51,21 +47,21 @@ namespace ActionLanguage
         static string mixsound = "MixSound";
         static string queuelimit = "QueueLimit";
 
-        static public bool FromString(string s, out string saying, out ConditionVariables vars)
+        static public bool FromString(string s, out string saying, out Variables vars)
         {
-            vars = new ConditionVariables();
+            vars = new Variables();
 
             StringParser p = new StringParser(s);
             saying = p.NextQuotedWord(", ");        // stop at space or comma..
 
-            if (saying != null && (p.IsEOL || (p.IsCharMoveOn(',') && vars.FromString(p, ConditionVariables.FromMode.MultiEntryComma))))   // normalise variable names (true)
+            if (saying != null && (p.IsEOL || (p.IsCharMoveOn(',') && vars.FromString(p, Variables.FromMode.MultiEntryComma))))   // normalise variable names (true)
                 return true;
 
             saying = "";
             return false;
         }
 
-        static public string ToString(string saying, ConditionVariables cond)
+        static public string ToString(string saying, Variables cond)
         {
             if (cond.Count > 0)
                 return saying.QuoteString(comma: true) + ", " + cond.ToString();
@@ -76,14 +72,14 @@ namespace ActionLanguage
         public override string VerifyActionCorrect()
         {
             string saying;
-            ConditionVariables vars;
+            Variables vars;
             return FromString(userdata, out saying, out vars) ? null : "Say command line not in correct format";
         }
 
         static public string Menu(Control parent, string userdata, ActionCoreController cp)
         {
             string saying;
-            ConditionVariables vars;
+            Variables vars;
             FromString(userdata, out saying, out vars);
 
             ExtendedAudioForms.SpeechConfigure cfg = new ExtendedAudioForms.SpeechConfigure();
@@ -102,7 +98,7 @@ namespace ActionLanguage
 
             if (cfg.ShowDialog(parent.FindForm()) == DialogResult.OK)
             {
-                ConditionVariables cond = new ConditionVariables(cfg.Effects);// add on any effects variables (and may add in some previous variables, since we did not purge
+                Variables cond = new Variables(cfg.Effects);// add on any effects variables (and may add in some previous variables, since we did not purge
                 cond.SetOrRemove(cfg.Wait, waitname, "1");
                 cond.SetOrRemove(cfg.Literal, literalname, "1");
                 cond.SetOrRemove(cfg.Priority != AudioQueue.Priority.Normal, priorityname, cfg.Priority.ToString());
@@ -144,11 +140,11 @@ namespace ActionLanguage
         public override bool ExecuteAction(ActionProgramRun ap)
         {
             string say;
-            ConditionVariables statementvars;
+            Variables statementvars;
             if (FromString(userdata, out say, out statementvars))
             {
                 string errlist = null;
-                ConditionVariables vars = ap.functions.ExpandVars(statementvars, out errlist);
+                Variables vars = ap.functions.ExpandVars(statementvars, out errlist);
 
                 if (errlist == null)
                 {
@@ -180,7 +176,7 @@ namespace ActionLanguage
                     string postfixsoundpath = vars.GetString(postfixsound, checklen: true);
                     string mixsoundpath = vars.GetString(mixsound, checklen: true);
 
-                    ConditionVariables globalsettings = ap.VarExist(globalvarspeecheffects) ? new ConditionVariables(ap[globalvarspeecheffects], ConditionVariables.FromMode.MultiEntryComma) : null;
+                    Variables globalsettings = ap.VarExist(globalvarspeecheffects) ? new Variables(ap[globalvarspeecheffects], Variables.FromMode.MultiEntryComma) : null;
                     SoundEffectSettings ses = SoundEffectSettings.Set(globalsettings, vars);        // work out the settings
 
                     if (queuelimitms > 0)
@@ -196,9 +192,9 @@ namespace ActionLanguage
                     }
 
                     string expsay;
-                    if (ap.functions.ExpandString(say, out expsay) != ConditionFunctions.ExpandResult.Failed)
+                    if (ap.functions.ExpandString(say, out expsay) != Functions.ExpandResult.Failed)
                     {
-                        Random rnd = ConditionFunctionHandlers.GetRandom();
+                        Random rnd = FunctionHandlers.GetRandom();
 
                         if ( !literal )
                         {
@@ -318,7 +314,7 @@ namespace ActionLanguage
             AudioEvent af = tag as AudioEvent;
 
             if (af.eventname != null && af.eventname.Length>0)
-                af.apr.actioncontroller.ActionRun(af.ev, new ConditionVariables("EventName", af.eventname), now: false);    // queue at end an event
+                af.apr.actioncontroller.ActionRun(af.ev, new Variables("EventName", af.eventname), now: false);    // queue at end an event
 
             if (af.wait)
                 af.apr.ResumeAfterPause();

@@ -15,7 +15,7 @@
  */
 using System;
 using System.Collections.Generic;
-using Conditions;
+using BaseUtils;
 
 namespace ActionLanguage
 {
@@ -25,18 +25,18 @@ namespace ActionLanguage
     {
         // used during execution.. filled in on program objects associated with an execution
         public ActionCoreController actioncontroller;                     // core controller.
-        public ConditionFunctions functions;                   // function handler
+        public Functions functions;                   // function handler
         public ActionFile actionfile;                       // what file it came from..
 
-        private ConditionVariables currentvars;      // set up by ActionRun at invokation so they have the latest globals, see Run line 87 ish
+        private Variables currentvars;      // set up by ActionRun at invokation so they have the latest globals, see Run line 87 ish
 
-        private ConditionPersistentData conditionpersistentdata;
+        private FunctionPersistentData conditionpersistentdata;
         public Dictionary<string, ExtendedControls.ConfigurableForm> dialogs;
         private bool closehandlesatend;
 
         public bool ClosingHandlesAtEnd { get { return closehandlesatend; } }
 
-        private ConditionVariables inputvars;        // input vars to this program, never changed
+        private Variables inputvars;        // input vars to this program, never changed
 
         private ActionRun actionrun;                         // who is running it..
 
@@ -53,7 +53,7 @@ namespace ActionLanguage
 
         public ActionProgramRun(ActionFile af, // associated file
                                 ActionProgram r,  // the program
-                                ConditionVariables iparas,             // input variables to the program only.. not globals
+                                Variables iparas,             // input variables to the program only.. not globals
                                 ActionRun runner, // who is running it..
                                 ActionCoreController ed) : base(r.Name)      // allow a pause
         {
@@ -77,27 +77,27 @@ namespace ActionLanguage
             programsteps = psteps;
         }
 
-        public ConditionVariables inputvariables { get { return inputvars; } }
+        public Variables inputvariables { get { return inputvars; } }
 
         #region Variables
 
-        public ConditionVariables variables { get { return currentvars; } }
+        public Variables variables { get { return currentvars; } }
         public string this[string s] { get { return currentvars[s]; } set { currentvars[s] = value; } }
         public void DeleteVariableWildcard(string v) { currentvars.DeleteWildcard(v); }
         public bool VarExist(string v) { return currentvars.Exists(v); }
-        public void Add(ConditionVariables v) { currentvars.Add(v); }
+        public void Add(Variables v) { currentvars.Add(v); }
         public void AddDataOfType(Object o, Type t, string n) { currentvars.AddDataOfType(o, t, n, 5); }
 
         #endregion
 
         #region Exec control
 
-        public void PrepareToRun( ConditionVariables v , ConditionPersistentData fh , Dictionary<string, ExtendedControls.ConfigurableForm> d, bool chae = true)
+        public void PrepareToRun( Variables v , FunctionPersistentData fh , Dictionary<string, ExtendedControls.ConfigurableForm> d, bool chae = true)
         {
             currentvars = v;
             conditionpersistentdata = fh;
             closehandlesatend = chae;
-            functions = new ConditionFunctions(currentvars, conditionpersistentdata);           // point the functions at our variables and our files..
+            functions = new Functions(currentvars, conditionpersistentdata);           // point the functions at our variables and our files..
             dialogs = d; 
         }
 

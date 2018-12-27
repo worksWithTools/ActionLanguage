@@ -22,7 +22,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Conditions;
+using BaseUtils;
 
 // A file holds a set of conditions and programs associated with them
 
@@ -32,14 +32,14 @@ namespace ActionLanguage
     {
         public ActionFile()
         {
-            filevariables = new ConditionVariables();       // filevariables are only cleared on creation
+            filevariables = new Variables();       // filevariables are only cleared on creation
             dialogs = new Dictionary<string, ExtendedControls.ConfigurableForm>();
             Clear();
         }
 
         public ActionFile(string f, string n)
         {
-            filevariables = new ConditionVariables();
+            filevariables = new Variables();
             dialogs = new Dictionary<string, ExtendedControls.ConfigurableForm>();
             Clear(f, n);
         }
@@ -49,7 +49,7 @@ namespace ActionLanguage
             actioneventlist = new ConditionLists();
             actionprogramlist = new ActionProgramList();
             enabled = true;
-            installationvariables = new ConditionVariables();
+            installationvariables = new Variables();
             filepath = f;
             name = n;
             fileencoding = Encoding.UTF8;
@@ -59,8 +59,8 @@ namespace ActionLanguage
 
         public ConditionLists actioneventlist { get; private set; }                        // note we use the list, but not the evaluate between conditions..
         public ActionProgramList actionprogramlist { get; private set; }                   // programs associated with this pack
-        public ConditionVariables installationvariables { get; private set; }              // used to pass to the installer various options, such as disable other packs
-        public ConditionVariables filevariables { get; private set; }                      // variables defined using the static.. private to this program.  Not persistent. 
+        public Variables installationvariables { get; private set; }              // used to pass to the installer various options, such as disable other packs
+        public Variables filevariables { get; private set; }                      // variables defined using the static.. private to this program.  Not persistent. 
         public Dictionary<string, ExtendedControls.ConfigurableForm> dialogs;              // persistent dialogs owned by this file
         public string filepath { get; private set; }                                       // where it came from
         public string name { get; private set; }                                           // its logical name
@@ -73,7 +73,7 @@ namespace ActionLanguage
             actioneventlist = s;
         }
 
-        public void ChangeInstallationVariables(ConditionVariables v)
+        public void ChangeInstallationVariables(Variables v)
         {
             installationvariables = v;
         }
@@ -245,8 +245,8 @@ namespace ActionLanguage
                             }
                             else if (line.StartsWith("INSTALL", StringComparison.InvariantCultureIgnoreCase))
                             {
-                                ConditionVariables c = new ConditionVariables();
-                                if (c.FromString(line.Substring(7).Trim(), ConditionVariables.FromMode.OnePerLine) && c.Count == 1)
+                                Variables c = new Variables();
+                                if (c.FromString(line.Substring(7).Trim(), Variables.FromMode.OnePerLine) && c.Count == 1)
                                 {
                                     installationvariables.Add(c);
                                 }
@@ -444,7 +444,7 @@ namespace ActionLanguage
             return false;
         }
 
-        static public ConditionVariables ReadVarsAndEnableFromFile(string file, out bool? enable)
+        static public Variables ReadVarsAndEnableFromFile(string file, out bool? enable)
         {
             ActionFile f = new ActionFile();
             enable = null;

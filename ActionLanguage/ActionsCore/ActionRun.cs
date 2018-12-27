@@ -19,7 +19,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Conditions;
+using BaseUtils;
 
 namespace ActionLanguage
 {
@@ -51,8 +51,8 @@ namespace ActionLanguage
 
         // now = true, run it immediately, else run at end of queue.  Optionally pass in handles and dialogs in case its a sub prog
 
-        public void Run(bool now, ActionFile fileset, ActionProgram r, ConditionVariables inputparas,
-                                ConditionPersistentData fh = null, Dictionary<string, ExtendedControls.ConfigurableForm> d = null, bool closeatend = true)
+        public void Run(bool now, ActionFile fileset, ActionProgram r, Variables inputparas,
+                                FunctionPersistentData fh = null, Dictionary<string, ExtendedControls.ConfigurableForm> d = null, bool closeatend = true)
         {
             if (now)
             {
@@ -61,8 +61,8 @@ namespace ActionLanguage
 
                 progcurrent = new ActionProgramRun(fileset, r, inputparas, this, actioncontroller);   // now we run this.. no need to push to stack
 
-                progcurrent.PrepareToRun(new ConditionVariables(progcurrent.inputvariables, actioncontroller.Globals, fileset.filevariables),
-                                                fh == null ? new ConditionPersistentData() : fh, d == null ? new Dictionary<string, ExtendedControls.ConfigurableForm>() : d, closeatend);        // if no filehandles, make them and close at end
+                progcurrent.PrepareToRun(new Variables(progcurrent.inputvariables, actioncontroller.Globals, fileset.filevariables),
+                                                fh == null ? new FunctionPersistentData() : fh, d == null ? new Dictionary<string, ExtendedControls.ConfigurableForm>() : d, closeatend);        // if no filehandles, make them and close at end
             }
             else
             {
@@ -139,8 +139,8 @@ namespace ActionLanguage
                     else
                     {
                         progcurrent.PrepareToRun(
-                                new ConditionVariables(progcurrent.inputvariables, actioncontroller.Globals, progcurrent.actionfile.filevariables),
-                                new ConditionPersistentData(),
+                                new Variables(progcurrent.inputvariables, actioncontroller.Globals, progcurrent.actionfile.filevariables),
+                                new FunctionPersistentData(),
                                 new Dictionary<string, ExtendedControls.ConfigurableForm>(), true); // with new file handles and close at end..
                     }
 
@@ -182,7 +182,7 @@ namespace ActionLanguage
                     {
                         ActionCall acall = ac as ActionCall;
                         string prog;
-                        ConditionVariables paravars;
+                        Variables paravars;
                         if (acall.ExecuteCallAction(progcurrent, out prog, out paravars)) // if execute ok
                         {
                             //System.Diagnostics.Debug.WriteLine("Call " + prog + " with " + paravars.ToString());

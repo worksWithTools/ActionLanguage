@@ -16,11 +16,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using BaseUtils;
-using Conditions;
 
 namespace ActionLanguage
 {
@@ -302,7 +299,7 @@ namespace ActionLanguage
                     List<string> ctrl = FromString(UserData);
                     List<string> exp;
 
-                    if (ap.functions.ExpandStrings(ctrl, out exp) != ConditionFunctions.ExpandResult.Failed)
+                    if (ap.functions.ExpandStrings(ctrl, out exp) != Functions.ExpandResult.Failed)
                     {
                         if (exp[0].InvariantParse(out loopcount))
                         {
@@ -432,7 +429,7 @@ namespace ActionLanguage
 
                 if (res)
                 {
-                    if (ap.functions.ExpandString(errmsg, out string exprerr) != ConditionFunctions.ExpandResult.Failed)
+                    if (ap.functions.ExpandString(errmsg, out string exprerr) != Functions.ExpandResult.Failed)
                     {
                         ap.ReportError(exprerr);
                     }
@@ -449,10 +446,10 @@ namespace ActionLanguage
 
     public class ActionCall : ActionBase
     {
-        public bool FromString(string s, out string progname, out ConditionVariables vars, out Dictionary<string, string> altops)
+        public bool FromString(string s, out string progname, out Variables vars, out Dictionary<string, string> altops)
         {
             StringParser p = new StringParser(s);
-            vars = new ConditionVariables();
+            vars = new Variables();
             altops = new Dictionary<string, string>();
 
             progname = p.NextWord("( ");        // stop at space or (
@@ -461,7 +458,7 @@ namespace ActionLanguage
             {
                 if (p.IsCharMoveOn('('))       // if (, then
                 {
-                    if (vars.FromString(p, ConditionVariables.FromMode.MultiEntryCommaBracketEnds, altops) && p.IsCharMoveOn(')') && p.IsEOL)      // if para list decodes and we finish on a ) and its EOL
+                    if (vars.FromString(p, Variables.FromMode.MultiEntryCommaBracketEnds, altops) && p.IsCharMoveOn(')') && p.IsEOL)      // if para list decodes and we finish on a ) and its EOL
                         return true;
                 }
                 else if (p.IsEOL)   // if EOL, its okay, prog name only
@@ -471,7 +468,7 @@ namespace ActionLanguage
             return false;
         }
 
-        public string ToString(string progname, ConditionVariables cond, Dictionary<string, string> altops)
+        public string ToString(string progname, Variables cond, Dictionary<string, string> altops)
         {
             if (cond.Count > 0)
                 return progname + "(" + cond.ToString(altops, bracket: true) + ")";
@@ -482,7 +479,7 @@ namespace ActionLanguage
         public string GetProgramName()
         {
             string progname;
-            ConditionVariables vars;
+            Variables vars;
             Dictionary<string, string> altops;
             return FromString(userdata, out progname, out vars, out altops) ? progname : null;
         }
@@ -490,7 +487,7 @@ namespace ActionLanguage
         public override string VerifyActionCorrect()
         {
             string progname;
-            ConditionVariables vars;
+            Variables vars;
             Dictionary<string, string> altops;
             return FromString(userdata, out progname, out vars, out altops) ? null : "Call not in correct format: progname (var list v=\"y\")";
         }
@@ -498,7 +495,7 @@ namespace ActionLanguage
         public override bool ConfigurationMenu(Form parent, ActionCoreController cp, List<string> eventvars)
         {
             string progname;
-            ConditionVariables cond;
+            Variables cond;
             Dictionary<string, string> altops;
             FromString(UserData, out progname, out cond, out altops);
 
@@ -519,13 +516,13 @@ namespace ActionLanguage
         }
 
         //special call for execute, needs to pass back more data
-        public bool ExecuteCallAction(ActionProgramRun ap, out string progname, out ConditionVariables vars)
+        public bool ExecuteCallAction(ActionProgramRun ap, out string progname, out Variables vars)
         {
             Dictionary<string, string> altops;
             if (FromString(UserData, out progname, out vars, out altops) && progname.Length > 0)
             {
                 List<string> wildcards = new List<string>();
-                ConditionVariables newitems = new ConditionVariables();
+                Variables newitems = new Variables();
 
                 foreach (string key in vars.NameEnumuerable)
                 {
@@ -546,7 +543,7 @@ namespace ActionLanguage
                                 else
                                 {
                                     string res;
-                                    if (ap.functions.ExpandString(ap[jkey], out res) == ConditionFunctions.ExpandResult.Failed)
+                                    if (ap.functions.ExpandString(ap[jkey], out res) == Functions.ExpandResult.Failed)
                                     {
                                         ap.ReportError(res);
                                         return false;
@@ -570,7 +567,7 @@ namespace ActionLanguage
                     if (!noexpand)
                     {
                         string res;
-                        if (ap.functions.ExpandString(vars[k], out res) == ConditionFunctions.ExpandResult.Failed)
+                        if (ap.functions.ExpandString(vars[k], out res) == Functions.ExpandResult.Failed)
                         {
                             ap.ReportError(res);
                             return false;
@@ -655,7 +652,7 @@ namespace ActionLanguage
 
                 if (FromString(UserData, out macroname, out searchterm))
                 {
-                    if (ap.functions.ExpandString(macroname, out expmacroname) == Conditions.ConditionFunctions.ExpandResult.Failed)       //Expand out.. and if no errors
+                    if (ap.functions.ExpandString(macroname, out expmacroname) == BaseUtils.Functions.ExpandResult.Failed)       //Expand out.. and if no errors
                     {
                         ap.ReportError(expmacroname);
                         return true;
@@ -663,7 +660,7 @@ namespace ActionLanguage
 
                     string expsearchterm;
 
-                    if (ap.functions.ExpandString(searchterm, out expsearchterm) == Conditions.ConditionFunctions.ExpandResult.Failed)       //Expand out.. and if no errors
+                    if (ap.functions.ExpandString(searchterm, out expsearchterm) == BaseUtils.Functions.ExpandResult.Failed)       //Expand out.. and if no errors
                     {
                         ap.ReportError(expmacroname);
                         return true;

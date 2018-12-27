@@ -18,7 +18,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Conditions;
+using BaseUtils;
 using AudioExtensions;
 
 namespace ActionLanguage
@@ -28,22 +28,22 @@ namespace ActionLanguage
         protected ActionFileList actionfiles;
         protected ActionRun actionrunasync;
 
-        private ConditionVariables programrunglobalvariables;         // program run, lost at power off, set by GLOBAL or internal 
-        private ConditionVariables persistentglobalvariables;   // user variables, set by user only, including user setting vars like SpeechVolume
-        private ConditionVariables globalvariables;                  // combo of above.
+        private Variables programrunglobalvariables;         // program run, lost at power off, set by GLOBAL or internal 
+        private Variables persistentglobalvariables;   // user variables, set by user only, including user setting vars like SpeechVolume
+        private Variables globalvariables;                  // combo of above.
 
-        protected ConditionVariables PersistentVariables { get { return persistentglobalvariables; } }
-        protected void LoadPeristentVariables(ConditionVariables list)
+        protected Variables PersistentVariables { get { return persistentglobalvariables; } }
+        protected void LoadPeristentVariables(Variables list)
         {
             persistentglobalvariables = list;
-            globalvariables = new ConditionVariables(persistentglobalvariables, programrunglobalvariables);
+            globalvariables = new Variables(persistentglobalvariables, programrunglobalvariables);
         }
 
         virtual public AudioExtensions.AudioQueue AudioQueueWave { get; }
         virtual public AudioExtensions.AudioQueue AudioQueueSpeech { get; }
         virtual public AudioExtensions.SpeechSynthesizer SpeechSynthesizer { get; }
 
-        public ConditionVariables Globals { get { return globalvariables; } }
+        public Variables Globals { get { return globalvariables; } }
 
         protected System.Windows.Forms.Form form;
 
@@ -59,9 +59,9 @@ namespace ActionLanguage
             Icon = ic;
             form = frm;
 
-            persistentglobalvariables = new ConditionVariables();
-            globalvariables = new ConditionVariables();
-            programrunglobalvariables = new ConditionVariables();
+            persistentglobalvariables = new Variables();
+            globalvariables = new Variables();
+            programrunglobalvariables = new Variables();
 
             SetInternalGlobal("CurrentCulture", System.Threading.Thread.CurrentThread.CurrentCulture.Name);
             SetInternalGlobal("CurrentCultureInEnglish", System.Threading.Thread.CurrentThread.CurrentCulture.EnglishName);
@@ -135,7 +135,7 @@ namespace ActionLanguage
         public virtual void LogLine(string s)
         { }
 
-        public virtual int ActionRun(ActionEvent ev, ConditionVariables additionalvars = null,
+        public virtual int ActionRun(ActionEvent ev, Variables additionalvars = null,
                                 string flagstart = null, bool now = false)
         { return 0; }
 

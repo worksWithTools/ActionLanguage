@@ -15,33 +15,29 @@
  */
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using BaseUtils;
-using Conditions;
 
 namespace ActionLanguage
 {
     public class ActionSetLetBase : ActionBase
     {
-        protected bool FromString(string ud, out ConditionVariables vars, out Dictionary<string, string> operations)
+        protected bool FromString(string ud, out Variables vars, out Dictionary<string, string> operations)
         {
-            vars = new ConditionVariables();
+            vars = new Variables();
             operations = new Dictionary<string, string>();
             StringParser p = new StringParser(ud);
-            return vars.FromString(p, ConditionVariables.FromMode.OnePerLine, altops:operations);
+            return vars.FromString(p, Variables.FromMode.OnePerLine, altops:operations);
         }
 
-        protected string ToString(ConditionVariables vars, Dictionary<string, string> operations)
+        protected string ToString(Variables vars, Dictionary<string, string> operations)
         {
             return vars.ToString(operations, pad: " ", comma:false, bracket:false, space:false);
         }
 
         public bool ConfigurationMenu(Form parent, ActionCoreController cp, List<string> eventvars, bool allowaddv , bool allownoexpandv)
         {
-            ConditionVariables av;
+            Variables av;
             Dictionary<string, string> operations;
             FromString(userdata, out av, out operations);
 
@@ -59,7 +55,7 @@ namespace ActionLanguage
 
         public override string VerifyActionCorrect()
         {
-            ConditionVariables av;
+            Variables av;
             Dictionary<string, string> operations;
             bool ok = FromString(userdata, out av ,out operations);
 
@@ -72,7 +68,7 @@ namespace ActionLanguage
         }
 
 
-        ConditionVariables av;
+        Variables av;
         Dictionary<string, string> operations;
 
         public bool ExecuteAction(ActionProgramRun ap, bool setit, bool globalit =false, bool persistentit =false, bool staticit = false )
@@ -86,7 +82,7 @@ namespace ActionLanguage
 
                 if (keyname.Contains("%"))      // if its an expansion, got for expansion
                 {
-                    if (ap.functions.ExpandString(key, out keyname) == ConditionFunctions.ExpandResult.Failed)
+                    if (ap.functions.ExpandString(key, out keyname) == Functions.ExpandResult.Failed)
                     {
                         ap.ReportError(keyname);
                         break;
@@ -99,7 +95,7 @@ namespace ActionLanguage
 
                 if (operations[key].Contains("$"))
                     res = av[key];
-                else if (ap.functions.ExpandString(av[key], out res) == ConditionFunctions.ExpandResult.Failed)       //Expand out.. and if no errors
+                else if (ap.functions.ExpandString(av[key], out res) == Functions.ExpandResult.Failed)       //Expand out.. and if no errors
                 {
                     ap.ReportError(res);
                     break;
@@ -257,7 +253,7 @@ namespace ActionLanguage
         public override bool ExecuteAction(ActionProgramRun ap)
         {
             string res;
-            if (ap.functions.ExpandString(UserData,  out res) != ConditionFunctions.ExpandResult.Failed)
+            if (ap.functions.ExpandString(UserData,  out res) != Functions.ExpandResult.Failed)
             {
                 StringParser p = new StringParser(res);
 
@@ -296,7 +292,7 @@ namespace ActionLanguage
         public override bool ExecuteAction(ActionProgramRun ap)
         {
             string res;
-            if (ap.functions.ExpandString(UserData, out res) != ConditionFunctions.ExpandResult.Failed)
+            if (ap.functions.ExpandString(UserData, out res) != Functions.ExpandResult.Failed)
             {
                 ap["Result"] = res;
             }

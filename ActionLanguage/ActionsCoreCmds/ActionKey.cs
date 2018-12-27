@@ -13,15 +13,10 @@
  * 
  * EDDiscovery is not affiliated with Frontier Developments plc.
  */
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using BaseUtils;
 using AudioExtensions;
-using Conditions;
 
 namespace ActionLanguage
 {
@@ -49,21 +44,21 @@ namespace ActionLanguage
 
         protected const int DefaultDelay = 10;
 
-        static public bool FromString(string s, out string keys, out ConditionVariables vars)
+        static public bool FromString(string s, out string keys, out Variables vars)
         {
-            vars = new ConditionVariables();
+            vars = new Variables();
 
             StringParser p = new StringParser(s);
             keys = p.NextQuotedWord(", ");        // stop at space or comma..
 
-            if (keys != null && (p.IsEOL || (p.IsCharMoveOn(',') && vars.FromString(p, ConditionVariables.FromMode.MultiEntryComma))))   // normalise variable names (true)
+            if (keys != null && (p.IsEOL || (p.IsCharMoveOn(',') && vars.FromString(p, Variables.FromMode.MultiEntryComma))))   // normalise variable names (true)
                 return true;
 
             keys = "";
             return false;
         }
 
-        static public string ToString(string keys, ConditionVariables cond )
+        static public string ToString(string keys, Variables cond )
         {
             if (cond.Count > 0)
                 return keys.QuoteString(comma: true) + ", " + cond.ToString();
@@ -74,13 +69,13 @@ namespace ActionLanguage
         public override string VerifyActionCorrect()
         {
             string saying;
-            ConditionVariables vars;
+            Variables vars;
             return FromString(userdata, out saying, out vars) ? null : "Key command line not in correct format";
         }
 
         static public string Menu(Form parent, System.Drawing.Icon ic, string userdata, List<string> additionalkeys, BaseUtils.EnhancedSendKeysParser.IAdditionalKeyParser additionalparser)
         {
-            ConditionVariables vars;
+            Variables vars;
             string keys;
             FromString(userdata, out keys, out vars);
 
@@ -92,7 +87,7 @@ namespace ActionLanguage
 
             if (kf.ShowDialog(parent) == DialogResult.OK)
             {
-                ConditionVariables vlist = new ConditionVariables();
+                Variables vlist = new Variables();
 
                 if (kf.DefaultDelay != ExtendedControls.KeyForm.DefaultDelayID)                                       // only add these into the command if set to non default
                     vlist[DelayID] = kf.DefaultDelay.ToStringInvariant();
@@ -127,11 +122,11 @@ namespace ActionLanguage
         public bool ExecuteAction(ActionProgramRun ap, BaseUtils.EnhancedSendKeysParser.IAdditionalKeyParser akp )      // additional parser
         { 
             string keys;
-            ConditionVariables statementvars;
+            Variables statementvars;
             if (FromString(userdata, out keys, out statementvars))
             {
                 string errlist = null;
-                ConditionVariables vars = ap.functions.ExpandVars(statementvars, out errlist);
+                Variables vars = ap.functions.ExpandVars(statementvars, out errlist);
 
                 if (errlist == null)
                 {

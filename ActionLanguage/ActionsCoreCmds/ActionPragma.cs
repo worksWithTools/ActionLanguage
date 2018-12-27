@@ -13,14 +13,9 @@
  * 
  * EDDiscovery is not affiliated with Frontier Developments plc.
  */
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using BaseUtils;
-using Conditions;
 
 namespace ActionLanguage
 {
@@ -42,7 +37,7 @@ namespace ActionLanguage
         public override bool ExecuteAction(ActionProgramRun ap)
         {
             string res;
-            if (ap.functions.ExpandString(UserData, out res) != ConditionFunctions.ExpandResult.Failed)
+            if (ap.functions.ExpandString(UserData, out res) != Functions.ExpandResult.Failed)
             {
                 StringParser p = new StringParser(res);
 
@@ -55,7 +50,7 @@ namespace ActionLanguage
 
                         if (rest != null && rest.Length > 0)
                         {
-                            ConditionVariables filtered = ap.variables.FilterVars(rest);
+                            Variables filtered = ap.variables.FilterVars(rest);
                             foreach (string key in filtered.NameEnumuerable)
                             {
                                 ap.actioncontroller.LogLine(key + "=" + filtered[key]);
