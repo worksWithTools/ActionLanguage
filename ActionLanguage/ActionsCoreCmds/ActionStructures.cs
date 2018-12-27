@@ -41,7 +41,7 @@ namespace ActionLanguage
 
             if (frm.ShowDialog(parent) == DialogResult.OK)
             {
-                jf = frm.result;
+                jf = frm.Result;
                 return true;
             }
             else

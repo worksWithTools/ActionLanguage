@@ -155,7 +155,7 @@ namespace ActionLanguage
             frm.TopMost = this.FindForm().TopMost;
             if (frm.ShowDialog(this.FindForm()) == DialogResult.OK)
             {
-                Condition res = frm.result.Get(0);
+                Condition res = frm.Result.Get(0);
                 if (res != null)
                 {
                     cd.fields = res.fields;
