@@ -127,7 +127,7 @@ namespace ActionLanguage
                 //System.Diagnostics.Debug.WriteLine("Check `" + ae.af.name + ae.af.actionfieldfilter.ToString() + "`");
                 //ActionData.DumpVars(valuesneeded, " Test var:");
 
-                ae.af.actioneventlist.CheckConditions(ae.cl, valuesneeded, out errlist, ae.passed, cf);   // indicate which ones passed
+                ConditionLists.CheckConditions(ae.cl, valuesneeded, out errlist, ae.passed, cf);   // indicate which ones passed
                 progs += ae.passed.Count;
             }
 
