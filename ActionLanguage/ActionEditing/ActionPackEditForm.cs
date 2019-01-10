@@ -27,7 +27,7 @@ using BaseUtils;
 
 namespace ActionLanguage
 {
-    public partial class ActionPackEditPack : ExtendedControls.DraggableForm
+    public partial class ActionPackEditPackForm : ExtendedControls.DraggableForm
     {
         ActionFile actionfile;      // file we are editing
         string applicationfolder;   // folder where the file is
@@ -90,7 +90,7 @@ namespace ActionLanguage
 
         #region Init
 
-        public ActionPackEditPack()
+        public ActionPackEditPackForm()
         {
             groups = new List<Group>();
             InitializeComponent();
