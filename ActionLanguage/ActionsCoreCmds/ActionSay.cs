@@ -143,8 +143,17 @@ namespace ActionLanguage
             Variables statementvars;
             if (FromString(userdata, out say, out statementvars))
             {
+                string ctrl = ap.VarExist("SpeechDebug") ? ap["SpeechDebug"] : "";
+
                 string errlist = null;
                 Variables vars = ap.functions.ExpandVars(statementvars, out errlist);
+
+                if (ctrl.Contains("SayLine"))
+                {
+                    ap.actioncontroller.LogLine("Say Command: " + userdata);
+                    ap.actioncontroller.LogLine("Say Vars: " + vars.ToString(separ: Environment.NewLine));
+                    System.Diagnostics.Debug.WriteLine("Say Vars: " + vars.ToString(separ: Environment.NewLine));
+                }
 
                 if (errlist == null)
                 {
@@ -191,6 +200,9 @@ namespace ActionLanguage
                         }
                     }
 
+                    System.Diagnostics.Debug.WriteLine("Say wait {0}, vol {1}, rate {2}, queue {3}, culture {4}, literal {5}, dontspeak {6} , prefix {7}, postfix {8}, mix {9} starte {10}, finishe {11} , voice {12} ",
+                                    wait, vol, rate, queuelimitms, culture, literal, dontspeak, prefixsoundpath, postfixsoundpath, mixsoundpath, start, finish, voice );
+
                     string expsay;
                     if (ap.functions.ExpandString(say, out expsay) != Functions.ExpandResult.Failed)
                     {
@@ -202,8 +214,6 @@ namespace ActionLanguage
                         }
 
                         ap["SaySaid"] = expsay;
-
-                        string ctrl = ap.VarExist("SpeechDebug") ? ap["SpeechDebug"] : "";
 
                         if (ctrl.Contains("Global"))
                         {
