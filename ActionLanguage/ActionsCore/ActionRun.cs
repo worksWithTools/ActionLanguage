@@ -205,7 +205,10 @@ namespace ActionLanguage
                         {
                             TerminateCurrent();
 
-                            if (progqueue.Count > 0)        // pass return value if program is there..
+                            // if a new program is queued, but not prepared, and this program returns to finish, make sure we don't
+                            // screw up since the variables are not preparred yet - they will be above in PrepareToRun
+
+                            if (progqueue.Count > 0 && progqueue[0].variables != null )        // pass return value if program is there AND its prepared
                                 progqueue[0]["ReturnValue"] = retstr;
 
                             continue;       // back to top, next action from returned function.
@@ -217,7 +220,7 @@ namespace ActionLanguage
                     }
                 }
 
-                if (AsyncMode && timetaken.ElapsedMilliseconds > 100)  // no more than 100ms per go to stop the main thread being blocked
+                if (AsyncMode && timetaken.ElapsedMilliseconds > 150)  // no more than ms per go to stop the main thread being blocked
                 {
                     //System.Diagnostics.Debug.WriteLine((Environment.TickCount % 10000).ToString("00000") + " *** SUSPEND");
                     restarttick.Start();
