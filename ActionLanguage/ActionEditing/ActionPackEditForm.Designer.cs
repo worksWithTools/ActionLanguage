@@ -30,20 +30,20 @@
         {
             this.components = new System.ComponentModel.Container();
             this.panelTop = new System.Windows.Forms.Panel();
-            this.panel_close = new ExtendedControls.DrawnPanel();
-            this.panel_minimize = new ExtendedControls.DrawnPanel();
+            this.panel_close = new ExtendedControls.ExtPanelDrawn();
+            this.panel_minimize = new ExtendedControls.ExtPanelDrawn();
             this.label_index = new System.Windows.Forms.Label();
             this.panelOK = new System.Windows.Forms.Panel();
-            this.buttonInstallationVars = new ExtendedControls.ButtonExt();
-            this.comboBoxCustomEditProg = new ExtendedControls.ComboBoxCustom();
+            this.buttonInstallationVars = new ExtendedControls.ExtButton();
+            this.comboBoxCustomEditProg = new ExtendedControls.ExtComboBox();
             this.labelEditProg = new System.Windows.Forms.Label();
-            this.buttonCancel = new ExtendedControls.ButtonExt();
-            this.buttonOK = new ExtendedControls.ButtonExt();
+            this.buttonCancel = new ExtendedControls.ExtButton();
+            this.buttonOK = new ExtendedControls.ExtButton();
             this.panelOuter = new System.Windows.Forms.Panel();
-            this.panelVScroll = new ExtendedControls.PanelVScroll();
-            this.vScrollBarCustom1 = new ExtendedControls.VScrollBarCustom();
-            this.buttonMore = new ExtendedControls.ButtonExt();
-            this.statusStripCustom = new ExtendedControls.StatusStripCustom();
+            this.panelVScroll = new ExtendedControls.ExtPanelScroll();
+            this.vScrollBarCustom1 = new ExtendedControls.ExtScrollBar();
+            this.buttonMore = new ExtendedControls.ExtButton();
+            this.statusStripCustom = new ExtendedControls.ExtStatusStrip();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.contextMenuStripAction = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.moveUpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -95,7 +95,7 @@
             // panel_minimize
             // 
             this.panel_minimize.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel_minimize.ImageSelected = ExtendedControls.DrawnPanel.ImageType.Minimize;
+            this.panel_minimize.ImageSelected = ExtendedControls.ExtPanelDrawn.ImageType.Minimize;
             this.panel_minimize.Location = new System.Drawing.Point(1015, 0);
             this.panel_minimize.Name = "panel_minimize";
             this.panel_minimize.Padding = new System.Windows.Forms.Padding(6);
@@ -421,20 +421,20 @@
         #endregion
 
         private System.Windows.Forms.Panel panelTop;
-        private ExtendedControls.DrawnPanel panel_close;
-        private ExtendedControls.DrawnPanel panel_minimize;
+        private ExtendedControls.ExtPanelDrawn panel_close;
+        private ExtendedControls.ExtPanelDrawn panel_minimize;
         private System.Windows.Forms.Label label_index;
         private System.Windows.Forms.Panel panelOK;
-        private ExtendedControls.ComboBoxCustom comboBoxCustomEditProg;
+        private ExtendedControls.ExtComboBox comboBoxCustomEditProg;
         private System.Windows.Forms.Label labelEditProg;
-        private ExtendedControls.ButtonExt buttonCancel;
-        private ExtendedControls.ButtonExt buttonOK;
+        private ExtendedControls.ExtButton buttonCancel;
+        private ExtendedControls.ExtButton buttonOK;
         private System.Windows.Forms.Panel panelOuter;
-        private ExtendedControls.PanelVScroll panelVScroll;
-        private ExtendedControls.VScrollBarCustom vScrollBarCustom1;
-        private ExtendedControls.ButtonExt buttonMore;
-        private ExtendedControls.StatusStripCustom statusStripCustom;
-        private ExtendedControls.ButtonExt buttonInstallationVars;
+        private ExtendedControls.ExtPanelScroll panelVScroll;
+        private ExtendedControls.ExtScrollBar vScrollBarCustom1;
+        private ExtendedControls.ExtButton buttonMore;
+        private ExtendedControls.ExtStatusStrip statusStripCustom;
+        private ExtendedControls.ExtButton buttonInstallationVars;
         private System.Windows.Forms.ToolTip toolTip;
         private System.Windows.Forms.ContextMenuStrip contextMenuStripAction;
         private System.Windows.Forms.ToolStripMenuItem insertGroupToolStripMenuItem;

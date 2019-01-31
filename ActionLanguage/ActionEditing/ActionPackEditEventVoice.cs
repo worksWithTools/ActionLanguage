@@ -26,7 +26,7 @@ namespace ActionLanguage
         public System.Func<Form, System.Drawing.Icon, string, string> onEditKeys;   // edit the key string..  must provide
         public System.Func<Form, string, ActionCoreController, string> onEditSay;   // edit the say string..  must provide
 
-        private ExtendedControls.TextBoxBorder textBoxInput;
+        private ExtendedControls.ExtTextBox textBoxInput;
         private ActionPackEditProgram ucprog;
 
         private const int panelxmargin = 3;
@@ -37,7 +37,7 @@ namespace ActionLanguage
         {
             cd = cond;      // on creation, the cond with be set to onVoice with one condition, checked in ActionController.cs:SetPackEditor..
 
-            textBoxInput = new ExtendedControls.TextBoxBorder();
+            textBoxInput = new ExtendedControls.ExtTextBox();
             textBoxInput.Location = new Point(panelxmargin, panelymargin);
             textBoxInput.Size = new Size(356, 24);      // manually matched to size of eventprogramcondition bits
             textBoxInput.Text = cd.fields[0].matchstring;
@@ -68,7 +68,7 @@ namespace ActionLanguage
 
         private void TextBoxInput_TextChanged(object sender, System.EventArgs e)
         {
-            cd.fields[0].matchstring = ((ExtendedControls.TextBoxBorder)sender).Text;
+            cd.fields[0].matchstring = ((ExtendedControls.ExtTextBox)sender).Text;
         }
 
         public override void UpdateProgramList(string[] proglist)

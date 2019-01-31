@@ -26,7 +26,7 @@ namespace ActionLanguage
         public System.Func<Form, System.Drawing.Icon, string, string> onEditKeys;   // edit the key string.. must provide
         public System.Func<Form, string, ActionCoreController, string> onEditSay;   // edit the say string..
 
-        private ExtendedControls.ComboBoxCustom eventtype;
+        private ExtendedControls.ExtComboBox eventtype;
 
         private ActionPackEditProgram ucprog;
         private ActionPackEditCondition uccond;
@@ -43,7 +43,7 @@ namespace ActionLanguage
             cd = cond;
             anfunc = func;
 
-            eventtype = new ExtendedControls.ComboBoxCustom();
+            eventtype = new ExtendedControls.ExtComboBox();
             eventtype.Items.AddRange(events);
             eventtype.Location = new Point(panelxmargin, panelymargin);
             eventtype.Size = new Size(140, 24);

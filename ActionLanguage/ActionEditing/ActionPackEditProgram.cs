@@ -42,14 +42,14 @@ namespace ActionLanguage
         private const int panelxmargin = 3;
         private const int panelymargin = 2;
 
-        private ExtendedControls.PanelSelectionList progmajortype;
+        private ExtendedControls.ExtPanelDropDown progmajortype;
 
-        private ExtendedControls.ComboBoxCustom proglist;   //Full
-        private ExtendedControls.ButtonExt progedit;
-        private ExtendedControls.TextBoxBorder paras;
+        private ExtendedControls.ExtComboBox proglist;   //Full
+        private ExtendedControls.ExtButton progedit;
+        private ExtendedControls.ExtTextBox paras;
 
-        private ExtendedControls.ButtonExt buttonSay;
-        private ExtendedControls.ButtonExt buttonKeys;
+        private ExtendedControls.ExtButton buttonSay;
+        private ExtendedControls.ExtButton buttonKeys;
 
         ActionProgram.ProgramConditionClass classifier;
         ActionProgram.ProgramConditionClass[] indextoclassifier;
@@ -64,7 +64,7 @@ namespace ActionLanguage
             Icon = i;
             classifier = cls;
 
-            progmajortype = new ExtendedControls.PanelSelectionList();
+            progmajortype = new ExtendedControls.ExtPanelDropDown();
             progmajortype.Items.AddRange(new string[] { "Key" , "Say", "Key+Say" , "Full Program" });
             indextoclassifier = new ActionProgram.ProgramConditionClass[] { ActionProgram.ProgramConditionClass.Key , ActionProgram.ProgramConditionClass.Say ,
                                                                             ActionProgram.ProgramConditionClass.KeySay , ActionProgram.ProgramConditionClass.Full };
@@ -73,7 +73,7 @@ namespace ActionLanguage
             progmajortype.SelectedIndexChanged += PanelType_SelectedIndexChanged;
             toolTip.SetToolTip(progmajortype, "Use the selector (click on bottom right arrow) to select program class type");
 
-            proglist = new ExtendedControls.ComboBoxCustom();
+            proglist = new ExtendedControls.ExtComboBox();
             proglist.Items.Add("New");
             proglist.Items.AddRange(actionfile.actionprogramlist.GetActionProgramList());
             proglist.Location = new Point(panelxmargin, panelymargin);
@@ -83,14 +83,14 @@ namespace ActionLanguage
             proglist.SelectedIndexChanged += Proglist_SelectedIndexChanged;
             proglist.SetTipDynamically(toolTip, "Select program to associate with this event");
 
-            progedit = new ExtendedControls.ButtonExt();
+            progedit = new ExtendedControls.ExtButton();
             progedit.Text = "P";
             progedit.Location = new Point(proglist.Right + 8, panelymargin);
             progedit.Size = new Size(24, 24);
             progedit.Click += Progedit_Click;
             toolTip.SetToolTip(progedit, "Edit associated program");
 
-            paras = new ExtendedControls.TextBoxBorder();
+            paras = new ExtendedControls.ExtTextBox();
             paras.Text = (cd.actiondata != null) ? cd.actiondata : "";
             paras.Location = new Point(progedit.Right + 8, panelymargin + 2);
             paras.Size = proglist.Size;
@@ -98,13 +98,13 @@ namespace ActionLanguage
             paras.Click += Paras_Click;
             paras.SetTipDynamically(toolTip, "Click to enter parameters to pass to program");
 
-            buttonKeys = new ExtendedControls.ButtonExt();
+            buttonKeys = new ExtendedControls.ExtButton();
             buttonKeys.Location = proglist.Location;
             buttonKeys.Size = new Size((this.Width - 8 - 8 - panelxmargin * 2) / 2, 24);
             buttonKeys.Click += Keypress_Click;
             toolTip.SetToolTip(buttonKeys, "Click to define keystrokes to send");
 
-            buttonSay = new ExtendedControls.ButtonExt();
+            buttonSay = new ExtendedControls.ExtButton();
             buttonSay.Location = new Point(buttonKeys.Right + 8, buttonKeys.Top);
             buttonSay.Size = buttonKeys.Size;
             buttonSay.Click += Saypress_Click;

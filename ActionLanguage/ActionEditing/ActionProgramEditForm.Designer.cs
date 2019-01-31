@@ -45,25 +45,25 @@ namespace ActionLanguage
         {
             this.components = new System.ComponentModel.Container();
             this.panelOuter = new System.Windows.Forms.Panel();
-            this.panelVScroll = new ExtendedControls.PanelVScroll();
-            this.vScrollBarCustom1 = new ExtendedControls.VScrollBarCustom();
-            this.buttonMore = new ExtendedControls.ButtonExt();
+            this.panelVScroll = new ExtendedControls.ExtPanelScroll();
+            this.vScrollBarCustom1 = new ExtendedControls.ExtScrollBar();
+            this.buttonMore = new ExtendedControls.ExtButton();
             this.panelName = new System.Windows.Forms.Panel();
-            this.buttonExtDelete = new ExtendedControls.ButtonExt();
-            this.textBoxBorderName = new ExtendedControls.TextBoxBorder();
+            this.buttonExtDelete = new ExtendedControls.ExtButton();
+            this.textBoxBorderName = new ExtendedControls.ExtTextBox();
             this.labelSet = new System.Windows.Forms.Label();
             this.labelName = new System.Windows.Forms.Label();
             this.panelTop = new System.Windows.Forms.Panel();
-            this.panel_close = new ExtendedControls.DrawnPanel();
-            this.panel_minimize = new ExtendedControls.DrawnPanel();
+            this.panel_close = new ExtendedControls.ExtPanelDrawn();
+            this.panel_minimize = new ExtendedControls.ExtPanelDrawn();
             this.label_index = new System.Windows.Forms.Label();
             this.panelOK = new System.Windows.Forms.Panel();
-            this.buttonExtDisk = new ExtendedControls.ButtonExt();
-            this.buttonExtLoad = new ExtendedControls.ButtonExt();
-            this.buttonExtSave = new ExtendedControls.ButtonExt();
-            this.buttonExtEdit = new ExtendedControls.ButtonExt();
-            this.buttonCancel = new ExtendedControls.ButtonExt();
-            this.buttonOK = new ExtendedControls.ButtonExt();
+            this.buttonExtDisk = new ExtendedControls.ExtButton();
+            this.buttonExtLoad = new ExtendedControls.ExtButton();
+            this.buttonExtSave = new ExtendedControls.ExtButton();
+            this.buttonExtEdit = new ExtendedControls.ExtButton();
+            this.buttonCancel = new ExtendedControls.ExtButton();
+            this.buttonOK = new ExtendedControls.ExtButton();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.copyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pasteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -73,7 +73,7 @@ namespace ActionLanguage
             this.removeWhitespaceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.editCommentToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
-            this.statusStripCustom = new ExtendedControls.StatusStripCustom();
+            this.statusStripCustom = new ExtendedControls.ExtStatusStrip();
             this.panelOuter.SuspendLayout();
             this.panelVScroll.SuspendLayout();
             this.panelName.SuspendLayout();
@@ -244,7 +244,7 @@ namespace ActionLanguage
             // panel_minimize
             // 
             this.panel_minimize.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel_minimize.ImageSelected = ExtendedControls.DrawnPanel.ImageType.Minimize;
+            this.panel_minimize.ImageSelected = ExtendedControls.ExtPanelDrawn.ImageType.Minimize;
             this.panel_minimize.Location = new System.Drawing.Point(809, 0);
             this.panel_minimize.Name = "panel_minimize";
             this.panel_minimize.Padding = new System.Windows.Forms.Padding(6);
@@ -465,25 +465,25 @@ namespace ActionLanguage
         #endregion
 
         private System.Windows.Forms.Panel panelOuter;
-        private ExtendedControls.PanelVScroll panelVScroll;
-        private ExtendedControls.VScrollBarCustom vScrollBarCustom1;
-        private ExtendedControls.ButtonExt buttonMore;
-        private ExtendedControls.StatusStripCustom statusStripCustom;
+        private ExtendedControls.ExtPanelScroll panelVScroll;
+        private ExtendedControls.ExtScrollBar vScrollBarCustom1;
+        private ExtendedControls.ExtButton buttonMore;
+        private ExtendedControls.ExtStatusStrip statusStripCustom;
         private System.Windows.Forms.Panel panelTop;
-        private ExtendedControls.DrawnPanel panel_close;
-        private ExtendedControls.DrawnPanel panel_minimize;
+        private ExtendedControls.ExtPanelDrawn panel_close;
+        private ExtendedControls.ExtPanelDrawn panel_minimize;
         private System.Windows.Forms.Label label_index;
         private System.Windows.Forms.Panel panelName;
-        private ExtendedControls.TextBoxBorder textBoxBorderName;
+        private ExtendedControls.ExtTextBox textBoxBorderName;
         private System.Windows.Forms.Label labelName;
         private System.Windows.Forms.Panel panelOK;
-        private ExtendedControls.ButtonExt buttonCancel;
-        private ExtendedControls.ButtonExt buttonOK;
-        private ExtendedControls.ButtonExt buttonExtDelete;
+        private ExtendedControls.ExtButton buttonCancel;
+        private ExtendedControls.ExtButton buttonOK;
+        private ExtendedControls.ExtButton buttonExtDelete;
         private System.Windows.Forms.Label labelSet;
-        private ExtendedControls.ButtonExt buttonExtLoad;
-        private ExtendedControls.ButtonExt buttonExtSave;
-        private ExtendedControls.ButtonExt buttonExtEdit;
+        private ExtendedControls.ExtButton buttonExtLoad;
+        private ExtendedControls.ExtButton buttonExtSave;
+        private ExtendedControls.ExtButton buttonExtEdit;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.ToolStripMenuItem pasteToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem copyToolStripMenuItem;
@@ -492,7 +492,7 @@ namespace ActionLanguage
         private System.Windows.Forms.ToolStripMenuItem removeWhitespaceToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem insertEntryAboveToolStripMenuItem;
         private System.Windows.Forms.ToolTip toolTip1;
-        private ExtendedControls.ButtonExt buttonExtDisk;
+        private ExtendedControls.ExtButton buttonExtDisk;
         private System.Windows.Forms.ToolStripMenuItem editCommentToolStripMenuItem;
     }
 }

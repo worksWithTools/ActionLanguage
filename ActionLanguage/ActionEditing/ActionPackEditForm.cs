@@ -44,14 +44,14 @@ namespace ActionLanguage
         {
             public Panel panel;
 
-            public ExtendedControls.ComboBoxCustom grouptype;       // present for any other than group name
+            public ExtendedControls.ExtComboBox grouptype;       // present for any other than group name
             public ActionPackEditBase usercontrol;                  // present for any other than group name, but may or may not be set
 
-            public ExtendedControls.ButtonExt action;               // always present
+            public ExtendedControls.ExtButton action;               // always present
 
             public Panel groupnamepanel;                            // present for group name
             public Label groupnamelabel;                            // present for group name
-            public ExtendedControls.ButtonExt groupnamecollapsebutton;               // grouping button
+            public ExtendedControls.ExtButton groupnamecollapsebutton;               // grouping button
             public bool collapsed;                                  // if collapsed..
 
             public bool IsGroupName { get { return groupnamepanel != null; } }
@@ -156,7 +156,7 @@ namespace ActionLanguage
             if (isevent)
             {
                 //g.panel.BackColor = Color.Green; // useful for debug
-                g.grouptype = new ExtendedControls.ComboBoxCustom();
+                g.grouptype = new ExtendedControls.ExtComboBox();
                 g.grouptype.Items.AddRange(grouptypenames);
                 g.grouptype.Location = new Point(panelxmargin, panelymargin);
                 g.grouptype.Size = new Size(80, 24);
@@ -183,7 +183,7 @@ namespace ActionLanguage
                 g.groupnamepanel.Location = new Point(3, 2);
                 g.panel.Controls.Add(g.groupnamepanel);
 
-                g.groupnamecollapsebutton = new ExtendedControls.ButtonExt();
+                g.groupnamecollapsebutton = new ExtendedControls.ExtButton();
                 g.groupnamecollapsebutton.Text = "-";
                 g.groupnamecollapsebutton.Size = new Size(16, 16);
                 g.groupnamecollapsebutton.Tag = g;
@@ -198,7 +198,7 @@ namespace ActionLanguage
                 g.groupnamepanel.Controls.Add(g.groupnamelabel);
             }
 
-            g.action = new ExtendedControls.ButtonExt();
+            g.action = new ExtendedControls.ExtButton();
             g.action.Text = ">";
             g.action.Size = new Size(24, 24);
             g.action.Tag = g;
@@ -341,7 +341,7 @@ namespace ActionLanguage
 
         private void Grouptype_SelectedIndexChanged(object sender, EventArgs e)
         {
-            ExtendedControls.ComboBoxCustom b = sender as ExtendedControls.ComboBoxCustom;
+            ExtendedControls.ExtComboBox b = sender as ExtendedControls.ExtComboBox;
             Group g = (Group)b.Tag;
             CreateUserControl(g, Condition.AlwaysTrue());
         }

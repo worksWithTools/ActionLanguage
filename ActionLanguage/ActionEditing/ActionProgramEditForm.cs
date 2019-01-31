@@ -44,13 +44,13 @@ namespace ActionLanguage
         class Group     // group and curprog always have same number of entries, curprog can have a null in an entry indicating a non assigned step
         {
             public Panel panel;
-            public ExtendedControls.ComboBoxCustom stepname;
-            public ExtendedControls.TextBoxBorder value;
-            public ExtendedControls.ButtonExt config;
-            public ExtendedControls.ButtonExt up;
-            public ExtendedControls.ButtonExt prog;
-            public ExtendedControls.ButtonExt left;
-            public ExtendedControls.ButtonExt right;
+            public ExtendedControls.ExtComboBox stepname;
+            public ExtendedControls.ExtTextBox value;
+            public ExtendedControls.ExtButton config;
+            public ExtendedControls.ExtButton up;
+            public ExtendedControls.ExtButton prog;
+            public ExtendedControls.ExtButton left;
+            public ExtendedControls.ExtButton right;
             public bool marked;     // is marked for editing
 
             public ActionBase checkit; // used just to check we keep in sync with curprog, not strictly ness. but useful
@@ -180,21 +180,21 @@ namespace ActionLanguage
             g.panel.MouseMove += panelVScroll_MouseMove;
             g.panel.ContextMenuStrip = contextMenuStrip1;
 
-            g.left = new ExtendedControls.ButtonExt();
+            g.left = new ExtendedControls.ExtButton();
             g.left.Location = new Point(0, panelheightmargin);      // 8 spacing, allow 8*4 to indent
             g.left.Size = new Size(controlsize, controlsize);
             g.left.Text = "<";
             g.left.Click += Left_Clicked;
             g.panel.Controls.Add(g.left);
 
-            g.right = new ExtendedControls.ButtonExt();
+            g.right = new ExtendedControls.ExtButton();
             g.right.Location = new Point(g.left.Right + 2, panelheightmargin);      // 8 spacing, allow 8*4 to indent
             g.right.Size = new Size(controlsize, controlsize);
             g.right.Text = ">";
             g.right.Click += Right_Clicked;
             g.panel.Controls.Add(g.right);
 
-            g.stepname = new ExtendedControls.ComboBoxCustom();
+            g.stepname = new ExtendedControls.ExtComboBox();
             g.stepname.Items.AddRange(ActionBase.GetActionNameList());
             g.stepname.DropDownHeight = 400;
             if (step != null)
@@ -202,25 +202,25 @@ namespace ActionLanguage
             g.stepname.SelectedIndexChanged += Stepname_SelectedIndexChanged;
             g.panel.Controls.Add(g.stepname);
 
-            g.value = new ExtendedControls.TextBoxBorder();
+            g.value = new ExtendedControls.ExtTextBox();
             SetValue(g.value, step);
             g.value.TextChanged += Value_TextChanged;
             g.value.Click += Value_Click;
             g.panel.Controls.Add(g.value);         // must be next
 
-            g.config = new ExtendedControls.ButtonExt();
+            g.config = new ExtendedControls.ExtButton();
             g.config.Text = "C";
             g.config.Size = new Size(controlsize, controlsize);
             g.config.Click += ActionConfig_Clicked;
             g.panel.Controls.Add(g.config);         // must be next
 
-            g.up = new ExtendedControls.ButtonExt();
+            g.up = new ExtendedControls.ExtButton();
             g.up.Size = new Size(controlsize, controlsize);
             g.up.Text = "^";
             g.up.Click += Up_Clicked;
             g.panel.Controls.Add(g.up);
 
-            g.prog = new ExtendedControls.ButtonExt();
+            g.prog = new ExtendedControls.ExtButton();
             g.prog.Size = new Size(controlsize, controlsize);
             g.prog.Text = ">";
             g.prog.Click += Prog_Clicked;
@@ -244,7 +244,7 @@ namespace ActionLanguage
             return g;
         }
 
-        void SetValue(ExtendedControls.TextBoxBorder value, ActionBase step)
+        void SetValue(ExtendedControls.ExtTextBox value, ActionBase step)
         {
             value.Enabled = false;
             value.Text = "";
@@ -369,7 +369,7 @@ namespace ActionLanguage
 
         private void Stepname_SelectedIndexChanged(object sender, EventArgs e)                // EVENT list changed
         {
-            ExtendedControls.ComboBoxCustom b = sender as ExtendedControls.ComboBoxCustom;
+            ExtendedControls.ExtComboBox b = sender as ExtendedControls.ExtComboBox;
 
             if (b.Enabled)
             {
@@ -401,7 +401,7 @@ namespace ActionLanguage
 
         private void ActionConfig_Clicked(object sender, EventArgs e)
         {
-            ExtendedControls.ButtonExt b = sender as ExtendedControls.ButtonExt;
+            ExtendedControls.ExtButton b = sender as ExtendedControls.ExtButton;
             Group g = (Group)b.Tag;
             ActionBase curact = curprog.GetStep(groups.IndexOf(g));
 
@@ -414,7 +414,7 @@ namespace ActionLanguage
 
         private void Value_Click(object sender, EventArgs e)
         {
-            ExtendedControls.TextBoxBorder b = sender as ExtendedControls.TextBoxBorder;
+            ExtendedControls.ExtTextBox b = sender as ExtendedControls.ExtTextBox;
             Group g = (Group)b.Tag;
             if (b.ReadOnly)
                 ActionConfig_Clicked(g.config, null);
@@ -422,7 +422,7 @@ namespace ActionLanguage
 
         private void Up_Clicked(object sender, EventArgs e)
         {
-            ExtendedControls.ButtonExt b = sender as ExtendedControls.ButtonExt;
+            ExtendedControls.ExtButton b = sender as ExtendedControls.ExtButton;
             Group g = (Group)b.Tag;
             int gstep = groups.IndexOf(g);
 
@@ -435,7 +435,7 @@ namespace ActionLanguage
 
         private void Prog_Clicked(object sender, EventArgs e)
         {
-            ExtendedControls.ButtonExt b = sender as ExtendedControls.ButtonExt;
+            ExtendedControls.ExtButton b = sender as ExtendedControls.ExtButton;
             Group g = (Group)b.Tag;
             ActionBase curact = curprog.GetStep(groups.IndexOf(g));
 
@@ -451,7 +451,7 @@ namespace ActionLanguage
 
         private void Left_Clicked(object sender, EventArgs e)
         {
-            ExtendedControls.ButtonExt b = sender as ExtendedControls.ButtonExt;
+            ExtendedControls.ExtButton b = sender as ExtendedControls.ExtButton;
             Group g = (Group)b.Tag;
             int step = groups.IndexOf(g);
             ActionBase curact = curprog.GetStep(step);
@@ -469,7 +469,7 @@ namespace ActionLanguage
 
         private void Right_Clicked(object sender, EventArgs e)
         {
-            ExtendedControls.ButtonExt b = sender as ExtendedControls.ButtonExt;
+            ExtendedControls.ExtButton b = sender as ExtendedControls.ExtButton;
             Group g = (Group)b.Tag;
             int step = groups.IndexOf(g);
             ActionBase curact = curprog.GetStep(step);
@@ -487,7 +487,7 @@ namespace ActionLanguage
 
         private void Value_TextChanged(object sender, EventArgs e)
         {
-            ExtendedControls.TextBoxBorder tb = sender as ExtendedControls.TextBoxBorder;
+            ExtendedControls.ExtTextBox tb = sender as ExtendedControls.ExtTextBox;
             Group g = (Group)tb.Tag;
             ActionBase curact = curprog.GetStep(groups.IndexOf(g));
 
@@ -701,7 +701,7 @@ namespace ActionLanguage
             }
             else if (e.Button == MouseButtons.Right)
             {
-                if (sender is ExtendedControls.PanelVScroll)
+                if (sender is ExtendedControls.ExtPanelScroll)
                     rightclickstep = groups.Count;      // click outside, means end
                 else
                 {

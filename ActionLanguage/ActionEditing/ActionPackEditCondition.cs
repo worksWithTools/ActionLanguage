@@ -32,9 +32,9 @@ namespace ActionLanguage
         private const int panelxmargin = 3;
         private const int panelymargin = 1;
         private Icon Icon;
-        private ExtendedControls.PanelSelectionList panelConditionType;
-        private ExtendedControls.TextBoxBorder textBoxCondition;
-        private ExtendedControls.ButtonExt buttonKeys;
+        private ExtendedControls.ExtPanelDropDown panelConditionType;
+        private ExtendedControls.ExtTextBox textBoxCondition;
+        private ExtendedControls.ExtButton buttonKeys;
         private Label labelAlwaysTrue;
         private Label labelAlwaysFalse;
         private Condition cd;
@@ -45,20 +45,20 @@ namespace ActionLanguage
             cd = c;     // point to common condition.  We only change the fields, not the cd.action/actiondata, and we don't replace it.
             Icon = ic;
 
-            panelConditionType = new ExtendedControls.PanelSelectionList();
+            panelConditionType = new ExtendedControls.ExtPanelDropDown();
             panelConditionType.Location = new Point(0, 0);
             panelConditionType.Size = new Size(this.Width, this.Height); // outer panel aligns with this UC 
             panelConditionType.SelectedIndexChanged += PanelConditionType_SelectedIndexChanged;
             toolTip.SetToolTip(panelConditionType, "Use the selector (click on bottom right arrow) to select condition class type");
 
-            textBoxCondition = new ExtendedControls.TextBoxBorder();
+            textBoxCondition = new ExtendedControls.ExtTextBox();
             textBoxCondition.Location = new Point(panelxmargin, panelymargin + 2);
             textBoxCondition.Size = new Size(this.Width-8-panelxmargin*2, 24);    // 8 for selector
             textBoxCondition.ReadOnly = true;
             textBoxCondition.Click += Condition_Click;
             textBoxCondition.SetTipDynamically(toolTip, "Click to edit the condition that controls when the event is generated");
 
-            buttonKeys = new ExtendedControls.ButtonExt();
+            buttonKeys = new ExtendedControls.ExtButton();
             buttonKeys.Location = textBoxCondition.Location;
             buttonKeys.Size = textBoxCondition.Size;
             buttonKeys.Click += Keypress_Click;
