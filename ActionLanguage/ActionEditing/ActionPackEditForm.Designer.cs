@@ -48,17 +48,17 @@
             this.contextMenuStripAction = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.moveUpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.moveDownToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.insertGroupToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.insertNewEventAboveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.moveToGroupAboveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.moveToGroupBelowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.moveGroupUpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.moveGroupDownToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.insertNewEventAboveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.insertGroupToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.renameGroupToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStripCollapse = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.collapseAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.expandAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.moveGroupUpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.moveGroupDownToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.renameGroupToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panelTop.SuspendLayout();
             this.panelOK.SuspendLayout();
             this.panelOuter.SuspendLayout();
@@ -129,9 +129,6 @@
             // 
             // buttonInstallationVars
             // 
-            this.buttonInstallationVars.BorderColorScaling = 1.25F;
-            this.buttonInstallationVars.ButtonColorScaling = 0.5F;
-            this.buttonInstallationVars.ButtonDisabledScaling = 0.5F;
             this.buttonInstallationVars.Location = new System.Drawing.Point(246, 3);
             this.buttonInstallationVars.Name = "buttonInstallationVars";
             this.buttonInstallationVars.Size = new System.Drawing.Size(135, 23);
@@ -147,6 +144,7 @@
             this.comboBoxCustomEditProg.BorderColor = System.Drawing.Color.White;
             this.comboBoxCustomEditProg.ButtonColorScaling = 0.5F;
             this.comboBoxCustomEditProg.DataSource = null;
+            this.comboBoxCustomEditProg.DisableBackgroundDisabledShadingGradient = false;
             this.comboBoxCustomEditProg.DisplayMember = "";
             this.comboBoxCustomEditProg.DropDownBackgroundColor = System.Drawing.Color.Gray;
             this.comboBoxCustomEditProg.DropDownHeight = 200;
@@ -164,6 +162,7 @@
             this.comboBoxCustomEditProg.SelectedValue = null;
             this.comboBoxCustomEditProg.Size = new System.Drawing.Size(144, 21);
             this.comboBoxCustomEditProg.TabIndex = 9;
+            this.comboBoxCustomEditProg.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.toolTip.SetToolTip(this.comboBoxCustomEditProg, "Select a program to edit directly");
             this.comboBoxCustomEditProg.ValueMember = "";
             this.comboBoxCustomEditProg.SelectedIndexChanged += new System.EventHandler(this.comboBoxCustomEditProg_SelectedIndexChanged);
@@ -180,9 +179,6 @@
             // buttonCancel
             // 
             this.buttonCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonCancel.BorderColorScaling = 1.25F;
-            this.buttonCancel.ButtonColorScaling = 0.5F;
-            this.buttonCancel.ButtonDisabledScaling = 0.5F;
             this.buttonCancel.Location = new System.Drawing.Point(892, 4);
             this.buttonCancel.Name = "buttonCancel";
             this.buttonCancel.Size = new System.Drawing.Size(75, 23);
@@ -194,9 +190,6 @@
             // buttonOK
             // 
             this.buttonOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonOK.BorderColorScaling = 1.25F;
-            this.buttonOK.ButtonColorScaling = 0.5F;
-            this.buttonOK.ButtonDisabledScaling = 0.5F;
             this.buttonOK.Location = new System.Drawing.Point(989, 4);
             this.buttonOK.Name = "buttonOK";
             this.buttonOK.Size = new System.Drawing.Size(75, 23);
@@ -261,9 +254,6 @@
             // 
             // buttonMore
             // 
-            this.buttonMore.BorderColorScaling = 1.25F;
-            this.buttonMore.ButtonColorScaling = 0.5F;
-            this.buttonMore.ButtonDisabledScaling = 0.5F;
             this.buttonMore.Location = new System.Drawing.Point(6, 6);
             this.buttonMore.Name = "buttonMore";
             this.buttonMore.Size = new System.Drawing.Size(24, 24);
@@ -299,7 +289,7 @@
             this.renameGroupToolStripMenuItem,
             this.deleteToolStripMenuItem});
             this.contextMenuStripAction.Name = "contextMenuStrip1";
-            this.contextMenuStripAction.Size = new System.Drawing.Size(207, 246);
+            this.contextMenuStripAction.Size = new System.Drawing.Size(207, 224);
             // 
             // moveUpToolStripMenuItem
             // 
@@ -315,27 +305,6 @@
             this.moveDownToolStripMenuItem.Text = "Move Down";
             this.moveDownToolStripMenuItem.Click += new System.EventHandler(this.moveDownToolStripMenuItem_Click);
             // 
-            // deleteToolStripMenuItem
-            // 
-            this.deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
-            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(206, 22);
-            this.deleteToolStripMenuItem.Text = "Delete";
-            this.deleteToolStripMenuItem.Click += new System.EventHandler(this.deleteToolStripMenuItem_Click);
-            // 
-            // insertGroupToolStripMenuItem
-            // 
-            this.insertGroupToolStripMenuItem.Name = "insertGroupToolStripMenuItem";
-            this.insertGroupToolStripMenuItem.Size = new System.Drawing.Size(206, 22);
-            this.insertGroupToolStripMenuItem.Text = "Insert New  Group Above";
-            this.insertGroupToolStripMenuItem.Click += new System.EventHandler(this.insertGroupToolStripMenuItem_Click);
-            // 
-            // insertNewEventAboveToolStripMenuItem
-            // 
-            this.insertNewEventAboveToolStripMenuItem.Name = "insertNewEventAboveToolStripMenuItem";
-            this.insertNewEventAboveToolStripMenuItem.Size = new System.Drawing.Size(206, 22);
-            this.insertNewEventAboveToolStripMenuItem.Text = "Insert New Event Above";
-            this.insertNewEventAboveToolStripMenuItem.Click += new System.EventHandler(this.insertNewEventAboveToolStripMenuItem_Click);
-            // 
             // moveToGroupAboveToolStripMenuItem
             // 
             this.moveToGroupAboveToolStripMenuItem.Name = "moveToGroupAboveToolStripMenuItem";
@@ -349,28 +318,6 @@
             this.moveToGroupBelowToolStripMenuItem.Size = new System.Drawing.Size(206, 22);
             this.moveToGroupBelowToolStripMenuItem.Text = "Move to Group Below";
             this.moveToGroupBelowToolStripMenuItem.Click += new System.EventHandler(this.moveToGroupBelowToolStripMenuItem_Click);
-            // 
-            // contextMenuStripCollapse
-            // 
-            this.contextMenuStripCollapse.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.collapseAllToolStripMenuItem,
-            this.expandAllToolStripMenuItem});
-            this.contextMenuStripCollapse.Name = "contextMenuStrip1";
-            this.contextMenuStripCollapse.Size = new System.Drawing.Size(137, 48);
-            // 
-            // collapseAllToolStripMenuItem
-            // 
-            this.collapseAllToolStripMenuItem.Name = "collapseAllToolStripMenuItem";
-            this.collapseAllToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.collapseAllToolStripMenuItem.Text = "Collapse All";
-            this.collapseAllToolStripMenuItem.Click += new System.EventHandler(this.collapseAllToolStripMenuItem_Click);
-            // 
-            // expandAllToolStripMenuItem
-            // 
-            this.expandAllToolStripMenuItem.Name = "expandAllToolStripMenuItem";
-            this.expandAllToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.expandAllToolStripMenuItem.Text = "Expand All";
-            this.expandAllToolStripMenuItem.Click += new System.EventHandler(this.expandAllToolStripMenuItem_Click);
             // 
             // moveGroupUpToolStripMenuItem
             // 
@@ -386,6 +333,20 @@
             this.moveGroupDownToolStripMenuItem.Text = "Move Group Down";
             this.moveGroupDownToolStripMenuItem.Click += new System.EventHandler(this.moveGroupDownToolStripMenuItem_Click);
             // 
+            // insertNewEventAboveToolStripMenuItem
+            // 
+            this.insertNewEventAboveToolStripMenuItem.Name = "insertNewEventAboveToolStripMenuItem";
+            this.insertNewEventAboveToolStripMenuItem.Size = new System.Drawing.Size(206, 22);
+            this.insertNewEventAboveToolStripMenuItem.Text = "Insert New Event Above";
+            this.insertNewEventAboveToolStripMenuItem.Click += new System.EventHandler(this.insertNewEventAboveToolStripMenuItem_Click);
+            // 
+            // insertGroupToolStripMenuItem
+            // 
+            this.insertGroupToolStripMenuItem.Name = "insertGroupToolStripMenuItem";
+            this.insertGroupToolStripMenuItem.Size = new System.Drawing.Size(206, 22);
+            this.insertGroupToolStripMenuItem.Text = "Insert New  Group Above";
+            this.insertGroupToolStripMenuItem.Click += new System.EventHandler(this.insertGroupToolStripMenuItem_Click);
+            // 
             // renameGroupToolStripMenuItem
             // 
             this.renameGroupToolStripMenuItem.Name = "renameGroupToolStripMenuItem";
@@ -393,7 +354,36 @@
             this.renameGroupToolStripMenuItem.Text = "Rename Group";
             this.renameGroupToolStripMenuItem.Click += new System.EventHandler(this.renameGroupToolStripMenuItem_Click);
             // 
-            // ActionPackEditorForm
+            // deleteToolStripMenuItem
+            // 
+            this.deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
+            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(206, 22);
+            this.deleteToolStripMenuItem.Text = "Delete";
+            this.deleteToolStripMenuItem.Click += new System.EventHandler(this.deleteToolStripMenuItem_Click);
+            // 
+            // contextMenuStripCollapse
+            // 
+            this.contextMenuStripCollapse.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.collapseAllToolStripMenuItem,
+            this.expandAllToolStripMenuItem});
+            this.contextMenuStripCollapse.Name = "contextMenuStrip1";
+            this.contextMenuStripCollapse.Size = new System.Drawing.Size(137, 48);
+            // 
+            // collapseAllToolStripMenuItem
+            // 
+            this.collapseAllToolStripMenuItem.Name = "collapseAllToolStripMenuItem";
+            this.collapseAllToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
+            this.collapseAllToolStripMenuItem.Text = "Collapse All";
+            this.collapseAllToolStripMenuItem.Click += new System.EventHandler(this.collapseAllToolStripMenuItem_Click);
+            // 
+            // expandAllToolStripMenuItem
+            // 
+            this.expandAllToolStripMenuItem.Name = "expandAllToolStripMenuItem";
+            this.expandAllToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
+            this.expandAllToolStripMenuItem.Text = "Expand All";
+            this.expandAllToolStripMenuItem.Click += new System.EventHandler(this.expandAllToolStripMenuItem_Click);
+            // 
+            // ActionPackEditPackForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -402,7 +392,7 @@
             this.Controls.Add(this.panelTop);
             this.Controls.Add(this.panelOK);
             this.Controls.Add(this.statusStripCustom);
-            this.Name = "ActionPackEditorForm";
+            this.Name = "ActionPackEditPackForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "ActionEditor";
             this.panelTop.ResumeLayout(false);

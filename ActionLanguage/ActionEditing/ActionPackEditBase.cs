@@ -32,6 +32,7 @@ namespace ActionLanguage
 
         public virtual string ID() { return ""; }
         public virtual void UpdateProgramList(string[] proglist) { }
+        public virtual void PerformAction(string action) { }    // do something with it..
 
         public virtual new void Dispose()
         {

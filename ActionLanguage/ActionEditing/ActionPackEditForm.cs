@@ -51,7 +51,8 @@ namespace ActionLanguage
 
             public Panel groupnamepanel;                            // present for group name
             public Label groupnamelabel;                            // present for group name
-            public ExtendedControls.ExtButton groupnamecollapsebutton;               // grouping button
+            public ExtendedControls.ExtButton groupnamecollapsebutton;   // grouping button
+            public ExtendedControls.ExtComboBox groupactionscombobox;       // action list
             public bool collapsed;                                  // if collapsed..
 
             public bool IsGroupName { get { return groupnamepanel != null; } }
@@ -75,6 +76,9 @@ namespace ActionLanguage
 
                 if (groupnamecollapsebutton != null)
                     groupnamecollapsebutton.Dispose();
+
+                if (groupactionscombobox != null)
+                    groupactionscombobox.Dispose();
 
                 if (action != null)
                     action.Dispose();
@@ -196,6 +200,14 @@ namespace ActionLanguage
                 g.groupnamelabel.Text = name;
                 g.groupnamelabel.Location = new Point(24, 2);
                 g.groupnamepanel.Controls.Add(g.groupnamelabel);
+
+                g.groupactionscombobox = new ExtendedControls.ExtComboBox();
+                g.groupactionscombobox.Items.AddRange(new string[] { "Select Action", "Disable All", "Enable All", "Delete All"});
+                g.groupactionscombobox.Size = new Size(200, 16);
+                g.groupactionscombobox.Tag = g;
+                g.groupactionscombobox.SelectedIndex = 0;
+                g.groupactionscombobox.SelectedIndexChanged += Groupactionscombobox_SelectedIndexChanged;
+                g.groupnamepanel.Controls.Add(g.groupactionscombobox);
             }
 
             g.action = new ExtendedControls.ExtButton();
@@ -268,11 +280,15 @@ namespace ActionLanguage
                     g.panel.Visible = true;
                     g.panel.Location = new Point(panelxmargin, y + panelVScroll.ScrollOffset);
                     g.panel.Width = Math.Max(panelwidth - panelxmargin * 2, farx); //, panelymargin + conditionhoff);
+
                     g.action.Location = new Point(g.panel.Width - 30, panelymargin);
 
                     int widthuc = g.panel.Size.Width - 4 - 32;
                     if (g.groupnamepanel != null)
+                    {
                         g.groupnamepanel.Size = new Size(widthuc - g.groupnamepanel.Left, g.panel.Height - 8);
+                        g.groupactionscombobox.Location = new Point(g.groupnamepanel.Width - g.groupactionscombobox.Width - 8, 2);
+                    }
 
                     if (g.usercontrol != null)
                         g.usercontrol.Width = widthuc - g.usercontrol.Left;
@@ -697,6 +713,61 @@ namespace ActionLanguage
             PositionGroups(g.collapsed == false);
         }
 
+        private void Groupactionscombobox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ExtendedControls.ExtComboBox cb = sender as ExtendedControls.ExtComboBox;
+
+            if ( cb.SelectedIndex > 0)
+            { 
+                Group selected = cb.Tag as Group;
+                string action = (string)cb.SelectedItem;
+
+                List<Group> todelete = new List<Group>();
+                bool change = false;
+                for (int i = 0; i < groups.Count; i++)
+                {
+                    Group g = groups[i];
+
+                    if (g.IsGroupName)
+                    {
+                        if (g == selected)
+                            change = true;
+                        else if (change == true)
+                            break;
+                    }
+                    else
+                    {
+                        if (change)
+                        {
+                            if ( action == "Delete All" )
+                            {
+                                todelete.Add(g);
+                            }
+                            else
+                                g.usercontrol.PerformAction(action);
+                        }
+                    }
+                }
+
+                if ( todelete.Count>0)
+                {
+                    if (ExtendedControls.MessageBoxTheme.Show("Are you sure you want to delete all in this group?", "Warning", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) == DialogResult.OK)
+                    {
+                        foreach (Group g in todelete)
+                        {
+                            g.Dispose();
+                            groups.Remove(g);
+                        }
+
+                        PositionGroups(false);
+                    }
+                }
+
+
+                cb.SelectedIndex = 0;
+            }
+        }
+
         public string CollapsedState()      // save it per session so its not so horrible if you reenter
         {
             string str = "";
@@ -711,7 +782,6 @@ namespace ActionLanguage
         }
 
         #endregion
-
     }
 }
 

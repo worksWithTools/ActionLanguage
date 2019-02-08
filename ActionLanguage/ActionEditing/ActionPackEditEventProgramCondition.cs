@@ -95,6 +95,20 @@ namespace ActionLanguage
             ucprog.UpdateProgramList(proglist);
         }
 
+        public override void PerformAction(string action)
+        {
+            if ( action.Contains("Enable"))
+            {
+                cd.SetAlwaysTrue();
+                uccond.ChangedCondition();      // cd is updated
+            }
+            else if ( action.Contains("Disable"))
+            {
+                cd.SetAlwaysFalse();
+                uccond.ChangedCondition();      // cd is updated
+            }
+        }    
+
         public override void Dispose()
         {
             base.Dispose();
