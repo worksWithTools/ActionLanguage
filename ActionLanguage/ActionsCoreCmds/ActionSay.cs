@@ -31,6 +31,7 @@ namespace ActionLanguage
         public static string globalvarspeecheffects = "SpeechEffects";
         public static string globalvarspeechculture = "SpeechCulture";
         public static string globalvarspeechpriority = "SpeechPriority";
+        public static string globalvarspeechdisable = "SpeechDisable";
 
         static string volumename = "Volume";
         static string voicename = "Voice";
@@ -179,7 +180,7 @@ namespace ActionLanguage
                     string culture = (vars.Exists(culturename) && vars[culturename].Length > 0) ? vars[culturename] : (ap.VarExist(globalvarspeechculture) ? ap[globalvarspeechculture] : "Default");
 
                     bool literal = vars.GetInt(literalname, 0) != 0;
-                    bool dontspeak = vars.GetInt(dontspeakname, 0) != 0;
+                    bool dontspeak = vars.Exists(dontspeakname) ? (vars.GetInt(dontspeakname, 0) != 0) : (ap.VarExist(globalvarspeechdisable) ? ap[globalvarspeechdisable].InvariantParseInt(0) != 0 : false);
 
                     string prefixsoundpath = vars.GetString(prefixsound, checklen: true);
                     string postfixsoundpath = vars.GetString(postfixsound, checklen: true);
@@ -200,12 +201,12 @@ namespace ActionLanguage
                         }
                     }
 
-                    System.Diagnostics.Debug.WriteLine("Say wait {0}, vol {1}, rate {2}, queue {3}, culture {4}, literal {5}, dontspeak {6} , prefix {7}, postfix {8}, mix {9} starte {10}, finishe {11} , voice {12} ",
-                                    wait, vol, rate, queuelimitms, culture, literal, dontspeak, prefixsoundpath, postfixsoundpath, mixsoundpath, start, finish, voice );
-
                     string expsay;
                     if (ap.functions.ExpandString(say, out expsay) != Functions.ExpandResult.Failed)
                     {
+                        System.Diagnostics.Debug.WriteLine("Say wait {0}, vol {1}, rate {2}, queue {3}, priority {4}, culture {5}, literal {6}, dontspeak {7} , prefix {8}, postfix {9}, mix {10} starte {11}, finishe {12} , voice {13}, text {14}",
+                                        wait, vol, rate, queuelimitms, priority, culture, literal, dontspeak, prefixsoundpath, postfixsoundpath, mixsoundpath, start, finish, voice , expsay);
+
                         Random rnd = FunctionHandlers.GetRandom();
 
                         if ( !literal )
