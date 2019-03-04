@@ -26,21 +26,48 @@ namespace ActionLanguage
         public string TriggerName { get; protected set; }             // define an event, a name, a trigger type.  associate for editing with a uiclass
         public string TriggerType { get; protected set; }
         public string UIClass { get; protected set; }
+        public List<BaseUtils.TypeHelpers.PropertyNameInfo> Variables { get; protected set; }
 
-        protected ActionEvent(string n, string c, string u)
+        protected ActionEvent(string n, string c, string u, List<BaseUtils.TypeHelpers.PropertyNameInfo> vars)
         {
-            TriggerName = n; TriggerType = c; UIClass = u;
+            TriggerName = n; TriggerType = c; UIClass = u; Variables = vars;
         }
 
         protected static List<ActionEvent> events = new List<ActionEvent>()
         {
-            new ActionEvent("onStartup", "ProgramEvent", "Program"),
-            new ActionEvent("onPostStartup","ProgramEvent",  "Program"),
-            new ActionEvent("onNonModalDialog", "UserUIEvent", "UI"),
-            new ActionEvent("onPlayStarted","ProgramEvent",  "Audio"),
-            new ActionEvent("onPlayFinished","ProgramEvent",  "Audio"),
-            new ActionEvent("onSayStarted", "ProgramEvent", "Audio"), //5
-            new ActionEvent("onSayFinished","ProgramEvent",  "Audio"),
+            new ActionEvent("onStartup", "ProgramEvent", "Program", null ),
+            new ActionEvent("onPostStartup","ProgramEvent",  "Program", null ),
+            new ActionEvent("onNonModalDialog", "UserUIEvent", "UI",
+                new List<BaseUtils.TypeHelpers.PropertyNameInfo>()
+                {
+                    new BaseUtils.TypeHelpers.PropertyNameInfo("Dialog", "Name of dialog", BaseUtils.ConditionEntry.MatchType.Equals, "Event Variable"),
+                    new BaseUtils.TypeHelpers.PropertyNameInfo("Control", "Name of control causing the event", BaseUtils.ConditionEntry.MatchType.Equals, "Event Variable"),
+                }
+                ),
+            new ActionEvent("onPlayStarted","ProgramEvent",  "Audio",
+                new List<BaseUtils.TypeHelpers.PropertyNameInfo>()
+                {
+                    new BaseUtils.TypeHelpers.PropertyNameInfo("EventName", "Event name associated with the play start event", BaseUtils.ConditionEntry.MatchType.Equals, "Event Variable"),
+                }
+                ),
+            new ActionEvent("onPlayFinished","ProgramEvent",  "Audio",
+                new List<BaseUtils.TypeHelpers.PropertyNameInfo>()
+                {
+                    new BaseUtils.TypeHelpers.PropertyNameInfo("EventName", "Event name associated with the play finish event", BaseUtils.ConditionEntry.MatchType.Equals, "Event Variable"),
+                }
+                ),
+            new ActionEvent("onSayStarted", "ProgramEvent", "Audio",
+                new List<BaseUtils.TypeHelpers.PropertyNameInfo>()
+                {
+                    new BaseUtils.TypeHelpers.PropertyNameInfo("EventName", "Event name associated with the say start event", BaseUtils.ConditionEntry.MatchType.Equals, "Event Variable"),
+                }
+                ), //5
+            new ActionEvent("onSayFinished","ProgramEvent",  "Audio",
+                new List<BaseUtils.TypeHelpers.PropertyNameInfo>()
+                {
+                    new BaseUtils.TypeHelpers.PropertyNameInfo("EventName", "Event name associated with the say end event", BaseUtils.ConditionEntry.MatchType.Equals, "Event Variable"),
+                }
+                ),
         };
 
         public static ActionEvent onStartup { get { return events[0]; } }
