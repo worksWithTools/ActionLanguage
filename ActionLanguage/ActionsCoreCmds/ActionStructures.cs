@@ -453,7 +453,7 @@ namespace ActionLanguage
             vars = new Variables();
             altops = new Dictionary<string, string>();
 
-            progname = p.NextWord("( ");        // stop at space or (
+            progname = p.NextQuotedWord("( ");        // stop at space or (
 
             if (progname != null)
             {
@@ -471,6 +471,9 @@ namespace ActionLanguage
 
         public string ToString(string progname, Variables cond, Dictionary<string, string> altops)
         {
+            if (progname.IndexOf('(')>=0)                       // if any ( in name, needs quotes
+                progname = progname.AlwaysQuoteString();
+
             if (cond.Count > 0)
                 return progname + "(" + cond.ToString(altops, bracket: true) + ")";
             else
@@ -522,6 +525,14 @@ namespace ActionLanguage
             Dictionary<string, string> altops;
             if (FromString(UserData, out progname, out vars, out altops) && progname.Length > 0)
             {
+                if (ap.functions.ExpandString(progname, out string prognameexpanded) == Functions.ExpandResult.Failed)
+                {
+                    ap.ReportError(prognameexpanded);
+                    return true;
+                }
+                else
+                    progname = prognameexpanded;
+
                 List<string> wildcards = new List<string>();
                 Variables newitems = new Variables();
 
