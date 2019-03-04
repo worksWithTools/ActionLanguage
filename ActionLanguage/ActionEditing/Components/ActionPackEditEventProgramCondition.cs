@@ -31,17 +31,15 @@ namespace ActionLanguage
         private ActionPackEditProgram ucprog;
         private ActionPackEditCondition uccond;
 
-        private System.Func<string, List<string>> anfunc;
         public System.Func<Condition, ActionProgram.ProgramConditionClass> autosetcondition;      // set the condition from the event type..
 
         private const int panelxmargin = 3;
         private const int panelymargin = 1;
 
         public override void Init(Condition cond, List<string> events, ActionCoreController cp, string appfolder, ActionFile actionfile,
-                        System.Func<string, List<string>> func, Icon ic, ToolTip toolTip)
+                        System.Func<string, List<BaseUtils.TypeHelpers.PropertyNameInfo>> func, Icon ic, ToolTip toolTip)
         {
             cd = cond;
-            anfunc = func;
 
             eventtype = new ExtendedControls.ExtComboBox();
             eventtype.Items.AddRange(events);
@@ -59,7 +57,7 @@ namespace ActionLanguage
             uccond.Location = new Point(eventtype.Right+16, 0);
             uccond.Size = new Size(200, this.Height);       // init all the panels to 0/this height, select widths
             uccond.Init(cond, ic ,toolTip);
-            uccond.onAdditionalNames += () => { return anfunc(eventtype.Text); };
+            uccond.onAdditionalNames += () => { return func(eventtype.Text); };
 
             Controls.Add(uccond);
 
@@ -71,7 +69,7 @@ namespace ActionLanguage
             ucprog.Init(actionfile, cond, cp, appfolder, ic, toolTip, classifier);
             ucprog.onEditKeys = onEditKeys;
             ucprog.onEditSay = onEditSay;
-            ucprog.onAdditionalNames += () => { return anfunc(eventtype.Text); };
+            ucprog.onAdditionalNames += () => { return func(eventtype.Text); };
             ucprog.SuggestedName += () => { return eventtype.Text; };
             ucprog.RefreshEvent += () => { RefreshIt(); };
             Controls.Add(ucprog);

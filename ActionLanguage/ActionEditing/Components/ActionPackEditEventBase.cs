@@ -27,7 +27,7 @@ namespace ActionLanguage
         public Condition cd;    // which is a copy of the Program condition, so it can edited
 
         public virtual void Init(Condition cond, List<string> events, ActionCoreController cp, string appfolder, ActionFile file,
-                        System.Func<string, List<string>> func, Icon ic , ToolTip toolTip)
+                        System.Func<string, List<TypeHelpers.PropertyNameInfo>> func, Icon ic , ToolTip toolTip)
         { }
 
         public virtual string ID() { return ""; }

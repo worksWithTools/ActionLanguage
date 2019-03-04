@@ -35,7 +35,7 @@ namespace ActionLanguage
             return (UserData.Length > 0) ? null : "Sleep missing timeout in ms";
         }
 
-        public override bool ConfigurationMenu(Form parent, ActionCoreController cp, List<string> eventvars)
+        public override bool ConfigurationMenu(Form parent, ActionCoreController cp, List<BaseUtils.TypeHelpers.PropertyNameInfo> eventvars)
         {
             string promptValue = ExtendedControls.PromptSingleLine.ShowDialog(parent, "Sleep time in ms:", UserData, "Set Sleep timeout" , cp.Icon);
 

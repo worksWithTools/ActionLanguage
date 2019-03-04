@@ -24,7 +24,7 @@ namespace ActionLanguage
     public class ActionIfElseBase : ActionBase
     {
 
-        public override bool ConfigurationMenu(Form parent, ActionCoreController cp, List<string> eventvars) //standard one used for most
+        public override bool ConfigurationMenu(Form parent, ActionCoreController cp, List<BaseUtils.TypeHelpers.PropertyNameInfo> eventvars) //standard one used for most
         {
             ConditionLists jf = new ConditionLists();
             jf.Read(userdata);
@@ -34,10 +34,11 @@ namespace ActionLanguage
             return ok;
         }
 
-        public bool ConfigurationMenu(Form parent, ActionCoreController cp, List<string> eventvars, ref ConditionLists jf)
+        public bool ConfigurationMenu(Form parent, ActionCoreController cp, List<BaseUtils.TypeHelpers.PropertyNameInfo> eventvars, ref ConditionLists jf)
         {
             ExtendedConditionsForms.ConditionFilterForm frm = new ExtendedConditionsForms.ConditionFilterForm();
-            frm.InitCondition("Define condition", cp.Icon, eventvars, jf);
+            frm.VariableNames = eventvars;
+            frm.InitCondition("Define condition", cp.Icon, jf);
 
             if (frm.ShowDialog(parent) == DialogResult.OK)
             {
@@ -278,7 +279,7 @@ namespace ActionLanguage
             return (FromString(userdata) != null) ? null : "Loop command line not in correct format";
         }
 
-        public override bool ConfigurationMenu(Form parent, ActionCoreController cp, List<string> eventvars)
+        public override bool ConfigurationMenu(Form parent, ActionCoreController cp, List<BaseUtils.TypeHelpers.PropertyNameInfo> eventvars)
         {
             List<string> l = FromString(userdata);
             List<string> r = ExtendedControls.PromptMultiLine.ShowDialog(parent, "Configure Loop", cp.Icon,
@@ -390,7 +391,7 @@ namespace ActionLanguage
             return FromString(userdata, out cond, out errmsg) ? null : "ErrorIf not in correct format: \"Error string\", condition";
         }
 
-        public override bool ConfigurationMenu(Form parent, ActionCoreController cp, List<string> eventvars)
+        public override bool ConfigurationMenu(Form parent, ActionCoreController cp, List<BaseUtils.TypeHelpers.PropertyNameInfo> eventvars)
         {
             ConditionLists cond;
             string errmsg;
@@ -492,7 +493,7 @@ namespace ActionLanguage
             return FromString(userdata, out progname, out vars, out altops) ? null : "Call not in correct format: progname (var list v=\"y\")";
         }
 
-        public override bool ConfigurationMenu(Form parent, ActionCoreController cp, List<string> eventvars)
+        public override bool ConfigurationMenu(Form parent, ActionCoreController cp, List<BaseUtils.TypeHelpers.PropertyNameInfo> eventvars)
         {
             string progname;
             Variables cond;
@@ -623,7 +624,7 @@ namespace ActionLanguage
             return FromString(UserData, out mn, out st) ? null : "ForEach command line not in correct format";
         }
 
-        public override bool ConfigurationMenu(Form parent, ActionCoreController cp, List<string> eventvars)
+        public override bool ConfigurationMenu(Form parent, ActionCoreController cp, List<BaseUtils.TypeHelpers.PropertyNameInfo> eventvars)
         {
             string mn = "", st = "";
             FromString(UserData, out mn, out st);

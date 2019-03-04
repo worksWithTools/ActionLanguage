@@ -33,7 +33,7 @@ namespace ActionLanguage
         private const int panelymargin = 1;
 
         public override void Init(Condition cond, List<string> events, ActionCoreController cp, string appfolder, ActionFile actionfile,
-                        System.Func<string, List<string>> func, Icon ic , ToolTip toolTip)
+                        System.Func<string, List<BaseUtils.TypeHelpers.PropertyNameInfo>> func, Icon ic , ToolTip toolTip)
         {
             cd = cond;      // on creation, the cond with be set to onVoice with one condition, checked in ActionController.cs:SetPackEditor..
 
@@ -55,12 +55,13 @@ namespace ActionLanguage
             ucprog.Init(actionfile, cond, cp, appfolder, ic, toolTip, classifier);
             ucprog.onEditKeys = onEditKeys;
             ucprog.onEditSay = onEditSay;
-            ucprog.onAdditionalNames += () => { return func(null); };
+            ucprog.onAdditionalNames += () => { return func(cd.eventname); };
             ucprog.SuggestedName += () => 
             {
                 string textparse = (textBoxInput.Text.Length > 0 && !textBoxInput.Text.Equals("?")) ? ("_" + textBoxInput.Text.Split(';')[0].SafeVariableString()) : "";
                 return "VoiceInput" + textparse;
             };
+
             ucprog.RefreshEvent += () => { RefreshIt(); };
             Controls.Add(ucprog);
 

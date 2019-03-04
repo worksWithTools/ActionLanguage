@@ -27,7 +27,7 @@ namespace ActionLanguage
 
     public class ActionPackEditProgram : UserControl
     {
-        public Func<List<string>> onAdditionalNames;        // give me more names must provide
+        public Func<List<BaseUtils.TypeHelpers.PropertyNameInfo>> onAdditionalNames;        // give me more names must provide
         public Func<Form, System.Drawing.Icon, string, string> onEditKeys;   // edit the key string.. must provide
         public Func<Form, string, ActionCoreController,string> onEditSay;   // edit the say string.. must provide
         public Func<string> SuggestedName;      // give me a suggested program name must provide
@@ -225,7 +225,9 @@ namespace ActionLanguage
                 // we init with a variable list based on the field names of the group (normally the event field names got by SetFieldNames)
                 // pass in the program if found, and its action data.
 
-                apf.Init("Action program ", this.Icon, actioncorecontroller, applicationfolder, onAdditionalNames(), actionfile.name, p, 
+                var names = onAdditionalNames();
+
+                apf.Init("Action program ", this.Icon, actioncorecontroller, applicationfolder, names, actionfile.name, p, 
                                 actionfile.actionprogramlist.GetActionProgramList(), suggestedname, ModifierKeys.HasFlag(Keys.Shift));
 
                 DialogResult res = apf.ShowDialog(FindForm());

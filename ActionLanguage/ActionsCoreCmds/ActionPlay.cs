@@ -71,7 +71,7 @@ namespace ActionLanguage
             return FromString(userdata, out path, out vars) ? null : "Play command line not in correct format";
         }
 
-        public override bool ConfigurationMenu(Form parent, ActionCoreController cp , List<string> eventvars)
+        public override bool ConfigurationMenu(Form parent, ActionCoreController cp , List<BaseUtils.TypeHelpers.PropertyNameInfo> eventvars)
         {
             string path;
             Variables vars;

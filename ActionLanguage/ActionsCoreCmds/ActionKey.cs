@@ -100,7 +100,7 @@ namespace ActionLanguage
                 return null;
         }
 
-        public override bool ConfigurationMenu(Form parent, ActionCoreController cp, List<string> eventvars)    // override again to expand any functionality
+        public override bool ConfigurationMenu(Form parent, ActionCoreController cp, List<BaseUtils.TypeHelpers.PropertyNameInfo> eventvars)    // override again to expand any functionality
         {
             string ud = Menu(parent, cp.Icon, userdata, null, null);      // base has no additional keys/parser
             if (ud != null)

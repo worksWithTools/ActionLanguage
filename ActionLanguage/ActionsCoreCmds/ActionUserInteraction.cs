@@ -36,7 +36,7 @@ namespace ActionLanguage
             return (FromString(userdata) != null) ? null : "MessageBox command line not in correct format";
         }
 
-        public override bool ConfigurationMenu(Form parent, ActionCoreController cp, List<string> eventvars)
+        public override bool ConfigurationMenu(Form parent, ActionCoreController cp, List<BaseUtils.TypeHelpers.PropertyNameInfo> eventvars)
         {
             List<string> l = FromString(userdata);
             List<string> r = ExtendedControls.PromptMultiLine.ShowDialog(parent, "Configure MessageBox Dialog", cp.Icon,
@@ -104,7 +104,7 @@ namespace ActionLanguage
             return (FromString(userdata) != null) ? null : "InfoBox command line not in correct format";
         }
 
-        public override bool ConfigurationMenu(Form parent, ActionCoreController cp, List<string> eventvars)
+        public override bool ConfigurationMenu(Form parent, ActionCoreController cp, List<BaseUtils.TypeHelpers.PropertyNameInfo> eventvars)
         {
             List<string> l = FromString(userdata);
             List<string> r = ExtendedControls.PromptMultiLine.ShowDialog(parent, "Configure InfoBox Dialog", cp.Icon,
@@ -146,7 +146,7 @@ namespace ActionLanguage
     {
         public override bool AllowDirectEditingOfUserData { get { return true; } }    // and allow editing?
 
-        public override bool ConfigurationMenu(Form parent, ActionCoreController cp, List<string> eventvars)
+        public override bool ConfigurationMenu(Form parent, ActionCoreController cp, List<BaseUtils.TypeHelpers.PropertyNameInfo> eventvars)
         {
             string promptValue = ExtendedControls.PromptSingleLine.ShowDialog(parent, "Options", UserData, "Configure File Dialog", cp.Icon);
             if (promptValue != null)
@@ -280,7 +280,7 @@ namespace ActionLanguage
             return (FromString(userdata) != null) ? null : " command line not in correct format";
         }
 
-        public override bool ConfigurationMenu(Form parent, ActionCoreController cp, List<string> eventvars)
+        public override bool ConfigurationMenu(Form parent, ActionCoreController cp, List<BaseUtils.TypeHelpers.PropertyNameInfo> eventvars)
         {
             List<string> l = FromString(userdata);
             List<string> r = ExtendedControls.PromptMultiLine.ShowDialog(parent, "Configure InputBox Dialog", cp.Icon,
@@ -347,7 +347,7 @@ namespace ActionLanguage
             return (FromString(userdata) != null) ? null : " command line not in correct format";
         }
 
-        public override bool ConfigurationMenu(Form parent, ActionCoreController cp, List<string> eventvars)
+        public override bool ConfigurationMenu(Form parent, ActionCoreController cp, List<BaseUtils.TypeHelpers.PropertyNameInfo> eventvars)
         {
             List<string> l = FromString(userdata);
             List<string> r = ExtendedControls.PromptMultiLine.ShowDialog(parent, "Configure Dialog", cp.Icon,
@@ -453,7 +453,7 @@ namespace ActionLanguage
     {
         public override bool AllowDirectEditingOfUserData { get { return true; } }    // and allow editing?
 
-        public override bool ConfigurationMenu(Form parent, ActionCoreController cp, List<string> eventvars)
+        public override bool ConfigurationMenu(Form parent, ActionCoreController cp, List<BaseUtils.TypeHelpers.PropertyNameInfo> eventvars)
         {
             string promptValue = ExtendedControls.PromptSingleLine.ShowDialog(parent, "DialogControl command", UserData, "Configure DialogControl Command", cp.Icon);
             if (promptValue != null)

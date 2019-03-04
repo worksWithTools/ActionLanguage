@@ -46,19 +46,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ActionEditing\ActionPackEditBase.cs">
+    <Compile Include="ActionEditing\Components\ActionPackEditEventBase.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="ActionEditing\ActionPackEditCondition.cs">
+    <Compile Include="ActionEditing\UC\ActionPackConditionUC.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="ActionEditing\ActionPackEditEventVoice.cs">
+    <Compile Include="ActionEditing\Components\ActionPackEditEventVoice.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="ActionEditing\ActionPackEditProgram.cs">
+    <Compile Include="ActionEditing\UC\ActionPackProgramUC.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="ActionEditing\ActionPackEditEventProgramCondition.cs">
+    <Compile Include="ActionEditing\Components\ActionPackEditEventProgramCondition.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="ActionsCoreCmds\ActionKey.cs" />

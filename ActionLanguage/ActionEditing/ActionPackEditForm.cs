@@ -29,67 +29,7 @@ namespace ActionLanguage
 {
     public partial class ActionPackEditPackForm : ExtendedControls.DraggableForm
     {
-        ActionFile actionfile;      // file we are editing
-        string applicationfolder;   // folder where the file is
-        ActionCoreController actioncorecontroller;  // need this for some access to data
-        List<ActionEvent> events;   // list of events, UIs
-        List<string> grouptypenames;    // groupnames extracted from events
-        Dictionary<string, List<string>> groupeventlist;    // events per group name, extracted from events
-        string initialtitle;
-
-        const int panelxmargin = 3;
-        const int panelymargin = 1;
-
-        class Group     // this top level form has a list of groups, each containing a grouptype CBC, a delete button, and a UC containing its controls
-        {
-            public Panel panel;
-
-            public ExtendedControls.ExtComboBox grouptype;       // present for any other than group name
-            public ActionPackEditBase usercontrol;                  // present for any other than group name, but may or may not be set
-
-            public ExtendedControls.ExtButton action;               // always present
-
-            public Panel groupnamepanel;                            // present for group name
-            public Label groupnamelabel;                            // present for group name
-            public ExtendedControls.ExtButton groupnamecollapsebutton;   // grouping button
-            public ExtendedControls.ExtComboBox groupactionscombobox;       // action list
-            public bool collapsed;                                  // if collapsed..
-
-            public bool IsGroupName { get { return groupnamepanel != null; } }
-            public bool IsEvent { get { return groupnamepanel == null; } }
-
-            public void Dispose()
-            {
-                panel.Controls.Clear();
-
-                if (usercontrol != null)
-                    usercontrol.Dispose();
-
-                if (grouptype != null)
-                    grouptype.Dispose();
-
-                if (groupnamepanel != null)
-                    groupnamepanel.Dispose();
-
-                if (groupnamelabel != null)
-                    groupnamelabel.Dispose();
-
-                if (groupnamecollapsebutton != null)
-                    groupnamecollapsebutton.Dispose();
-
-                if (groupactionscombobox != null)
-                    groupactionscombobox.Dispose();
-
-                if (action != null)
-                    action.Dispose();
-
-                panel.Dispose();
-            }
-        }
-
-        List<Group> groups; // the groups
-
-        public Func<string, List<string>> AdditionalNames;                          // Call back when we need more variable names, by event string
+        public Func<string, List<TypeHelpers.PropertyNameInfo>> AdditionalNames;    // Call back when we need more variable names, by event string
         public Func<string, Condition, ActionPackEditBase> CreateActionPackEdit;    // must set, given a group and condition, what editor do you want? change the condition if you need to
 
         #region Init
@@ -397,7 +337,6 @@ namespace ActionLanguage
             Close();
         }
 
-        ConditionLists result;
         private string Check()
         {
             string errorlist = "";
@@ -460,7 +399,7 @@ namespace ActionLanguage
                     apf.EditProgram += EditProgram;
 
                     apf.Init("Action program ", this.Icon, actioncorecontroller, applicationfolder,
-                                AdditionalNames(""),        // no event associated, so just return the globals in effect
+                                AdditionalNames(null),        // no event associated, so just return the globals in effect
                                 actionfile.name, p,
                                 actionfile.actionprogramlist.GetActionProgramList(), "", ModifierKeys.HasFlag(Keys.Shift));
 
@@ -531,9 +470,6 @@ namespace ActionLanguage
         #endregion
 
         #region Action Click
-
-        Group clickgroup;
-        int clickgroupindex;
 
         private void Action_Click(object sender, EventArgs e)
         {
@@ -780,6 +716,74 @@ namespace ActionLanguage
 
             return str;
         }
+
+        #endregion
+
+        #region Variables
+
+        private ActionFile actionfile;      // file we are editing
+        private string applicationfolder;   // folder where the file is
+        private ActionCoreController actioncorecontroller;  // need this for some access to data
+        private List<ActionEvent> events;   // list of events, UIs
+        private List<string> grouptypenames;    // groupnames extracted from events
+        private Dictionary<string, List<string>> groupeventlist;    // events per group name, extracted from events
+        private string initialtitle;
+
+        const int panelxmargin = 3;
+        const int panelymargin = 1;
+
+        class Group     // this top level form has a list of groups, each containing a grouptype CBC, a delete button, and a UC containing its controls
+        {
+            public Panel panel;
+
+            public ExtendedControls.ExtComboBox grouptype;       // present for any other than group name
+            public ActionPackEditBase usercontrol;                  // present for any other than group name, but may or may not be set
+
+            public ExtendedControls.ExtButton action;               // always present
+
+            public Panel groupnamepanel;                            // present for group name
+            public Label groupnamelabel;                            // present for group name
+            public ExtendedControls.ExtButton groupnamecollapsebutton;   // grouping button
+            public ExtendedControls.ExtComboBox groupactionscombobox;       // action list
+            public bool collapsed;                                  // if collapsed..
+
+            public bool IsGroupName { get { return groupnamepanel != null; } }
+            public bool IsEvent { get { return groupnamepanel == null; } }
+
+            public void Dispose()
+            {
+                panel.Controls.Clear();
+
+                if (usercontrol != null)
+                    usercontrol.Dispose();
+
+                if (grouptype != null)
+                    grouptype.Dispose();
+
+                if (groupnamepanel != null)
+                    groupnamepanel.Dispose();
+
+                if (groupnamelabel != null)
+                    groupnamelabel.Dispose();
+
+                if (groupnamecollapsebutton != null)
+                    groupnamecollapsebutton.Dispose();
+
+                if (groupactionscombobox != null)
+                    groupactionscombobox.Dispose();
+
+                if (action != null)
+                    action.Dispose();
+
+                panel.Dispose();
+            }
+        }
+
+        private List<Group> groups; // the groups
+        private ConditionLists result;
+
+        private Group clickgroup;
+        private int clickgroupindex;
 
         #endregion
     }

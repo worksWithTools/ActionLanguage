@@ -116,7 +116,7 @@ namespace ActionLanguage
         }
 
 
-        public override bool ConfigurationMenu(Form parent, ActionCoreController cp, List<string> eventvars)
+        public override bool ConfigurationMenu(Form parent, ActionCoreController cp, List<BaseUtils.TypeHelpers.PropertyNameInfo> eventvars)
         {
             string ud = Menu(parent, userdata, cp);
 

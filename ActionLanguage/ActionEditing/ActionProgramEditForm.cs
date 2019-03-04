@@ -28,39 +28,8 @@ namespace ActionLanguage
 {
     public partial class ActionProgramEditForm : ExtendedControls.DraggableForm
     {
-        string filesetname;
-        string initialprogname;
-        string[] definedprograms;                                   // list of programs already defined, to detect rename over..
-
         public delegate void EditProgramFunc(string name);
-        public event EditProgramFunc EditProgram; 
-
-        List<string> currentvarlist;                                // variables available to use.. combination of above
-
-        bool editastextimmediately = false;
-
-        ActionProgram curprog = new ActionProgram();
-
-        class Group     // group and curprog always have same number of entries, curprog can have a null in an entry indicating a non assigned step
-        {
-            public Panel panel;
-            public ExtendedControls.ExtComboBox stepname;
-            public ExtendedControls.ExtTextBox value;
-            public ExtendedControls.ExtButton config;
-            public ExtendedControls.ExtButton up;
-            public ExtendedControls.ExtButton prog;
-            public ExtendedControls.ExtButton left;
-            public ExtendedControls.ExtButton right;
-            public bool marked;     // is marked for editing
-
-            public ActionBase checkit; // used just to check we keep in sync with curprog, not strictly ness. but useful
-        }
-
-        List<Group> groups;
-        int panelheightmargin = 1;
-        int panelleftmargin = 3;
-        int controlsize = 22;
-        int panelheight = 24;
+        public event EditProgramFunc EditProgram;       // set call back for editing program
 
         public ActionProgramEditForm()
         {
@@ -70,14 +39,8 @@ namespace ActionLanguage
             AcceptButton = buttonOK;
         }
         
-        const int vscrollmargin = 10;
-        const int xpanelmargin = 3;
-
-        ActionCoreController actioncorecontroller;
-        string applicationfolder;
-
         public void Init(string t, Icon ic, ActionCoreController cp, string appfolder,
-                            List<string> vbs,              // list any variables you want in condition statements - passed to config menu, passed back up to condition, not null
+                            List<BaseUtils.TypeHelpers.PropertyNameInfo> vbs,              // list any variables you want in condition statements - passed to config menu, passed back up to condition, not null
                             string pfilesetname,           // file set name
                             ActionProgram prog = null,     // give the program to display
                             string[] defprogs = null,      // list any default program names
@@ -86,7 +49,7 @@ namespace ActionLanguage
             this.Icon = ic;
             actioncorecontroller = cp;
             applicationfolder = appfolder;
-            currentvarlist = new List<string>(vbs);
+            currentvarlist = new List<BaseUtils.TypeHelpers.PropertyNameInfo>(vbs);
 
             bool winborder = ExtendedControls.ThemeableFormsInstance.Instance.ApplyToForm(this, SystemFonts.DefaultFont);
             statusStripCustom.Visible = panelTop.Visible = panelTop.Enabled = !winborder;
@@ -889,7 +852,7 @@ namespace ActionLanguage
 
         #endregion
 
-
+        #region Form control 
 
         private void label_index_MouseDown(object sender, MouseEventArgs e)
         {
@@ -910,6 +873,50 @@ namespace ActionLanguage
         {
             Close();
         }
+
+
+        #endregion
+
+        #region Variables
+
+        private string filesetname;
+        private string initialprogname;
+        private string[] definedprograms;                                   // list of programs already defined, to detect rename over..
+
+        private List<BaseUtils.TypeHelpers.PropertyNameInfo> currentvarlist;                                // variables available to use.. combination of above
+
+        private bool editastextimmediately = false;
+
+        private ActionProgram curprog = new ActionProgram();
+
+        class Group     // group and curprog always have same number of entries, curprog can have a null in an entry indicating a non assigned step
+        {
+            public Panel panel;
+            public ExtendedControls.ExtComboBox stepname;
+            public ExtendedControls.ExtTextBox value;
+            public ExtendedControls.ExtButton config;
+            public ExtendedControls.ExtButton up;
+            public ExtendedControls.ExtButton prog;
+            public ExtendedControls.ExtButton left;
+            public ExtendedControls.ExtButton right;
+            public bool marked;     // is marked for editing
+
+            public ActionBase checkit; // used just to check we keep in sync with curprog, not strictly ness. but useful
+        }
+
+        private List<Group> groups;
+        const int panelheightmargin = 1;
+        const int panelleftmargin = 3;
+        const int controlsize = 22;
+        const int panelheight = 24;
+
+        const int vscrollmargin = 10;
+        const int xpanelmargin = 3;
+
+        private ActionCoreController actioncorecontroller;
+        private string applicationfolder;
+
+        #endregion
 
     }
 }

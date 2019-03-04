@@ -80,7 +80,7 @@ namespace ActionLanguage
         public virtual string VerifyActionCorrect() { return null; } // on load, is the action correct?
 
         public virtual bool ConfigurationMenuInUse { get { return true; } }
-        public virtual bool ConfigurationMenu(System.Windows.Forms.Form parent, ActionCoreController cp, List<string> eventvars)
+        public virtual bool ConfigurationMenu(System.Windows.Forms.Form parent, ActionCoreController cp, List<BaseUtils.TypeHelpers.PropertyNameInfo> eventvars)
         {
             return false;
         }

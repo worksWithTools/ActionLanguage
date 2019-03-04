@@ -114,7 +114,7 @@ namespace ActionLanguage
                     this.cp = cp;
                     this.appfolder = appfolder;
 
-                    List<string> additionalfieldnames = new List<string>(); // We don't have any names to contribute going thru this path
+                    List<BaseUtils.TypeHelpers.PropertyNameInfo> additionalfieldnames = new List<BaseUtils.TypeHelpers.PropertyNameInfo>(); // We don't have any names to contribute going thru this path
 
                     apf.Init("Action program ", cp.Icon, cp, appfolder, additionalfieldnames, outername, p, GetActionProgramList(), "");
 

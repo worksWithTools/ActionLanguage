@@ -35,7 +35,7 @@ namespace ActionLanguage
             return vars.ToString(operations, pad: " ", comma:false, bracket:false, space:false);
         }
 
-        public bool ConfigurationMenu(Form parent, ActionCoreController cp, List<string> eventvars, bool allowaddv , bool allownoexpandv)
+        public bool ConfigurationMenu(Form parent, ActionCoreController cp, List<BaseUtils.TypeHelpers.PropertyNameInfo> eventvars, bool allowaddv , bool allownoexpandv)
         {
             Variables av;
             Dictionary<string, string> operations;
@@ -145,7 +145,7 @@ namespace ActionLanguage
 
     public class ActionSet : ActionSetLetBase
     {
-        public override bool ConfigurationMenu(Form parent, ActionCoreController discoveryform, List<string> eventvars)
+        public override bool ConfigurationMenu(Form parent, ActionCoreController discoveryform, List<BaseUtils.TypeHelpers.PropertyNameInfo> eventvars)
         {
             return base.ConfigurationMenu(parent, discoveryform, eventvars, true, true);
         }
@@ -158,7 +158,7 @@ namespace ActionLanguage
 
     public class ActionGlobal : ActionSetLetBase
     {
-        public override bool ConfigurationMenu(Form parent, ActionCoreController discoveryform, List<string> eventvars)
+        public override bool ConfigurationMenu(Form parent, ActionCoreController discoveryform, List<BaseUtils.TypeHelpers.PropertyNameInfo> eventvars)
         {
             return base.ConfigurationMenu(parent, discoveryform, eventvars, true, true);
         }
@@ -171,7 +171,7 @@ namespace ActionLanguage
 
     public class ActionLet : ActionSetLetBase
     {
-        public override bool ConfigurationMenu(Form parent, ActionCoreController discoveryform, List<string> eventvars)
+        public override bool ConfigurationMenu(Form parent, ActionCoreController discoveryform, List<BaseUtils.TypeHelpers.PropertyNameInfo> eventvars)
         {
             return base.ConfigurationMenu(parent, discoveryform, eventvars, false, true);
         }
@@ -184,7 +184,7 @@ namespace ActionLanguage
 
     public class ActionGlobalLet : ActionSetLetBase
     {
-        public override bool ConfigurationMenu(Form parent, ActionCoreController discoveryform, List<string> eventvars)
+        public override bool ConfigurationMenu(Form parent, ActionCoreController discoveryform, List<BaseUtils.TypeHelpers.PropertyNameInfo> eventvars)
         {
             return base.ConfigurationMenu(parent, discoveryform, eventvars, false, true);
         }
@@ -197,7 +197,7 @@ namespace ActionLanguage
 
     public class ActionStaticLet : ActionSetLetBase
     {
-        public override bool ConfigurationMenu(Form parent, ActionCoreController discoveryform, List<string> eventvars)
+        public override bool ConfigurationMenu(Form parent, ActionCoreController discoveryform, List<BaseUtils.TypeHelpers.PropertyNameInfo> eventvars)
         {
             return base.ConfigurationMenu(parent, discoveryform, eventvars, false, true);
         }
@@ -210,7 +210,7 @@ namespace ActionLanguage
 
     public class ActionPersistentGlobal : ActionSetLetBase
     {
-        public override bool ConfigurationMenu(Form parent, ActionCoreController discoveryform, List<string> eventvars)
+        public override bool ConfigurationMenu(Form parent, ActionCoreController discoveryform, List<BaseUtils.TypeHelpers.PropertyNameInfo> eventvars)
         {
             return base.ConfigurationMenu(parent, discoveryform, eventvars, true, true);
         }
@@ -223,7 +223,7 @@ namespace ActionLanguage
 
     public class ActionStatic : ActionSetLetBase
     {
-        public override bool ConfigurationMenu(Form parent, ActionCoreController discoveryform, List<string> eventvars)
+        public override bool ConfigurationMenu(Form parent, ActionCoreController discoveryform, List<BaseUtils.TypeHelpers.PropertyNameInfo> eventvars)
         {
             return base.ConfigurationMenu(parent, discoveryform, eventvars, true, true);
         }
@@ -239,7 +239,7 @@ namespace ActionLanguage
     {
         public override bool AllowDirectEditingOfUserData { get { return true; } }
 
-        public override bool ConfigurationMenu(Form parent, ActionCoreController cp, List<string> eventvars)
+        public override bool ConfigurationMenu(Form parent, ActionCoreController cp, List<BaseUtils.TypeHelpers.PropertyNameInfo> eventvars)
         {
             string promptValue = ExtendedControls.PromptSingleLine.ShowDialog(parent, "Variable name", UserData, "Configure DeleteVariable Command" , cp.Icon);
             if (promptValue != null)
@@ -278,7 +278,7 @@ namespace ActionLanguage
     {
         public override bool AllowDirectEditingOfUserData { get { return true; } }
 
-        public override bool ConfigurationMenu(Form parent, ActionCoreController cp, List<string> eventvars)
+        public override bool ConfigurationMenu(Form parent, ActionCoreController cp, List<BaseUtils.TypeHelpers.PropertyNameInfo> eventvars)
         {
             string promptValue = ExtendedControls.PromptSingleLine.ShowDialog(parent, "Expression", UserData, "Configure Function Expression", cp.Icon);
             if (promptValue != null)

@@ -27,7 +27,7 @@ namespace ActionLanguage
 
     public class ActionPackEditCondition : UserControl
     {
-        public Func<List<string>> onAdditionalNames;        // give me more names
+        public Func<List<BaseUtils.TypeHelpers.PropertyNameInfo>> onAdditionalNames;        // give me more names
 
         private const int panelxmargin = 3;
         private const int panelymargin = 1;
@@ -150,8 +150,8 @@ namespace ActionLanguage
         private void Condition_Click(object sender, EventArgs e)
         {
             ExtendedConditionsForms.ConditionFilterForm frm = new ExtendedConditionsForms.ConditionFilterForm();
-
-            frm.InitCondition("Action condition", this.Icon, onAdditionalNames(), cd);
+            frm.VariableNames = onAdditionalNames();
+            frm.InitCondition("Action condition", this.Icon, cd);
             frm.TopMost = this.FindForm().TopMost;
             if (frm.ShowDialog(this.FindForm()) == DialogResult.OK)
             {
