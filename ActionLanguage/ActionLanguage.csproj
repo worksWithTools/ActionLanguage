@@ -29,6 +29,11 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Properties\" />
+    <Compile Update="ActionEditing\ActionPackEditForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="ActionEditing\ActionProgramEditForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
   </ItemGroup>
 </Project>
