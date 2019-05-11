@@ -27,6 +27,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BaseUtils.WinForms", "BaseU
 		{C657C881-F3E1-45BA-ACA5-966348010414} = {C657C881-F3E1-45BA-ACA5-966348010414}
 	EndProjectSection
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ActionLanguage.WinForms", "ActionLanguage.WinForms\ActionLanguage.WinForms.csproj", "{F32D1FBE-5DD0-49B3-B5C8-DDAA9BA2E723}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -57,6 +59,10 @@ Global
 		{61AFEA77-0276-4DCF-983F-589E6AF31258}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{61AFEA77-0276-4DCF-983F-589E6AF31258}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{61AFEA77-0276-4DCF-983F-589E6AF31258}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F32D1FBE-5DD0-49B3-B5C8-DDAA9BA2E723}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F32D1FBE-5DD0-49B3-B5C8-DDAA9BA2E723}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F32D1FBE-5DD0-49B3-B5C8-DDAA9BA2E723}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F32D1FBE-5DD0-49B3-B5C8-DDAA9BA2E723}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

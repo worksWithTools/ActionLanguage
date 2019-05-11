@@ -15,7 +15,6 @@
  */
 using System;
 using System.Collections.Generic;
-using System.Windows.Forms;
 using BaseUtils;
 
 namespace ActionLanguage
@@ -35,22 +34,16 @@ namespace ActionLanguage
             return vars.ToString(operations, pad: " ", comma:false, bracket:false, space:false);
         }
 
-        public bool ConfigurationMenu(Form parent, ActionCoreController cp, List<BaseUtils.TypeHelpers.PropertyNameInfo> eventvars, bool allowaddv , bool allownoexpandv)
+        public bool Configure(ActionCoreController cp, List<TypeHelpers.PropertyNameInfo> eventvars, ActionConfigFuncs configFuncs, bool allowaddv, bool allownoexpandv)
         {
             Variables av;
             Dictionary<string, string> operations;
             FromString(userdata, out av, out operations);
 
-            ExtendedConditionsForms.VariablesForm avf = new ExtendedConditionsForms.VariablesForm();
-            avf.Init("Define Variable:", cp.Icon, av, showone: true, allowadd: allowaddv, allownoexpand: allownoexpandv, altops:operations, allowmultiple:false);
-
-            if (avf.ShowDialog(parent) == DialogResult.OK)
+            return configFuncs.SetVariables("Define Variable:", cp.Icon, av, showone: true, allowadd: allowaddv, allownoexpand: allownoexpandv, altops: operations, allowmultiple: false, resultact: (v, a, r) =>
             {
-                userdata = ToString(avf.result,avf.result_altops);
-                return true;
-            }
-            else
-                return false;
+                userdata = ToString(v, a);
+            });
         }
 
         public override string VerifyActionCorrect()
@@ -145,9 +138,9 @@ namespace ActionLanguage
 
     public class ActionSet : ActionSetLetBase
     {
-        public override bool ConfigurationMenu(Form parent, ActionCoreController discoveryform, List<BaseUtils.TypeHelpers.PropertyNameInfo> eventvars)
+        public override bool Configure(ActionCoreController cp, List<TypeHelpers.PropertyNameInfo> eventvars, ActionConfigFuncs configFuncs)
         {
-            return base.ConfigurationMenu(parent, discoveryform, eventvars, true, true);
+            return base.Configure(cp, eventvars, configFuncs, true, true);
         }
 
         public override bool ExecuteAction(ActionProgramRun ap)
@@ -158,9 +151,9 @@ namespace ActionLanguage
 
     public class ActionGlobal : ActionSetLetBase
     {
-        public override bool ConfigurationMenu(Form parent, ActionCoreController discoveryform, List<BaseUtils.TypeHelpers.PropertyNameInfo> eventvars)
+        public override bool Configure(ActionCoreController cp, List<TypeHelpers.PropertyNameInfo> eventvars, ActionConfigFuncs configFuncs)
         {
-            return base.ConfigurationMenu(parent, discoveryform, eventvars, true, true);
+            return base.Configure(cp, eventvars, configFuncs, true, true);
         }
 
         public override bool ExecuteAction(ActionProgramRun ap)
@@ -171,9 +164,9 @@ namespace ActionLanguage
 
     public class ActionLet : ActionSetLetBase
     {
-        public override bool ConfigurationMenu(Form parent, ActionCoreController discoveryform, List<BaseUtils.TypeHelpers.PropertyNameInfo> eventvars)
+        public override bool Configure(ActionCoreController cp, List<TypeHelpers.PropertyNameInfo> eventvars, ActionConfigFuncs configFuncs)
         {
-            return base.ConfigurationMenu(parent, discoveryform, eventvars, false, true);
+            return base.Configure(cp, eventvars, configFuncs, false, true);
         }
 
         public override bool ExecuteAction(ActionProgramRun ap)
@@ -184,9 +177,9 @@ namespace ActionLanguage
 
     public class ActionGlobalLet : ActionSetLetBase
     {
-        public override bool ConfigurationMenu(Form parent, ActionCoreController discoveryform, List<BaseUtils.TypeHelpers.PropertyNameInfo> eventvars)
+        public override bool Configure(ActionCoreController cp, List<TypeHelpers.PropertyNameInfo> eventvars, ActionConfigFuncs configFuncs)
         {
-            return base.ConfigurationMenu(parent, discoveryform, eventvars, false, true);
+            return base.Configure(cp, eventvars, configFuncs, false, true);
         }
 
         public override bool ExecuteAction(ActionProgramRun ap)
@@ -197,9 +190,9 @@ namespace ActionLanguage
 
     public class ActionStaticLet : ActionSetLetBase
     {
-        public override bool ConfigurationMenu(Form parent, ActionCoreController discoveryform, List<BaseUtils.TypeHelpers.PropertyNameInfo> eventvars)
+        public override bool Configure(ActionCoreController cp, List<TypeHelpers.PropertyNameInfo> eventvars, ActionConfigFuncs configFuncs)
         {
-            return base.ConfigurationMenu(parent, discoveryform, eventvars, false, true);
+            return base.Configure(cp, eventvars, configFuncs, false, true);
         }
 
         public override bool ExecuteAction(ActionProgramRun ap)
@@ -210,9 +203,9 @@ namespace ActionLanguage
 
     public class ActionPersistentGlobal : ActionSetLetBase
     {
-        public override bool ConfigurationMenu(Form parent, ActionCoreController discoveryform, List<BaseUtils.TypeHelpers.PropertyNameInfo> eventvars)
+        public override bool Configure(ActionCoreController cp, List<TypeHelpers.PropertyNameInfo> eventvars, ActionConfigFuncs configFuncs)
         {
-            return base.ConfigurationMenu(parent, discoveryform, eventvars, true, true);
+            return base.Configure(cp, eventvars, configFuncs, true, true);
         }
 
         public override bool ExecuteAction(ActionProgramRun ap)
@@ -223,9 +216,9 @@ namespace ActionLanguage
 
     public class ActionStatic : ActionSetLetBase
     {
-        public override bool ConfigurationMenu(Form parent, ActionCoreController discoveryform, List<BaseUtils.TypeHelpers.PropertyNameInfo> eventvars)
+        public override bool Configure(ActionCoreController cp, List<TypeHelpers.PropertyNameInfo> eventvars, ActionConfigFuncs configFuncs)
         {
-            return base.ConfigurationMenu(parent, discoveryform, eventvars, true, true);
+            return base.Configure(cp, eventvars, configFuncs, true, true);
         }
 
         public override bool ExecuteAction(ActionProgramRun ap)
@@ -239,9 +232,9 @@ namespace ActionLanguage
     {
         public override bool AllowDirectEditingOfUserData { get { return true; } }
 
-        public override bool ConfigurationMenu(Form parent, ActionCoreController cp, List<BaseUtils.TypeHelpers.PropertyNameInfo> eventvars)
+        public override bool Configure(ActionCoreController cp, List<TypeHelpers.PropertyNameInfo> eventvars, ActionConfigFuncs configFuncs)
         {
-            string promptValue = ExtendedControls.PromptSingleLine.ShowDialog(parent, "Variable name", UserData, "Configure DeleteVariable Command" , cp.Icon);
+            string promptValue = configFuncs.PromptSingleLine("Variable name", UserData, "Configure DeleteVariable Command", cp.Icon);
             if (promptValue != null)
             {
                 userdata = promptValue;
@@ -278,9 +271,9 @@ namespace ActionLanguage
     {
         public override bool AllowDirectEditingOfUserData { get { return true; } }
 
-        public override bool ConfigurationMenu(Form parent, ActionCoreController cp, List<BaseUtils.TypeHelpers.PropertyNameInfo> eventvars)
+        public override bool Configure(ActionCoreController cp, List<TypeHelpers.PropertyNameInfo> eventvars, ActionConfigFuncs configFuncs)
         {
-            string promptValue = ExtendedControls.PromptSingleLine.ShowDialog(parent, "Expression", UserData, "Configure Function Expression", cp.Icon);
+            string promptValue = configFuncs.PromptSingleLine("Expression", UserData, "Configure Function Expression", cp.Icon);
             if (promptValue != null)
             {
                 userdata = promptValue;

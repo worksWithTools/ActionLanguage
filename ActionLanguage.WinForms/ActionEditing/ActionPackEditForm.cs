@@ -391,7 +391,7 @@ namespace ActionLanguage
 
                 if (p != null && p.StoredInSubFile != null)
                 {
-                    p.EditInEditor(p.StoredInSubFile);         // Edit in the editor..
+                    p.EditInEditor(p.StoredInSubFile, configFuncs: new ActionConfigFuncsWinForms(this.FindForm()));         // Edit in the editor..
                 }
                 else
                 {

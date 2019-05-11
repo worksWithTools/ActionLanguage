@@ -15,7 +15,6 @@
  */
 using System;
 using System.Collections.Generic;
-using System.Windows.Forms;
 using BaseUtils;
 
 namespace ActionLanguage
@@ -36,14 +35,14 @@ namespace ActionLanguage
             return (FromString(userdata) != null) ? null : "MessageBox command line not in correct format";
         }
 
-        public override bool ConfigurationMenu(Form parent, ActionCoreController cp, List<BaseUtils.TypeHelpers.PropertyNameInfo> eventvars)
+        public override bool Configure(ActionCoreController cp, List<TypeHelpers.PropertyNameInfo> eventvars, ActionConfigFuncs configFuncs)
         {
             List<string> l = FromString(userdata);
-            List<string> r = ExtendedControls.PromptMultiLine.ShowDialog(parent, "Configure MessageBox Dialog", cp.Icon,
-                            new string[] { "Message" , "Caption" , "Buttons", "Icon"}, l?.ToArray(), true);
+            List<string> r = configFuncs.PromptMultiLine("Configure MessageBox Dialog", cp.Icon,
+                            new string[] { "Message", "Caption", "Buttons", "Icon" }, l?.ToArray(), true);
 
             if (r != null)
-                userdata = r.ToStringCommaList(1,true);     // and escape them back
+                userdata = r.ToStringCommaList(1, true);     // and escape them back
 
             return (r != null);
         }
@@ -59,24 +58,18 @@ namespace ActionLanguage
                 if (ap.functions.ExpandStrings(ctrl, out exp) != Functions.ExpandResult.Failed)
                 {
                     string caption = (exp.Count>=2) ? exp[1] : "EDDiscovery Program Message";
+                    string buttons = exp.Count >= 3 ? exp[2] : "OK";
+                    string icon = exp.Count >= 4 ? exp[3] : "None";
 
-                    MessageBoxButtons but = MessageBoxButtons.OK;
-                    MessageBoxIcon icon = MessageBoxIcon.None;
-                
-                    if (exp.Count >=3 && !Enum.TryParse<MessageBoxButtons>(exp[2], true, out but))
+                    try
                     {
-                        ap.ReportError("MessageBox button type not recognised");
+                        ap["DialogResult"] = ap.actioncontroller.ConfigFuncs.MessageBox(exp[1], caption, buttons, icon);
+                    }
+                    catch (InvalidOperationException ex)
+                    {
+                        ap.ReportError(ex.Message);
                         return true;
                     }
-                    if (exp.Count >= 4 && !Enum.TryParse<MessageBoxIcon>(exp[3], true, out icon))
-                    {
-                        ap.ReportError("MessageBox icon type not recognised");
-                        return true;
-                    }
-
-                    DialogResult res = ExtendedControls.MessageBoxTheme.Show(ap.actioncontroller.Form, exp[0], caption, but, icon);
-
-                    ap["DialogResult"] = res.ToString();
                 }
                 else
                     ap.ReportError(exp[0]);
@@ -104,10 +97,10 @@ namespace ActionLanguage
             return (FromString(userdata) != null) ? null : "InfoBox command line not in correct format";
         }
 
-        public override bool ConfigurationMenu(Form parent, ActionCoreController cp, List<BaseUtils.TypeHelpers.PropertyNameInfo> eventvars)
+        public override bool Configure(ActionCoreController cp, List<TypeHelpers.PropertyNameInfo> eventvars, ActionConfigFuncs configFuncs)
         {
             List<string> l = FromString(userdata);
-            List<string> r = ExtendedControls.PromptMultiLine.ShowDialog(parent, "Configure InfoBox Dialog", cp.Icon,
+            List<string> r = configFuncs.PromptMultiLine("Configure InfoBox Dialog", cp.Icon,
                             new string[] { "Message", "Caption" }, l?.ToArray(), true);
 
             if (r != null)
@@ -128,9 +121,7 @@ namespace ActionLanguage
                 {
                     string caption = (exp[1].Length>0) ? exp[1]: "EDDiscovery Program Message";
 
-                    ExtendedControls.InfoForm ifrm = new ExtendedControls.InfoForm();
-                    ifrm.Info(caption, ap.actioncontroller.Icon, exp[0]);
-                    ifrm.Show(ap.actioncontroller.Form);
+                    ap.actioncontroller.ConfigFuncs.InfoBox(caption, ap.actioncontroller.Icon, exp[0]);
                 }
                 else
                     ap.ReportError(exp[0]);
@@ -146,9 +137,9 @@ namespace ActionLanguage
     {
         public override bool AllowDirectEditingOfUserData { get { return true; } }    // and allow editing?
 
-        public override bool ConfigurationMenu(Form parent, ActionCoreController cp, List<BaseUtils.TypeHelpers.PropertyNameInfo> eventvars)
+        public override bool Configure(ActionCoreController cp, List<TypeHelpers.PropertyNameInfo> eventvars, ActionConfigFuncs configFuncs)
         {
-            string promptValue = ExtendedControls.PromptSingleLine.ShowDialog(parent, "Options", UserData, "Configure File Dialog", cp.Icon);
+            string promptValue = configFuncs.PromptSingleLine("Options", UserData, "Configure File Dialog", cp.Icon);
             if (promptValue != null)
             {
                 userdata = promptValue;
@@ -169,53 +160,59 @@ namespace ActionLanguage
                 {
                     sp.IsCharMoveOn(',');
 
-                    FolderBrowserDialog fbd = new FolderBrowserDialog();
-
                     string descr = sp.NextQuotedWordComma();
-                    if (descr != null)
-                        fbd.Description = descr;
 
-                    string rootfolder = sp.NextQuotedWordComma();
-                    if (rootfolder != null)
+                    string rootfoldername = sp.NextQuotedWordComma();
+                    Environment.SpecialFolder? rootfolder = null;
+                    if (rootfoldername != null)
                     {
                         Environment.SpecialFolder sf;
-                        if (Enum.TryParse<Environment.SpecialFolder>(rootfolder, out sf))
-                            fbd.RootFolder = sf;
+                        if (Enum.TryParse<Environment.SpecialFolder>(rootfoldername, out sf))
+                            rootfolder = sf;
                         else
-                            return ap.ReportError("FileDialog folder does not recognise folder location " + rootfolder);
+                            return ap.ReportError("FileDialog folder does not recognise folder location " + rootfoldername);
                     }
 
-                    string fileret = (fbd.ShowDialog(ap.actioncontroller.Form) == DialogResult.OK) ? fbd.SelectedPath : "";
-                    ap["FolderName"] = fileret;
+                    string fileret;
+                    bool success = ap.actioncontroller.ConfigFuncs.PromptFolder(fp =>
+                    {
+                        if (descr != null) fp.Description = descr;
+                        if (rootfolder != null) fp.RootFolder = (Environment.SpecialFolder)rootfolder;
+                    }, out fileret);
+
+                    ap["FolderName"] = success ? fileret : "";
                 }
                 else if (cmdname.Equals("openfile"))
                 {
                     sp.IsCharMoveOn(',');
 
-                    OpenFileDialog fd = new OpenFileDialog();
-                    fd.Multiselect = false;
-                    fd.CheckPathExists = true;
-
                     try
                     {
-                        string rootfolder = sp.NextQuotedWordComma();
-                        if (rootfolder != null)
-                            fd.InitialDirectory = rootfolder;
+                        string filename = null;
+                        bool success = ap.actioncontroller.ConfigFuncs.PromptOpenFile(fd =>
+                        {
+                            fd.Multiselect = false;
+                            fd.CheckPathExists = true;
 
-                        string filter = sp.NextQuotedWordComma();
-                        if (filter != null)
-                            fd.Filter = filter;
+                            string rootfolder = sp.NextQuotedWordComma();
+                            if (rootfolder != null)
+                                fd.InitialDirectory = rootfolder;
 
-                        string defext = sp.NextQuotedWordComma();
-                        if (defext != null)
-                            fd.DefaultExt = defext;
+                            string filter = sp.NextQuotedWordComma();
+                            if (filter != null)
+                                fd.Filter = filter;
 
-                        string check = sp.NextQuotedWordComma();
-                        if (check != null && check.Equals("On", StringComparison.InvariantCultureIgnoreCase))
-                            fd.CheckFileExists = true;
+                            string defext = sp.NextQuotedWordComma();
+                            if (defext != null)
+                                fd.DefaultExt = defext;
 
-                        string fileret = (fd.ShowDialog(ap.actioncontroller.Form) == DialogResult.OK) ? fd.FileName : "";
-                        ap["FileName"] = fileret;
+                            string check = sp.NextQuotedWordComma();
+                            if (check != null && check.Equals("On", StringComparison.InvariantCultureIgnoreCase))
+                                fd.CheckFileExists = true;
+
+                        }, out filename);
+
+                        ap["FileName"] = success ? filename : "";
                     }
                     catch
                     {
@@ -226,28 +223,30 @@ namespace ActionLanguage
                 {
                     sp.IsCharMoveOn(',');
 
-                    SaveFileDialog fd = new SaveFileDialog();
-
                     try
                     {
-                        string rootfolder = sp.NextQuotedWordComma();
-                        if (rootfolder != null)
-                            fd.InitialDirectory = rootfolder;
+                        string filename;
+                        bool success = ap.actioncontroller.ConfigFuncs.PromptSaveFile(fd =>
+                        {
 
-                        string filter = sp.NextQuotedWordComma();
-                        if (filter != null)
-                            fd.Filter = filter;
+                            string rootfolder = sp.NextQuotedWordComma();
+                            if (rootfolder != null)
+                                fd.InitialDirectory = rootfolder;
 
-                        string defext = sp.NextQuotedWordComma();
-                        if (defext != null)
-                            fd.DefaultExt = defext;
+                            string filter = sp.NextQuotedWordComma();
+                            if (filter != null)
+                                fd.Filter = filter;
 
-                        string check = sp.NextQuotedWordComma();
-                        if (check != null && check.Equals("On", StringComparison.InvariantCultureIgnoreCase))
-                            fd.OverwritePrompt = true;
+                            string defext = sp.NextQuotedWordComma();
+                            if (defext != null)
+                                fd.DefaultExt = defext;
 
-                        string fileret = (fd.ShowDialog(ap.actioncontroller.Form) == DialogResult.OK) ? fd.FileName : "";
-                        ap["FileName"] = fileret;
+                            string check = sp.NextQuotedWordComma();
+                            if (check != null && check.Equals("On", StringComparison.InvariantCultureIgnoreCase))
+                                fd.OverwritePrompt = true;
+                        }, out filename);
+
+                        ap["FileName"] = success ? filename : "";
                     }
                     catch
                     {
@@ -280,10 +279,10 @@ namespace ActionLanguage
             return (FromString(userdata) != null) ? null : " command line not in correct format";
         }
 
-        public override bool ConfigurationMenu(Form parent, ActionCoreController cp, List<BaseUtils.TypeHelpers.PropertyNameInfo> eventvars)
+        public override bool Configure(ActionCoreController cp, List<TypeHelpers.PropertyNameInfo> eventvars, ActionConfigFuncs configFuncs)
         {
             List<string> l = FromString(userdata);
-            List<string> r = ExtendedControls.PromptMultiLine.ShowDialog(parent, "Configure InputBox Dialog", cp.Icon,
+            List<string> r = configFuncs.PromptMultiLine("Configure InputBox Dialog", cp.Icon,
                             new string[] { "Caption", "Prompt List", "Default List", "Features", "ToolTips" }, l?.ToArray(),
                             false, new string[] { "Enter name of menu", "List of entries, semicolon separated", "Default list, semicolon separated", "Feature list: Multiline", "List of tool tips, semocolon separated" });
             if (r != null)
@@ -309,7 +308,7 @@ namespace ActionLanguage
                     bool multiline = (exp.Count >= 4) ? (exp[3].IndexOf("Multiline", StringComparison.InvariantCultureIgnoreCase) >= 0) : false;
                     string[] tooltips = (exp.Count >= 5) ? exp[4].Split(';') : null;
 
-                    List<string> r = ExtendedControls.PromptMultiLine.ShowDialog(ap.actioncontroller.Form, exp[0], ap.actioncontroller.Icon,
+                    List<string> r = ap.actioncontroller.ConfigFuncs.PromptMultiLine(exp[0], ap.actioncontroller.Icon,
                                         prompts, def, multiline, tooltips);
 
                     ap["InputBoxOK"] = (r != null) ? "1" : "0";
@@ -347,12 +346,12 @@ namespace ActionLanguage
             return (FromString(userdata) != null) ? null : " command line not in correct format";
         }
 
-        public override bool ConfigurationMenu(Form parent, ActionCoreController cp, List<BaseUtils.TypeHelpers.PropertyNameInfo> eventvars)
+        public override bool Configure(ActionCoreController cp, List<TypeHelpers.PropertyNameInfo> eventvars, ActionConfigFuncs configFuncs)
         {
             List<string> l = FromString(userdata);
-            List<string> r = ExtendedControls.PromptMultiLine.ShowDialog(parent, "Configure Dialog", cp.Icon,
-                            new string[] { "Logical Name" , "Caption", "Size [Pos]", "Var Prefix" }, l?.ToArray(),
-                            false, new string[] { "Handle name of menu" , "Enter title of menu", "Size and optional Position, as w,h [,x,y] 200,300 or 200,300,500,100", "Variable Prefix" });
+            List<string> r = configFuncs.PromptMultiLine("Configure Dialog", cp.Icon,
+                            new string[] { "Logical Name", "Caption", "Size [Pos]", "Var Prefix" }, l?.ToArray(),
+                            false, new string[] { "Handle name of menu", "Enter title of menu", "Size and optional Position, as w,h [,x,y] 200,300 or 200,300,500,100", "Variable Prefix" });
             if (r != null)
             {
                 userdata = r.ToStringCommaList(2);
@@ -373,7 +372,7 @@ namespace ActionLanguage
                 {
                     Variables cv = ap.variables.FilterVars(exp[3] + "*");
 
-                    ExtendedControls.ConfigurableForm cd = new ExtendedControls.ConfigurableForm();
+                    var cd = ap.actioncontroller.ConfigFuncs.CreateConfigurableForm();
 
                     foreach ( string k in cv.NameList )
                     {
@@ -401,7 +400,7 @@ namespace ActionLanguage
 
                         cd.Trigger += Cd_Trigger;
 
-                        cd.Show(ap.actioncontroller.Form, ap.actioncontroller.Icon,
+                        cd.Show(ap.actioncontroller.Icon,
                                             new System.Drawing.Size(dw.Value, dh.Value), pos , 
                                             exp[1],
                                             exp[0], new List<Object>() { ap, IsModalDialog() }  // logical name and tag
@@ -453,9 +452,9 @@ namespace ActionLanguage
     {
         public override bool AllowDirectEditingOfUserData { get { return true; } }    // and allow editing?
 
-        public override bool ConfigurationMenu(Form parent, ActionCoreController cp, List<BaseUtils.TypeHelpers.PropertyNameInfo> eventvars)
+        public override bool Configure(ActionCoreController cp, List<TypeHelpers.PropertyNameInfo> eventvars, ActionConfigFuncs configFuncs)
         {
-            string promptValue = ExtendedControls.PromptSingleLine.ShowDialog(parent, "DialogControl command", UserData, "Configure DialogControl Command", cp.Icon);
+            string promptValue = configFuncs.PromptSingleLine("DialogControl command", UserData, "Configure DialogControl Command", cp.Icon);
             if (promptValue != null)
             {
                 userdata = promptValue;
@@ -477,7 +476,7 @@ namespace ActionLanguage
                     bool infile = ap.actionfile.dialogs.ContainsKey(handle);
                     bool inlocal = ap.dialogs.ContainsKey(handle);
 
-                    ExtendedControls.ConfigurableForm f = infile ? ap.actionfile.dialogs[handle] : (inlocal ? ap.dialogs[handle] : null);
+                    ActionConfigFuncs.IConfigurableForm f = infile ? ap.actionfile.dialogs[handle] : (inlocal ? ap.dialogs[handle] : null);
 
                     string cmd = sp.NextWordLCInvariant();
 

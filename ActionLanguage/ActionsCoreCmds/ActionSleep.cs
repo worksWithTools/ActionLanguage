@@ -18,14 +18,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms;
-
+using BaseUtils;
 
 namespace ActionLanguage
 {
     class ActionSleep : ActionBase
     {
-        Timer t;
+        ActionConfigFuncs.ITimer t;
         ActionProgramRun apr;
 
         public override bool AllowDirectEditingOfUserData { get { return true; } }
@@ -35,9 +34,9 @@ namespace ActionLanguage
             return (UserData.Length > 0) ? null : "Sleep missing timeout in ms";
         }
 
-        public override bool ConfigurationMenu(Form parent, ActionCoreController cp, List<BaseUtils.TypeHelpers.PropertyNameInfo> eventvars)
+        public override bool Configure(ActionCoreController cp, List<TypeHelpers.PropertyNameInfo> eventvars, ActionConfigFuncs configFuncs)
         {
-            string promptValue = ExtendedControls.PromptSingleLine.ShowDialog(parent, "Sleep time in ms:", UserData, "Set Sleep timeout" , cp.Icon);
+            string promptValue = configFuncs.PromptSingleLine("Sleep time in ms:", UserData, "Set Sleep timeout", cp.Icon);
 
             if (promptValue != null)
             {
@@ -62,9 +61,8 @@ namespace ActionLanguage
             {
                 System.Diagnostics.Debug.WriteLine((Environment.TickCount % 10000).ToString("00000") + " Doze for " + i);
                 apr = ap;
-                t = new Timer();
-                t.Tick += T_Tick;
-                t.Interval = i;
+
+                t = ap.actioncontroller.ConfigFuncs.CreateTimer(i, T_Tick);
                 t.Start();
                 return false;
             }

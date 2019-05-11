@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net461</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="$(SolutionDir)\BaseUtilities\BaseUtilities\BaseUtils.csproj" />
+    <ProjectReference Include="$(SolutionDir)\BaseUtilities\BaseUtils.WinForms\BaseUtils.WinForms.csproj" />
+    <ProjectReference Include="$(SolutionDir)\ExtendedControls\ExtendedControls\ExtendedControls.csproj" />
+    <ProjectReference Include="$(SolutionDir)\ExtendedControls\ExtendedForms\ExtendedForms.csproj" />
+    <ProjectReference Include="..\ActionLanguage\ActionLanguage.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="System.Windows.Forms" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="ActionEditing\ActionPackEditForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="ActionEditing\ActionProgramEditForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+  </ItemGroup>
+
+</Project>

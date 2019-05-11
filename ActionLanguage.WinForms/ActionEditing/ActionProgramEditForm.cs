@@ -345,7 +345,7 @@ namespace ActionLanguage
                 {
                     ActionBase a = ActionBase.CreateAction(b.Text);
 
-                    if (!a.ConfigurationMenuInUse || a.ConfigurationMenu(this, actioncorecontroller, currentvarlist))
+                    if (!a.ConfigurationMenuInUse || a.Configure(actioncorecontroller, currentvarlist, new ActionConfigFuncsWinForms(this)))
                     {
                         curprog.SetStep(gstep, a);
                         g.checkit = a;
@@ -370,7 +370,7 @@ namespace ActionLanguage
 
             if (curact != null)
             {
-                if (curact.ConfigurationMenu(this, actioncorecontroller, currentvarlist))
+                if (curact.Configure(actioncorecontroller, currentvarlist, new ActionConfigFuncsWinForms(this)))
                     SetValue(g.value, curact);
             }
         }
@@ -546,7 +546,7 @@ namespace ActionLanguage
         private void buttonExtEdit_Click(object sender, EventArgs e)
         {
             curprog.Rename(textBoxBorderName.Text.Trim());
-            if ( curprog.EditInEditor())
+            if ( curprog.EditInEditor(configFuncs: new ActionConfigFuncsWinForms(this.FindForm())))
             {
                 LoadProgram(curprog);
             }
