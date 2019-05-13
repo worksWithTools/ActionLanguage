@@ -1,4 +1,5 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <Import Sdk="Microsoft.NET.Sdk.WindowsDesktop" Project="Sdk.props" Condition="'$(TargetFramework)' == 'netcoreapp3.0'"/>
   <PropertyGroup>
     <TargetFrameworks>net461<!-- ;netcoreapp3.0 --></TargetFrameworks>
     <Company>EDDiscovery</Company>
