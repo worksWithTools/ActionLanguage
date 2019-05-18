@@ -55,6 +55,7 @@ namespace ActionLanguage
         public ActionCoreController(ActionConfigFuncs configFuncs, System.Drawing.Icon ic)
         {
             Icon = ic;
+            ConfigFuncs = configFuncs;
 
             persistentglobalvariables = new Variables();
             globalvariables = new Variables();
@@ -66,10 +67,8 @@ namespace ActionLanguage
 
             ActionBase.AddCommand("Break", typeof(ActionBreak), ActionBase.ActionType.Cmd);
             ActionBase.AddCommand("Call", typeof(ActionCall), ActionBase.ActionType.Call);
-#if !NETSTANDARD2_0
             ActionBase.AddCommand("Dialog", typeof(ActionDialog), ActionBase.ActionType.Cmd);
             ActionBase.AddCommand("DialogControl", typeof(ActionDialogControl), ActionBase.ActionType.Cmd);
-#endif
             ActionBase.AddCommand("Do", typeof(ActionDo), ActionBase.ActionType.Do);
             ActionBase.AddCommand("DeleteVariable", typeof(ActionDeleteVariable), ActionBase.ActionType.Cmd);
             ActionBase.AddCommand("Expr", typeof(ActionExpr), ActionBase.ActionType.Cmd);
@@ -82,13 +81,11 @@ namespace ActionLanguage
             ActionBase.AddCommand("GlobalLet", typeof(ActionGlobalLet), ActionBase.ActionType.Cmd);
             ActionBase.AddCommand("Global", typeof(ActionGlobal), ActionBase.ActionType.Cmd);
             ActionBase.AddCommand("If", typeof(ActionIf), ActionBase.ActionType.If);
-#if !NETSTANDARD2_0
             ActionBase.AddCommand("InputBox", typeof(ActionInputBox), ActionBase.ActionType.Cmd);
             ActionBase.AddCommand("InfoBox", typeof(ActionInfoBox), ActionBase.ActionType.Cmd);
             ActionBase.AddCommand("Key", typeof(ActionKey), ActionBase.ActionType.Cmd);
             ActionBase.AddCommand("MessageBox", typeof(ActionMessageBox), ActionBase.ActionType.Cmd);
             ActionBase.AddCommand("NonModalDialog", typeof(ActionNonModalDialog), ActionBase.ActionType.Cmd);
-#endif
             ActionBase.AddCommand("Return", typeof(ActionReturn), ActionBase.ActionType.Return);
             ActionBase.AddCommand("Pragma", typeof(ActionPragma), ActionBase.ActionType.Cmd);
             ActionBase.AddCommand("Let", typeof(ActionLet), ActionBase.ActionType.Cmd);
