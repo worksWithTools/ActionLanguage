@@ -51,7 +51,7 @@ namespace ActionLanguage
             applicationfolder = appfolder;
             currentvarlist = new List<BaseUtils.TypeHelpers.PropertyNameInfo>(vbs);
 
-            bool winborder = ExtendedControls.ThemeableFormsInstance.Instance.ApplyToForm(this, SystemFonts.DefaultFont);
+            bool winborder = ExtendedControls.ThemeableFormsInstance.Instance.ApplyDialog(this);
             statusStripCustom.Visible = panelTop.Visible = panelTop.Enabled = !winborder;
             this.Text = label_index.Text = t;
 
@@ -159,7 +159,7 @@ namespace ActionLanguage
 
             g.stepname = new ExtendedControls.ExtComboBox();
             g.stepname.Items.AddRange(ActionBase.GetActionNameList());
-            g.stepname.DropDownHeight = 400;
+           // g.stepname.DropDownHeight = 400;
             if (step != null)
                 g.stepname.Text = step.Name;
             g.stepname.SelectedIndexChanged += Stepname_SelectedIndexChanged;
@@ -191,7 +191,7 @@ namespace ActionLanguage
 
             g.config.Tag = g.stepname.Tag = g.up.Tag = g.value.Tag = g.left.Tag = g.right.Tag = g.prog.Tag = g;
 
-            ExtendedControls.ThemeableFormsInstance.Instance.ApplyToControls(g.panel, SystemFonts.DefaultFont);
+            ExtendedControls.ThemeableFormsInstance.Instance.ApplyDialog(g.panel);
 
             panelVScroll.Controls.Add(g.panel);
 

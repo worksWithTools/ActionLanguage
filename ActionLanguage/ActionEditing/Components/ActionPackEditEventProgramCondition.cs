@@ -45,8 +45,6 @@ namespace ActionLanguage
             eventtype.Items.AddRange(events);
             eventtype.Location = new Point(panelxmargin, panelymargin);
             eventtype.Size = new Size(140, 24);
-            eventtype.DropDownHeight = 400;
-            eventtype.DropDownWidth = eventtype.Width * 3 / 2;
             if (cd.eventname != null)
                 eventtype.SelectedItem = cd.eventname;
             eventtype.SelectedIndexChanged += Eventtype_SelectedIndexChanged;

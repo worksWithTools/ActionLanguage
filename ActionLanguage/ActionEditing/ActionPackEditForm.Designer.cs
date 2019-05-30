@@ -30,8 +30,8 @@
         {
             this.components = new System.ComponentModel.Container();
             this.panelTop = new System.Windows.Forms.Panel();
-            this.panel_close = new ExtendedControls.ExtPanelDrawn();
-            this.panel_minimize = new ExtendedControls.ExtPanelDrawn();
+            this.panel_close = new ExtendedControls.ExtButtonDrawn();
+            this.panel_minimize = new ExtendedControls.ExtButtonDrawn();
             this.label_index = new System.Windows.Forms.Label();
             this.panelOK = new System.Windows.Forms.Panel();
             this.buttonInstallationVars = new ExtendedControls.ExtButton();
@@ -95,7 +95,7 @@
             // panel_minimize
             // 
             this.panel_minimize.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel_minimize.ImageSelected = ExtendedControls.ExtPanelDrawn.ImageType.Minimize;
+            this.panel_minimize.ImageSelected = ExtendedControls.ExtButtonDrawn.ImageType.Minimize;
             this.panel_minimize.Location = new System.Drawing.Point(1015, 0);
             this.panel_minimize.Name = "panel_minimize";
             this.panel_minimize.Padding = new System.Windows.Forms.Padding(6);
@@ -140,23 +140,23 @@
             // 
             // comboBoxCustomEditProg
             // 
-            this.comboBoxCustomEditProg.ArrowWidth = 1;
+            //this.comboBoxCustomEditProg.ArrowWidth = 1;
             this.comboBoxCustomEditProg.BorderColor = System.Drawing.Color.White;
             this.comboBoxCustomEditProg.ButtonColorScaling = 0.5F;
             this.comboBoxCustomEditProg.DataSource = null;
             this.comboBoxCustomEditProg.DisableBackgroundDisabledShadingGradient = false;
             this.comboBoxCustomEditProg.DisplayMember = "";
             this.comboBoxCustomEditProg.DropDownBackgroundColor = System.Drawing.Color.Gray;
-            this.comboBoxCustomEditProg.DropDownHeight = 200;
-            this.comboBoxCustomEditProg.DropDownWidth = 200;
+            //this.comboBoxCustomEditProg.DropDownHeight = 200;
+            //this.comboBoxCustomEditProg.DropDownWidth = 200;
             this.comboBoxCustomEditProg.FlatStyle = System.Windows.Forms.FlatStyle.System;
-            this.comboBoxCustomEditProg.ItemHeight = 13;
+            //this.comboBoxCustomEditProg.ItemHeight = 13;
             this.comboBoxCustomEditProg.Location = new System.Drawing.Point(78, 3);
             this.comboBoxCustomEditProg.MouseOverBackgroundColor = System.Drawing.Color.Silver;
             this.comboBoxCustomEditProg.Name = "comboBoxCustomEditProg";
             this.comboBoxCustomEditProg.ScrollBarButtonColor = System.Drawing.Color.LightGray;
             this.comboBoxCustomEditProg.ScrollBarColor = System.Drawing.Color.LightGray;
-            this.comboBoxCustomEditProg.ScrollBarWidth = 16;
+            //this.comboBoxCustomEditProg.ScrollBarWidth = 16;
             this.comboBoxCustomEditProg.SelectedIndex = -1;
             this.comboBoxCustomEditProg.SelectedItem = null;
             this.comboBoxCustomEditProg.SelectedValue = null;
@@ -216,7 +216,7 @@
             this.panelVScroll.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelVScroll.Location = new System.Drawing.Point(3, 3);
             this.panelVScroll.Name = "panelVScroll";
-            this.panelVScroll.ScrollBarWidth = 20;
+            //this.panelVScroll.ScrollBarWidth = 20;
             this.panelVScroll.Size = new System.Drawing.Size(1060, 502);
             this.panelVScroll.TabIndex = 8;
             this.panelVScroll.VerticalScrollBarDockRight = true;
@@ -410,8 +410,8 @@
         #endregion
 
         private System.Windows.Forms.Panel panelTop;
-        private ExtendedControls.ExtPanelDrawn panel_close;
-        private ExtendedControls.ExtPanelDrawn panel_minimize;
+        private ExtendedControls.ExtButtonDrawn panel_close;
+        private ExtendedControls.ExtButtonDrawn panel_minimize;
         private System.Windows.Forms.Label label_index;
         private System.Windows.Forms.Panel panelOK;
         private ExtendedControls.ExtComboBox comboBoxCustomEditProg;

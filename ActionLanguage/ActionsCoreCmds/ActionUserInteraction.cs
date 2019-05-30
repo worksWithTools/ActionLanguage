@@ -401,11 +401,13 @@ namespace ActionLanguage
 
                         cd.Trigger += Cd_Trigger;
 
-                        cd.Show(ap.actioncontroller.Form, ap.actioncontroller.Icon,
-                                            new System.Drawing.Size(dw.Value, dh.Value), pos , 
-                                            exp[1],
-                                            exp[0], new List<Object>() { ap, IsModalDialog() }  // logical name and tag
-                                            );
+                        cd.Show(ap.actioncontroller.Form);
+                        //TODO: Figure out why this was here...
+                        //cd.Show(ap.actioncontroller.Form, ap.actioncontroller.Icon,
+                        //                    new System.Drawing.Size(dw.Value, dh.Value), pos , 
+                        //                    exp[1],
+                        //                    exp[0], new List<Object>() { ap, IsModalDialog() }  // logical name and tag
+                        //                    );
 
                         return !IsModalDialog();       // modal, return false, STOP.  Non modal, continue
                     }

@@ -53,7 +53,7 @@ namespace ActionLanguage
             foreach (string s in grouptypenames)
                 groupeventlist.Add(s, (from e in events where e.UIClass == s select e.TriggerName).ToList());
 
-            bool winborder = ExtendedControls.ThemeableFormsInstance.Instance.ApplyToForm(this, SystemFonts.DefaultFont);
+            bool winborder = ExtendedControls.ThemeableFormsInstance.Instance.ApplyDialog(this/*, SystemFonts.DefaultFont*/);
             statusStripCustom.Visible = panelTop.Visible = panelTop.Enabled = !winborder;
             initialtitle = this.Text = label_index.Text = t;
 
@@ -104,7 +104,7 @@ namespace ActionLanguage
                 g.grouptype.Items.AddRange(grouptypenames);
                 g.grouptype.Location = new Point(panelxmargin, panelymargin);
                 g.grouptype.Size = new Size(80, 24);
-                g.grouptype.DropDownHeight = 400;
+                //g.grouptype.DropDownHeight = 400;
                 g.grouptype.SetTipDynamically(toolTip, "Select event class");
 
                 if (cd != null)
@@ -158,7 +158,7 @@ namespace ActionLanguage
             toolTip.SetToolTip(g.action, "Move event up");
             g.panel.Controls.Add(g.action);
 
-            ExtendedControls.ThemeableFormsInstance.Instance.ApplyToControls(g.panel, SystemFonts.DefaultFont);
+            ExtendedControls.ThemeableFormsInstance.Instance.ApplyDialog(g.panel);  //ApplyToControls(g.panel, SystemFonts.DefaultFont);
 
             if (g.groupnamepanel != null)
                 g.groupnamepanel.BackColor = ExtendedControls.ThemeableFormsInstance.Instance.TextBlockBorderColor;
@@ -184,7 +184,7 @@ namespace ActionLanguage
             g.usercontrol.Init(cd, groupeventlist[g.grouptype.Text], actioncorecontroller, applicationfolder, actionfile, AdditionalNames,
                                     this.Icon, toolTip);
 
-            ExtendedControls.ThemeableFormsInstance.Instance.ApplyToControls(g.usercontrol, SystemFonts.DefaultFont);
+            ExtendedControls.ThemeableFormsInstance.Instance.ApplyDialog(g.usercontrol);  
 
             g.usercontrol.Location = new Point(g.grouptype.Right + 16, 0);
             g.usercontrol.Size = new Size(5000, g.usercontrol.Height);
@@ -430,7 +430,7 @@ namespace ActionLanguage
         private void buttonInstallationVars_Click(object sender, EventArgs e)
         {
             ExtendedConditionsForms.VariablesForm avf = new ExtendedConditionsForms.VariablesForm();
-            avf.Init("Configuration items for installation - specialist use", this.Icon, actionfile.installationvariables, showone: false);
+            avf.Init("Configuration items for installation - specialist use", this.Icon, actionfile.installationvariables /*showone: false*/);
 
             if (avf.ShowDialog(this) == DialogResult.OK)
             {

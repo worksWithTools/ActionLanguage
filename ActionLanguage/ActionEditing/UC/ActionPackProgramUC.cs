@@ -78,8 +78,6 @@ namespace ActionLanguage
             proglist.Items.AddRange(actionfile.actionprogramlist.GetActionProgramList());
             proglist.Location = new Point(panelxmargin, panelymargin);
             proglist.Size = new Size((this.Width-24-8-8-8 -panelxmargin*2)/2, 24);      // 24 button, 8+8 gaps, 8 for selector
-            proglist.DropDownHeight = 400;
-            proglist.DropDownWidth = proglist.Width * 3 / 2;
             proglist.SelectedIndexChanged += Proglist_SelectedIndexChanged;
             proglist.SetTipDynamically(toolTip, "Select program to associate with this event");
 
@@ -258,7 +256,7 @@ namespace ActionLanguage
             }
 
             ExtendedConditionsForms.VariablesForm avf = new ExtendedConditionsForms.VariablesForm();
-            avf.Init("Input parameters and flags to pass to program on run", this.Icon, cond, showone: true, showrefresh: true, showrefreshstate: flag.Equals(Variables.flagRunAtRefresh));
+            avf.Init("Input parameters and flags to pass to program on run", this.Icon, cond);
 
             if (avf.ShowDialog(FindForm()) == DialogResult.OK)
             {
