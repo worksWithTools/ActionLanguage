@@ -507,7 +507,7 @@ namespace ActionLanguage
             if (promptValue != null)
             {
                 ExtendedConditionsForms.VariablesForm avf = new ExtendedConditionsForms.VariablesForm();
-                avf.Init("Variables to pass into called program", cp.Icon, cond, allownoexpand: true, altops: altops);
+                avf.Init("Variables to pass into called program", cp.Icon, cond, showone: true, allownoexpand: true, altops: altops);
 
                 if (avf.ShowDialog(parent) == DialogResult.OK)
                 {
