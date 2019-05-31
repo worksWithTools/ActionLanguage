@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace ActionLanguage
 {
@@ -118,9 +119,19 @@ namespace ActionLanguage
                 Form.Dispose();
             }
 
-            public void Show(Icon icon, Size size, Point pos, string caption, string lname = null, object callertag = null, Action callback = null)
+            public void InitCentred(Icon icon, string caption, string lname = null, Object callertag = null)
             {
-                Form.Show(ParentForm, icon, size, pos, caption, lname, callertag, callback);
+                Form.InitCentred(ParentForm, icon, caption, lname, callertag);
+            }
+
+            public void Init(Point pos, Icon icon, string caption, string lname = null, Object callertag = null)
+            {
+                Form.Init(pos, icon, caption, lname, callertag);
+            }
+
+            public void Show()
+            {
+                Form.Show(ParentForm);
             }
 
             public void Close()
@@ -273,14 +284,14 @@ namespace ActionLanguage
             ParentForm = parent;
         }
 
-        public override string PromptSingleLine(string lab1, string defaultValue1, string caption, Icon ic, bool multiline = false, string tooltip = null, int width = 600, int vspacing = -1, bool cursoratend = false)
+        public override string PromptSingleLine(string lab1, string defaultValue1, string caption, Icon ic, bool multiline = false, string tooltip = null, bool cursoratend = false, int widthboxes = 200, int heightboxes = -1)
         {
-            return ExtendedControls.PromptSingleLine.ShowDialog(ParentForm, lab1, defaultValue1, caption, ic, multiline, tooltip, width, vspacing, cursoratend);
+            return ExtendedControls.PromptSingleLine.ShowDialog(ParentForm, lab1, defaultValue1, caption, ic, multiline, tooltip, cursoratend, widthboxes, heightboxes);
         }
 
-        public override List<string> PromptMultiLine(string caption, Icon ic, string[] lab, string[] def, bool multiline = false, string[] tooltips = null, int width = 600, int vspacing = -1, bool cursoratend = false)
+        public override List<string> PromptMultiLine(string caption, Icon ic, string[] lab, string[] def, bool multiline = false, string[] tooltips = null, bool cursoratend = false, int widthboxes = 200, int heightboxes = -1)
         {
-            return ExtendedControls.PromptMultiLine.ShowDialog(ParentForm, caption, ic, lab, def, multiline, tooltips, width, vspacing, cursoratend);
+            return ExtendedControls.PromptMultiLine.ShowDialog(ParentForm, caption, ic, lab, def, multiline, tooltips, cursoratend, widthboxes, heightboxes);
         }
 
         public override bool PromptFolder(Action<IPromptFolderSettings> config, out string selectedPath)
@@ -376,10 +387,10 @@ namespace ActionLanguage
             };
         }
 
-        public override bool SetVariables(string t, Icon ic, Variables vbs, Dictionary<string, string> altops = null, bool showone = false, bool showrefresh = false, bool showrefreshstate = false, bool allowadd = false, bool allownoexpand = false, bool allowmultiple = true, Action<Variables, Dictionary<string, string>, bool> resultact = null)
+        public override bool SetVariables(string t, Icon ic, Variables vbs, Dictionary<string, string> altops = null, bool showatleastoneentry = false, bool showrunatrefreshcheckbox = false, bool setrunatrefreshcheckboxstate = false, bool allowadd = false, bool allownoexpand = false, bool allowmultipleentries = true, Action<Variables, Dictionary<string, string>, bool> resultact = null)
         {
             var form = new ExtendedConditionsForms.VariablesForm();
-            form.Init(t, ic, vbs, altops, showone, showrefresh, showrefreshstate, allowadd, allownoexpand, allowmultiple);
+            form.Init(t, ic, vbs, altops, showatleastoneentry, showrunatrefreshcheckbox, setrunatrefreshcheckboxstate, allowadd, allownoexpand, allowmultipleentries);
             var result = form.ShowDialog(ParentForm);
 
             if (result == System.Windows.Forms.DialogResult.OK)
