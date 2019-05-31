@@ -64,22 +64,25 @@ namespace ActionLanguage
             Icon = i;
             classifier = cls;
 
+            // BackColor = Color.Green; // for debug
+            // layed out for 12 point. Requires a 28 pixel area to sit in
+
             progmajortype = new ExtendedControls.ExtPanelDropDown();
             progmajortype.Items.AddRange(new string[] { "Key" , "Say", "Key+Say" , "Full Program" });
             indextoclassifier = new ActionProgram.ProgramConditionClass[] { ActionProgram.ProgramConditionClass.Key , ActionProgram.ProgramConditionClass.Say ,
                                                                             ActionProgram.ProgramConditionClass.KeySay , ActionProgram.ProgramConditionClass.Full };
             progmajortype.Location = new Point(0, 0);
-            progmajortype.Size = new Size(this.Width, this.Height); // outer panel aligns with this UC 
+            progmajortype.Size = new Size(this.Width, 28); // outer panel aligns with this UC 
             progmajortype.SelectedIndexChanged += PanelType_SelectedIndexChanged;
             toolTip.SetToolTip(progmajortype, "Use the selector (click on bottom right arrow) to select program class type");
+
+            int pwidth = (this.Width - 24 - 8 - 8 - 8 - panelxmargin * 2) / 2;       // 24 button, 8+8 gaps, 8 for selector
 
             proglist = new ExtendedControls.ExtComboBox();
             proglist.Items.Add("New");
             proglist.Items.AddRange(actionfile.actionprogramlist.GetActionProgramList());
             proglist.Location = new Point(panelxmargin, panelymargin);
-            proglist.Size = new Size((this.Width-24-8-8-8 -panelxmargin*2)/2, 24);      // 24 button, 8+8 gaps, 8 for selector
-            proglist.DropDownHeight = 400;
-            proglist.DropDownWidth = proglist.Width * 3 / 2;
+            proglist.Size = new Size(pwidth, 24); 
             proglist.SelectedIndexChanged += Proglist_SelectedIndexChanged;
             proglist.SetTipDynamically(toolTip, "Select program to associate with this event");
 
@@ -92,8 +95,8 @@ namespace ActionLanguage
 
             paras = new ExtendedControls.ExtTextBox();
             paras.Text = (cd.actiondata != null) ? cd.actiondata : "";
-            paras.Location = new Point(progedit.Right + 8, panelymargin + 2);
-            paras.Size = proglist.Size;
+            paras.Location = new Point(progedit.Right + 8, panelymargin );
+            paras.Size = new Size(pwidth,24);     
             paras.ReadOnly = true;
             paras.Click += Paras_Click;
             paras.SetTipDynamically(toolTip, "Click to enter parameters to pass to program");
@@ -258,7 +261,7 @@ namespace ActionLanguage
             }
 
             ExtendedConditionsForms.VariablesForm avf = new ExtendedConditionsForms.VariablesForm();
-            avf.Init("Input parameters and flags to pass to program on run", this.Icon, cond, showone: true, showrefresh: true, showrefreshstate: flag.Equals(Variables.flagRunAtRefresh));
+            avf.Init("Input parameters and flags to pass to program on run", this.Icon, cond, showatleastoneentry: true, showrunatrefreshcheckbox: true, setrunatrefreshcheckboxstate: flag.Equals(Variables.flagRunAtRefresh));
 
             if (avf.ShowDialog(FindForm()) == DialogResult.OK)
             {

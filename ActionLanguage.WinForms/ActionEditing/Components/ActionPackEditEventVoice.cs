@@ -37,6 +37,8 @@ namespace ActionLanguage
         {
             cd = cond;      // on creation, the cond with be set to onVoice with one condition, checked in ActionController.cs:SetPackEditor..
 
+            // layed out for 12 point.  UC below require 28 point area
+
             textBoxInput = new ExtendedControls.ExtTextBox();
             textBoxInput.Location = new Point(panelxmargin, panelymargin);
             textBoxInput.Size = new Size(356, 24);      // manually matched to size of eventprogramcondition bits
@@ -51,7 +53,7 @@ namespace ActionLanguage
 
             ucprog = new ActionPackEditProgram();
             ucprog.Location = new Point(textBoxInput.Right+16, 0);
-            ucprog.Size = new Size(400, this.Height);       // init all the panels to 0/this height, select widths
+            ucprog.Size = new Size(400, 28);       // init all the panels to 0/this height, select widths
             ucprog.Init(actionfile, cond, cp, appfolder, ic, toolTip, classifier);
             ucprog.onEditKeys = onEditKeys;
             ucprog.onEditSay = onEditSay;
