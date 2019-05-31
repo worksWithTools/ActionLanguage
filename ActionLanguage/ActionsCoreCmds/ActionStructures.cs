@@ -503,11 +503,14 @@ namespace ActionLanguage
             Dictionary<string, string> altops;
             FromString(UserData, out progname, out cond, out altops);
 
+            // test example List<string> p2romptValue = ExtendedControls.PromptMultiLine.ShowDialog(parent, "caption", cp.Icon, new string[] { "wkwkwkw wkw qwjkqwkqw qwkqwk", "wkwkw ejjd2" }, null, true);
+
             string promptValue = ExtendedControls.PromptSingleLine.ShowDialog(parent, "Program to call (use set::prog if req)", progname, "Configure Call Command", cp.Icon);
+                
             if (promptValue != null)
             {
                 ExtendedConditionsForms.VariablesForm avf = new ExtendedConditionsForms.VariablesForm();
-                avf.Init("Variables to pass into called program", cp.Icon, cond, showone: true, allownoexpand: true, altops: altops);
+                avf.Init("Variables to pass into called program", cp.Icon, cond, showatleastoneentry: true, allownoexpand: true, altops: altops);
 
                 if (avf.ShowDialog(parent) == DialogResult.OK)
                 {

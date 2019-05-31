@@ -53,12 +53,12 @@ namespace ActionLanguage
             foreach (string s in grouptypenames)
                 groupeventlist.Add(s, (from e in events where e.UIClass == s select e.TriggerName).ToList());
 
-            bool winborder = ExtendedControls.ThemeableFormsInstance.Instance.ApplyToForm(this, SystemFonts.DefaultFont);
+            bool winborder = ExtendedControls.ThemeableFormsInstance.Instance.ApplyDialog(this);    // scale to font
+
             statusStripCustom.Visible = panelTop.Visible = panelTop.Enabled = !winborder;
             initialtitle = this.Text = label_index.Text = t;
 
             ConditionLists clist = actionfile.actioneventlist;          // now load the initial conditions from the action file
-
 
             string eventname = null;
             for (int i = 0; i < clist.Count; i++)       // for ever event, find the condition, create the group, theme
@@ -95,7 +95,10 @@ namespace ActionLanguage
 
             g.panel = new Panel();
             g.panel.SuspendLayout();
-            g.panel.Height = 28;    // Def height
+
+            // We draw as it was 8.25 point then scale.
+
+            // g.panel.BackColor = Color.Yellow; // for debug
 
             if (isevent)
             {
@@ -104,7 +107,6 @@ namespace ActionLanguage
                 g.grouptype.Items.AddRange(grouptypenames);
                 g.grouptype.Location = new Point(panelxmargin, panelymargin);
                 g.grouptype.Size = new Size(80, 24);
-                g.grouptype.DropDownHeight = 400;
                 g.grouptype.SetTipDynamically(toolTip, "Select event class");
 
                 if (cd != null)
@@ -122,22 +124,21 @@ namespace ActionLanguage
             }
             else
             {
-                //g.panel.BackColor = Color.Yellow; // for debug
                 g.groupnamepanel = new Panel();
                 g.groupnamepanel.Location = new Point(3, 2);
                 g.panel.Controls.Add(g.groupnamepanel);
 
                 g.groupnamecollapsebutton = new ExtendedControls.ExtButton();
                 g.groupnamecollapsebutton.Text = "-";
+                g.groupnamecollapsebutton.Location = new Point(2, 2);
                 g.groupnamecollapsebutton.Size = new Size(16, 16);
                 g.groupnamecollapsebutton.Tag = g;
                 g.groupnamecollapsebutton.MouseDown += Groupnamecollapsebutton_MouseDown;
                 g.groupnamecollapsebutton.Click += Groupnamecollapsebutton_Click;
-                g.groupnamecollapsebutton.Location = new Point(2, 2);
                 g.groupnamepanel.Controls.Add(g.groupnamecollapsebutton);
 
                 g.groupnamelabel = new Label();
-                g.groupnamelabel.Text = name;
+                g.groupnamelabel.Name = g.groupnamelabel.Text = name;
                 g.groupnamelabel.Location = new Point(24, 2);
                 g.groupnamepanel.Controls.Add(g.groupnamelabel);
 
@@ -158,10 +159,15 @@ namespace ActionLanguage
             toolTip.SetToolTip(g.action, "Move event up");
             g.panel.Controls.Add(g.action);
 
-            ExtendedControls.ThemeableFormsInstance.Instance.ApplyToControls(g.panel, SystemFonts.DefaultFont);
+            ExtendedControls.ThemeableFormsInstance.Instance.ApplyDialog(g.panel);
+            g.panel.Scale(this.CurrentAutoScaleFactor());
 
             if (g.groupnamepanel != null)
-                g.groupnamepanel.BackColor = ExtendedControls.ThemeableFormsInstance.Instance.TextBlockBorderColor;
+            {
+                g.groupnamecollapsebutton.BackColor = g.groupnamepanel.BackColor = g.groupactionscombobox.BackColor = g.groupactionscombobox.DropDownBackgroundColor = ExtendedControls.ThemeableFormsInstance.Instance.TextBlockBorderColor;
+                g.groupnamecollapsebutton.ForeColor = g.groupnamelabel.ForeColor = g.groupactionscombobox.ForeColor = ExtendedControls.ThemeableFormsInstance.Instance.TextBackColor;
+
+            }
 
             g.panel.ResumeLayout();
 
@@ -184,16 +190,8 @@ namespace ActionLanguage
             g.usercontrol.Init(cd, groupeventlist[g.grouptype.Text], actioncorecontroller, applicationfolder, actionfile, AdditionalNames,
                                     this.Icon, toolTip);
 
-            ExtendedControls.ThemeableFormsInstance.Instance.ApplyToControls(g.usercontrol, SystemFonts.DefaultFont);
-
-            g.usercontrol.Location = new Point(g.grouptype.Right + 16, 0);
-            g.usercontrol.Size = new Size(5000, g.usercontrol.Height);
-
             g.usercontrol.RefreshEvent += Usercontrol_RefreshEvent;
-
-            g.panel.Height = g.usercontrol.Height;
             g.panel.Controls.Add(g.usercontrol);
-            //System.Diagnostics.Debug.WriteLine(g.GetHashCode() + " " + g.panel.Height);
         }
 
         private void PositionGroups(bool calcminsize)
@@ -215,26 +213,26 @@ namespace ActionLanguage
 
                 if (g.IsGroupName || collapsed == false)
                 {
-                    int farx = 100;
+                    g.action.Location = new Point(panelwidth - g.action.Width - 10, panelymargin);
+
+                    if (g.usercontrol != null)
+                    {
+                        g.usercontrol.Location = new Point(g.grouptype.Right + 16, 0);
+                        g.usercontrol.Size = g.usercontrol.FindMaxSubControlArea(0,0);
+                    }
+
+                    if (g.groupnamepanel != null)
+                    {
+                        g.groupnamepanel.Size = new Size(g.action.Left - g.groupnamepanel.Left - 8, g.groupnamecollapsebutton.Bottom + Font.ScalePixels(2));
+                        g.groupactionscombobox.Location = new Point(g.groupnamepanel.Width - g.groupactionscombobox.Width - 16, 2);
+                    }
 
                     g.panel.Visible = true;
                     g.panel.Location = new Point(panelxmargin, y + panelVScroll.ScrollOffset);
-                    g.panel.Width = Math.Max(panelwidth - panelxmargin * 2, farx); //, panelymargin + conditionhoff);
+                    g.panel.Size = g.panel.FindMaxSubControlArea(2, 2);
 
-                    g.action.Location = new Point(g.panel.Width - 30, panelymargin);
-
-                    int widthuc = g.panel.Size.Width - 4 - 32;
-                    if (g.groupnamepanel != null)
-                    {
-                        g.groupnamepanel.Size = new Size(widthuc - g.groupnamepanel.Left, g.panel.Height - 8);
-                        g.groupactionscombobox.Location = new Point(g.groupnamepanel.Width - g.groupactionscombobox.Width - 8, 2);
-                    }
-
-                    if (g.usercontrol != null)
-                        g.usercontrol.Width = widthuc - g.usercontrol.Left;
-
-                    //System.Diagnostics.Debug.WriteLine(g.GetHashCode() + " " + i + " " + g.panel.Height);
-                    y += g.panel.Height + 2;
+                    //System.Diagnostics.Debug.WriteLine("Panel " + i + " size " + g.panel.Size);
+                    y += g.panel.Height + Font.ScalePixels(4);
                 }
                 else
                     g.panel.Visible = false;
@@ -242,11 +240,10 @@ namespace ActionLanguage
 
             buttonMore.Location = new Point(panelxmargin, y + panelVScroll.ScrollOffset);
 
-            int titleHeight = RectangleToScreen(this.ClientRectangle).Top - this.Top;
-            y += buttonMore.Height + titleHeight + ((panelTop.Enabled) ? (panelTop.Height + statusStripCustom.Height) : 8) + 16 + panelOK.Height;
-
             if (calcminsize)
             {
+                int titleHeight = RectangleToScreen(this.ClientRectangle).Top - this.Top;
+                y += buttonMore.Height + titleHeight + ((panelTop.Enabled) ? (panelTop.Height + statusStripCustom.Height) : 8) + 16 + panelOK.Height;
                 this.MinimumSize = new Size(800, y);
                 this.MaximumSize = new Size(Screen.FromControl(this).WorkingArea.Width - 100, Screen.FromControl(this).WorkingArea.Height - 100);
 
@@ -254,7 +251,7 @@ namespace ActionLanguage
                     Top = Screen.FromControl(this).WorkingArea.Height - Height - 50;
             }
 
-            this.Text = label_index.Text = initialtitle + " (" + groups.Count.ToString() + " conditions)";
+            this.Text = label_index.Text = initialtitle + " (" + groups.Count.ToString() + ")";
         }
 
         private string GetGroupName(string a)
@@ -300,6 +297,9 @@ namespace ActionLanguage
             ExtendedControls.ExtComboBox b = sender as ExtendedControls.ExtComboBox;
             Group g = (Group)b.Tag;
             CreateUserControl(g, Condition.AlwaysTrue());
+            ExtendedControls.ThemeableFormsInstance.Instance.ApplyDialog(g.usercontrol);
+            g.usercontrol.Scale(this.CurrentAutoScaleFactor());
+            PositionGroups(true);
         }
 
         private void buttonCancel_Click(object sender, EventArgs e)
@@ -430,7 +430,7 @@ namespace ActionLanguage
         private void buttonInstallationVars_Click(object sender, EventArgs e)
         {
             ExtendedConditionsForms.VariablesForm avf = new ExtendedConditionsForms.VariablesForm();
-            avf.Init("Configuration items for installation - specialist use", this.Icon, actionfile.installationvariables, showone: false);
+            avf.Init("Configuration items for installation - specialist use", this.Icon, actionfile.installationvariables, showatleastoneentry: false);
 
             if (avf.ShowDialog(this) == DialogResult.OK)
             {
@@ -445,6 +445,7 @@ namespace ActionLanguage
         private void panelVScroll_Resize(object sender, EventArgs e)
         {
             PositionGroups(false);
+            Refresh();
         }
 
         private void panel_minimize_Click(object sender, EventArgs e)

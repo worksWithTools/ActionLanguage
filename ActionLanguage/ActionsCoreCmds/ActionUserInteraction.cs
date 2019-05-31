@@ -395,17 +395,26 @@ namespace ActionLanguage
                         else
                             ap.actionfile.dialogs[exp[0]] = cd;
 
-                        System.Drawing.Point pos = new System.Drawing.Point(-999, -999);
-                        if (x != null && y != null)
-                            pos = new System.Drawing.Point(x.Value, y.Value);
-
                         cd.Trigger += Cd_Trigger;
 
-                        cd.Show(ap.actioncontroller.Form, ap.actioncontroller.Icon,
-                                            new System.Drawing.Size(dw.Value, dh.Value), pos , 
+                        if (x != null && y != null)
+                        {
+                            cd.Init(new System.Drawing.Point(x.Value, y.Value),
+                                            ap.actioncontroller.Icon,
                                             exp[1],
                                             exp[0], new List<Object>() { ap, IsModalDialog() }  // logical name and tag
                                             );
+                        }
+                        else
+                        {
+                            cd.InitCentred(ap.actioncontroller.Form,
+                                            ap.actioncontroller.Icon,
+                                            exp[1],
+                                            exp[0], new List<Object>() { ap, IsModalDialog() }  // logical name and tag
+                                            );
+                        }
+
+                        cd.Show(ap.actioncontroller.Form);
 
                         return !IsModalDialog();       // modal, return false, STOP.  Non modal, continue
                     }

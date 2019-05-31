@@ -44,6 +44,7 @@ namespace ActionLanguage
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ActionProgramEditForm));
             this.panelOuter = new System.Windows.Forms.Panel();
             this.panelVScroll = new ExtendedControls.ExtPanelScroll();
             this.vScrollBarCustom1 = new ExtendedControls.ExtScrollBar();
@@ -54,8 +55,8 @@ namespace ActionLanguage
             this.labelSet = new System.Windows.Forms.Label();
             this.labelName = new System.Windows.Forms.Label();
             this.panelTop = new System.Windows.Forms.Panel();
-            this.panel_close = new ExtendedControls.ExtPanelDrawn();
-            this.panel_minimize = new ExtendedControls.ExtPanelDrawn();
+            this.panel_close = new ExtendedControls.ExtButtonDrawn();
+            this.panel_minimize = new ExtendedControls.ExtButtonDrawn();
             this.label_index = new System.Windows.Forms.Label();
             this.panelOK = new System.Windows.Forms.Panel();
             this.buttonExtDisk = new ExtendedControls.ExtButton();
@@ -98,9 +99,9 @@ namespace ActionLanguage
             this.panelVScroll.Controls.Add(this.vScrollBarCustom1);
             this.panelVScroll.Controls.Add(this.buttonMore);
             this.panelVScroll.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelVScroll.InternalScrollbar = true;
             this.panelVScroll.Location = new System.Drawing.Point(3, 3);
             this.panelVScroll.Name = "panelVScroll";
-            this.panelVScroll.ScrollBarWidth = 20;
             this.panelVScroll.Size = new System.Drawing.Size(854, 380);
             this.panelVScroll.TabIndex = 8;
             this.panelVScroll.VerticalScrollBarDockRight = true;
@@ -120,13 +121,13 @@ namespace ActionLanguage
             this.vScrollBarCustom1.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.vScrollBarCustom1.HideScrollBar = false;
             this.vScrollBarCustom1.LargeChange = 32;
-            this.vScrollBarCustom1.Location = new System.Drawing.Point(834, 0);
-            this.vScrollBarCustom1.Maximum = -314;
+            this.vScrollBarCustom1.Location = new System.Drawing.Point(841, 0);
+            this.vScrollBarCustom1.Maximum = -320;
             this.vScrollBarCustom1.Minimum = 0;
             this.vScrollBarCustom1.MouseOverButtonColor = System.Drawing.Color.Green;
             this.vScrollBarCustom1.MousePressedButtonColor = System.Drawing.Color.Red;
             this.vScrollBarCustom1.Name = "vScrollBarCustom1";
-            this.vScrollBarCustom1.Size = new System.Drawing.Size(20, 380);
+            this.vScrollBarCustom1.Size = new System.Drawing.Size(13, 380);
             this.vScrollBarCustom1.SliderColor = System.Drawing.Color.DarkGray;
             this.vScrollBarCustom1.SmallChange = 1;
             this.vScrollBarCustom1.TabIndex = 0;
@@ -135,17 +136,14 @@ namespace ActionLanguage
             this.vScrollBarCustom1.ThumbButtonColor = System.Drawing.Color.DarkBlue;
             this.vScrollBarCustom1.ThumbColorScaling = 0.5F;
             this.vScrollBarCustom1.ThumbDrawAngle = 0F;
-            this.vScrollBarCustom1.Value = -314;
-            this.vScrollBarCustom1.ValueLimited = -314;
+            this.vScrollBarCustom1.Value = -320;
+            this.vScrollBarCustom1.ValueLimited = -320;
             // 
             // buttonMore
             // 
-            this.buttonMore.BorderColorScaling = 1.25F;
-            this.buttonMore.ButtonColorScaling = 0.5F;
-            this.buttonMore.ButtonDisabledScaling = 0.5F;
             this.buttonMore.Location = new System.Drawing.Point(6, 6);
             this.buttonMore.Name = "buttonMore";
-            this.buttonMore.Size = new System.Drawing.Size(24, 24);
+            this.buttonMore.Size = new System.Drawing.Size(22, 22);
             this.buttonMore.TabIndex = 5;
             this.buttonMore.Text = "+";
             this.buttonMore.UseVisualStyleBackColor = true;
@@ -166,9 +164,6 @@ namespace ActionLanguage
             // buttonExtDelete
             // 
             this.buttonExtDelete.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonExtDelete.BorderColorScaling = 1.25F;
-            this.buttonExtDelete.ButtonColorScaling = 0.5F;
-            this.buttonExtDelete.ButtonDisabledScaling = 0.5F;
             this.buttonExtDelete.Location = new System.Drawing.Point(833, 4);
             this.buttonExtDelete.Name = "buttonExtDelete";
             this.buttonExtDelete.Size = new System.Drawing.Size(25, 23);
@@ -181,10 +176,16 @@ namespace ActionLanguage
             // 
             this.textBoxBorderName.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.None;
             this.textBoxBorderName.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.None;
+            this.textBoxBorderName.BackErrorColor = System.Drawing.Color.Red;
             this.textBoxBorderName.BorderColor = System.Drawing.Color.Transparent;
             this.textBoxBorderName.BorderColorScaling = 0.5F;
             this.textBoxBorderName.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.textBoxBorderName.ClearOnFirstChar = false;
             this.textBoxBorderName.ControlBackground = System.Drawing.SystemColors.Control;
+            this.textBoxBorderName.EndButtonEnable = true;
+            this.textBoxBorderName.EndButtonImage = ((System.Drawing.Image)(resources.GetObject("textBoxBorderName.EndButtonImage")));
+            this.textBoxBorderName.EndButtonVisible = false;
+            this.textBoxBorderName.InErrorCondition = false;
             this.textBoxBorderName.Location = new System.Drawing.Point(152, 4);
             this.textBoxBorderName.Multiline = false;
             this.textBoxBorderName.Name = "textBoxBorderName";
@@ -231,26 +232,45 @@ namespace ActionLanguage
             // panel_close
             // 
             this.panel_close.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel_close.AutoEllipsis = false;
+            this.panel_close.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.panel_close.Image = null;
+            this.panel_close.ImageSelected = ExtendedControls.ExtButtonDrawn.ImageType.Close;
             this.panel_close.Location = new System.Drawing.Point(839, 0);
+            this.panel_close.MouseOverColor = System.Drawing.Color.White;
+            this.panel_close.MouseSelectedColor = System.Drawing.Color.Green;
+            this.panel_close.MouseSelectedColorEnable = true;
             this.panel_close.Name = "panel_close";
             this.panel_close.Padding = new System.Windows.Forms.Padding(6);
+            this.panel_close.PanelDisabledScaling = 0.25F;
             this.panel_close.Selectable = false;
             this.panel_close.Size = new System.Drawing.Size(24, 24);
             this.panel_close.TabIndex = 27;
             this.panel_close.TabStop = false;
+            this.panel_close.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.panel_close.UseMnemonic = true;
             this.panel_close.Click += new System.EventHandler(this.panel_close_Click);
             // 
             // panel_minimize
             // 
             this.panel_minimize.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel_minimize.ImageSelected = ExtendedControls.ExtPanelDrawn.ImageType.Minimize;
+            this.panel_minimize.AutoEllipsis = false;
+            this.panel_minimize.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.panel_minimize.Image = null;
+            this.panel_minimize.ImageSelected = ExtendedControls.ExtButtonDrawn.ImageType.Minimize;
             this.panel_minimize.Location = new System.Drawing.Point(809, 0);
+            this.panel_minimize.MouseOverColor = System.Drawing.Color.White;
+            this.panel_minimize.MouseSelectedColor = System.Drawing.Color.Green;
+            this.panel_minimize.MouseSelectedColorEnable = true;
             this.panel_minimize.Name = "panel_minimize";
             this.panel_minimize.Padding = new System.Windows.Forms.Padding(6);
+            this.panel_minimize.PanelDisabledScaling = 0.25F;
             this.panel_minimize.Selectable = false;
             this.panel_minimize.Size = new System.Drawing.Size(24, 24);
             this.panel_minimize.TabIndex = 26;
             this.panel_minimize.TabStop = false;
+            this.panel_minimize.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.panel_minimize.UseMnemonic = true;
             this.panel_minimize.Click += new System.EventHandler(this.panel_minimize_Click);
             // 
             // label_index
@@ -280,9 +300,6 @@ namespace ActionLanguage
             // 
             // buttonExtDisk
             // 
-            this.buttonExtDisk.BorderColorScaling = 1.25F;
-            this.buttonExtDisk.ButtonColorScaling = 0.5F;
-            this.buttonExtDisk.ButtonDisabledScaling = 0.5F;
             this.buttonExtDisk.Location = new System.Drawing.Point(275, 4);
             this.buttonExtDisk.Name = "buttonExtDisk";
             this.buttonExtDisk.Size = new System.Drawing.Size(75, 23);
@@ -293,9 +310,6 @@ namespace ActionLanguage
             // 
             // buttonExtLoad
             // 
-            this.buttonExtLoad.BorderColorScaling = 1.25F;
-            this.buttonExtLoad.ButtonColorScaling = 0.5F;
-            this.buttonExtLoad.ButtonDisabledScaling = 0.5F;
             this.buttonExtLoad.Location = new System.Drawing.Point(170, 4);
             this.buttonExtLoad.Name = "buttonExtLoad";
             this.buttonExtLoad.Size = new System.Drawing.Size(75, 23);
@@ -306,9 +320,6 @@ namespace ActionLanguage
             // 
             // buttonExtSave
             // 
-            this.buttonExtSave.BorderColorScaling = 1.25F;
-            this.buttonExtSave.ButtonColorScaling = 0.5F;
-            this.buttonExtSave.ButtonDisabledScaling = 0.5F;
             this.buttonExtSave.Location = new System.Drawing.Point(88, 4);
             this.buttonExtSave.Name = "buttonExtSave";
             this.buttonExtSave.Size = new System.Drawing.Size(75, 23);
@@ -319,9 +330,6 @@ namespace ActionLanguage
             // 
             // buttonExtEdit
             // 
-            this.buttonExtEdit.BorderColorScaling = 1.25F;
-            this.buttonExtEdit.ButtonColorScaling = 0.5F;
-            this.buttonExtEdit.ButtonDisabledScaling = 0.5F;
             this.buttonExtEdit.Location = new System.Drawing.Point(6, 4);
             this.buttonExtEdit.Name = "buttonExtEdit";
             this.buttonExtEdit.Size = new System.Drawing.Size(75, 23);
@@ -333,12 +341,9 @@ namespace ActionLanguage
             // buttonCancel
             // 
             this.buttonCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonCancel.BorderColorScaling = 1.25F;
-            this.buttonCancel.ButtonColorScaling = 0.5F;
-            this.buttonCancel.ButtonDisabledScaling = 0.5F;
-            this.buttonCancel.Location = new System.Drawing.Point(686, 4);
+            this.buttonCancel.Location = new System.Drawing.Point(615, 4);
             this.buttonCancel.Name = "buttonCancel";
-            this.buttonCancel.Size = new System.Drawing.Size(75, 23);
+            this.buttonCancel.Size = new System.Drawing.Size(100, 23);
             this.buttonCancel.TabIndex = 6;
             this.buttonCancel.Text = "Cancel";
             this.buttonCancel.UseVisualStyleBackColor = true;
@@ -347,12 +352,9 @@ namespace ActionLanguage
             // buttonOK
             // 
             this.buttonOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.buttonOK.BorderColorScaling = 1.25F;
-            this.buttonOK.ButtonColorScaling = 0.5F;
-            this.buttonOK.ButtonDisabledScaling = 0.5F;
-            this.buttonOK.Location = new System.Drawing.Point(783, 4);
+            this.buttonOK.Location = new System.Drawing.Point(747, 4);
             this.buttonOK.Name = "buttonOK";
-            this.buttonOK.Size = new System.Drawing.Size(75, 23);
+            this.buttonOK.Size = new System.Drawing.Size(100, 23);
             this.buttonOK.TabIndex = 7;
             this.buttonOK.Text = "OK";
             this.buttonOK.UseVisualStyleBackColor = true;
@@ -469,8 +471,8 @@ namespace ActionLanguage
         private ExtendedControls.ExtButton buttonMore;
         private ExtendedControls.ExtStatusStrip statusStripCustom;
         private System.Windows.Forms.Panel panelTop;
-        private ExtendedControls.ExtPanelDrawn panel_close;
-        private ExtendedControls.ExtPanelDrawn panel_minimize;
+        private ExtendedControls.ExtButtonDrawn panel_close;
+        private ExtendedControls.ExtButtonDrawn panel_minimize;
         private System.Windows.Forms.Label label_index;
         private System.Windows.Forms.Panel panelName;
         private ExtendedControls.ExtTextBox textBoxBorderName;

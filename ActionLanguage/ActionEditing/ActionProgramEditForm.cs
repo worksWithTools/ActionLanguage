@@ -13,15 +13,10 @@
  * 
  * EDDiscovery is not affiliated with Frontier Developments plc.
  */
-using BaseUtils.Win32Constants;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ActionLanguage
@@ -51,7 +46,8 @@ namespace ActionLanguage
             applicationfolder = appfolder;
             currentvarlist = new List<BaseUtils.TypeHelpers.PropertyNameInfo>(vbs);
 
-            bool winborder = ExtendedControls.ThemeableFormsInstance.Instance.ApplyToForm(this, SystemFonts.DefaultFont);
+            bool winborder = ExtendedControls.ThemeableFormsInstance.Instance.ApplyDialog(this);
+
             statusStripCustom.Visible = panelTop.Visible = panelTop.Enabled = !winborder;
             this.Text = label_index.Text = t;
 
@@ -113,6 +109,7 @@ namespace ActionLanguage
         private void panelVScroll_Resize(object sender, EventArgs e)
         {
             RepositionGroups(false); // don't recalc min size, it creates a loop
+            Refresh();
         }
 
         private void ActionProgramForm_Shown(object sender, EventArgs e)        
@@ -132,6 +129,8 @@ namespace ActionLanguage
             panelVScroll.SuspendLayout();
 
             Group g = new Group();
+            
+            // layout sizes as if its in 12 point, then its scaled.
 
             g.checkit = step;
             
@@ -143,29 +142,33 @@ namespace ActionLanguage
             g.panel.MouseMove += panelVScroll_MouseMove;
             g.panel.ContextMenuStrip = contextMenuStrip1;
 
+            int controlsize = 22; // for a 12 point layout..
+
             g.left = new ExtendedControls.ExtButton();
-            g.left.Location = new Point(0, panelheightmargin);      // 8 spacing, allow 8*4 to indent
+            g.left.Location = new Point(0, panelheightmargin);      
             g.left.Size = new Size(controlsize, controlsize);
             g.left.Text = "<";
             g.left.Click += Left_Clicked;
             g.panel.Controls.Add(g.left);
 
             g.right = new ExtendedControls.ExtButton();
-            g.right.Location = new Point(g.left.Right + 2, panelheightmargin);      // 8 spacing, allow 8*4 to indent
+            g.right.Location = new Point(g.left.Right + 2, panelheightmargin); 
             g.right.Size = new Size(controlsize, controlsize);
             g.right.Text = ">";
             g.right.Click += Right_Clicked;
             g.panel.Controls.Add(g.right);
 
             g.stepname = new ExtendedControls.ExtComboBox();
+            g.stepname.Size = new Size(10, controlsize);        // width set by positioning
             g.stepname.Items.AddRange(ActionBase.GetActionNameList());
-            g.stepname.DropDownHeight = 400;
             if (step != null)
                 g.stepname.Text = step.Name;
             g.stepname.SelectedIndexChanged += Stepname_SelectedIndexChanged;
             g.panel.Controls.Add(g.stepname);
 
             g.value = new ExtendedControls.ExtTextBox();
+            g.value.Location = new Point(200, panelheightmargin);      // fixed ref point in 12 point space
+            g.value.Size = new Size(10, controlsize);       // width set by positioning
             SetValue(g.value, step);
             g.value.TextChanged += Value_TextChanged;
             g.value.Click += Value_Click;
@@ -191,7 +194,8 @@ namespace ActionLanguage
 
             g.config.Tag = g.stepname.Tag = g.up.Tag = g.value.Tag = g.left.Tag = g.right.Tag = g.prog.Tag = g;
 
-            ExtendedControls.ThemeableFormsInstance.Instance.ApplyToControls(g.panel, SystemFonts.DefaultFont);
+            ExtendedControls.ThemeableFormsInstance.Instance.ApplyDialog(g.panel);
+            g.panel.Scale(this.CurrentAutoScaleFactor());
 
             panelVScroll.Controls.Add(g.panel);
 
@@ -264,17 +268,24 @@ namespace ActionLanguage
 
                 g.panel.SuspendLayout();
 
-                g.panel.Location = new Point(panelleftmargin, voff + panelVScroll.ScrollOffset);
-                g.panel.Size = new Size(panelwidth, panelheight + ((whitespace>0) ? (panelheight/2) : 0 ));
-                g.stepname.Location = new Point(g.right.Right + 8 + 8 * indentlevel, panelheightmargin);
-                g.stepname.Size = new Size(140 - Math.Max((indentlevel - 4) * 8, 0), controlsize);
-                g.value.Location = new Point(g.right.Right + 140 + 8 + 8 * 4+ 8, panelheightmargin * 2);      // 8 spacing, allow 8*4 to indent
-                int valuewidth = panelwidth - 350;
-                g.value.Size = new Size(valuewidth, controlsize);
+                // note here, we don't set height (its been scaled) and we just use relative sizes between items, except for the width setter
+
+                g.stepname.Left = g.right.Right + 8 + 8 * indentlevel;
+                g.stepname.Width = g.value.Left - g.stepname.Left - 8;
+
+                g.value.Width = panelwidth - g.value.Left - g.config.Width - g.up.Width - g.prog.Width - 32;
+
                 g.config.Location = new Point(g.value.Right + 4, panelheightmargin);      // 8 spacing, allow 8*4 to indent
+
                 g.up.Location = new Point(g.config.Right + 4, panelheightmargin);
+
                 g.prog.Location = new Point(g.up.Right + 4, panelheightmargin);
-                g.up.Visible = groups.IndexOf(g)>0;
+                g.prog.Visible = true;
+
+                g.up.Visible = groups.IndexOf(g) > 0;
+
+                g.panel.Location = new Point(panelleftmargin, voff + panelVScroll.ScrollOffset);
+                g.panel.Size = g.panel.FindMaxSubControlArea(2, 2);
 
                 g.panel.ResumeLayout();
 
@@ -299,7 +310,6 @@ namespace ActionLanguage
             }
 
             buttonMore.Location = new Point(panelleftmargin, voff + panelVScroll.ScrollOffset);
-            buttonMore.Size = new Size(controlsize, controlsize);
 
             Rectangle screenRectangle = RectangleToScreen(this.ClientRectangle);
             int titleHeight = screenRectangle.Top - this.Top;
@@ -907,11 +917,6 @@ namespace ActionLanguage
         private List<Group> groups;
         const int panelheightmargin = 1;
         const int panelleftmargin = 3;
-        const int controlsize = 22;
-        const int panelheight = 24;
-
-        const int vscrollmargin = 10;
-        const int xpanelmargin = 3;
 
         private ActionCoreController actioncorecontroller;
         private string applicationfolder;
