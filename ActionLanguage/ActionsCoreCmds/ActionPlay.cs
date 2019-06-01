@@ -15,7 +15,6 @@
  */
 using System;
 using System.Collections.Generic;
-using System.Windows.Forms;
 using AudioExtensions;
 using BaseUtils;
 
@@ -71,35 +70,32 @@ namespace ActionLanguage
             return FromString(userdata, out path, out vars) ? null : "Play command line not in correct format";
         }
 
-        public override bool ConfigurationMenu(Form parent, ActionCoreController cp , List<BaseUtils.TypeHelpers.PropertyNameInfo> eventvars)
+        public override bool Configure(ActionCoreController cp, List<TypeHelpers.PropertyNameInfo> eventvars, ActionConfigFuncs configFuncs)
         {
             string path;
             Variables vars;
             FromString(userdata, out path, out vars);
 
-            ExtendedAudioForms.WaveConfigureDialog cfg = new ExtendedAudioForms.WaveConfigureDialog();
-            cfg.Init(cp.AudioQueueWave, false, "Select file, volume and effects", "Configure Play Command", cp.Icon,
+            return configFuncs.ConfigureWave(
+                        cp.AudioQueueWave, false, "Select file, volume and effects", "Configure Play Command", cp.Icon,
                         path,
                         vars.Exists(waitname),
                         AudioQueue.GetPriority(vars.GetString(priorityname, "Normal")),
                         vars.GetString(startname, ""),
                         vars.GetString(finishname, ""),
                         vars.GetString(volumename, "Default"),
-                        vars);
-
-            if (cfg.ShowDialog(parent) == DialogResult.OK)
-            {
-                Variables cond = new Variables(cfg.Effects);// add on any effects variables (and may add in some previous variables, since we did not purge)
-                cond.SetOrRemove(cfg.Wait, waitname, "1");
-                cond.SetOrRemove(cfg.Priority != AudioQueue.Priority.Normal, priorityname, cfg.Priority.ToString());
-                cond.SetOrRemove(cfg.StartEvent.Length > 0, startname, cfg.StartEvent);
-                cond.SetOrRemove(cfg.StartEvent.Length > 0, finishname, cfg.FinishEvent);
-                cond.SetOrRemove(!cfg.Volume.Equals("Default", StringComparison.InvariantCultureIgnoreCase), volumename, cfg.Volume);
-                userdata = ToString(cfg.Path, cond);
-                return true;
-            }
-
-            return false;
+                        vars,
+                        cfg =>
+                        {
+                            Variables cond = new Variables(cfg.Effects);// add on any effects variables (and may add in some previous variables, since we did not purge)
+                            cond.SetOrRemove(cfg.Wait, waitname, "1");
+                            cond.SetOrRemove(cfg.Priority != AudioQueue.Priority.Normal, priorityname, cfg.Priority.ToString());
+                            cond.SetOrRemove(cfg.StartEvent.Length > 0, startname, cfg.StartEvent);
+                            cond.SetOrRemove(cfg.StartEvent.Length > 0, finishname, cfg.FinishEvent);
+                            cond.SetOrRemove(!cfg.Volume.Equals("Default", StringComparison.InvariantCultureIgnoreCase), volumename, cfg.Volume);
+                            userdata = ToString(cfg.Path, cond);
+                        }
+            );
         }
 
         class AudioEvent

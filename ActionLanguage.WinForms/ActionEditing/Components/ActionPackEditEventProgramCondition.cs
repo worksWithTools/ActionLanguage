@@ -41,12 +41,14 @@ namespace ActionLanguage
         {
             cd = cond;
 
+            //this.BackColor = Color.Red; // for debug
+
+            // layed out for 12 point.  UC below require 28 point area
+
             eventtype = new ExtendedControls.ExtComboBox();
             eventtype.Items.AddRange(events);
             eventtype.Location = new Point(panelxmargin, panelymargin);
             eventtype.Size = new Size(140, 24);
-            eventtype.DropDownHeight = 400;
-            eventtype.DropDownWidth = eventtype.Width * 3 / 2;
             if (cd.eventname != null)
                 eventtype.SelectedItem = cd.eventname;
             eventtype.SelectedIndexChanged += Eventtype_SelectedIndexChanged;
@@ -55,7 +57,7 @@ namespace ActionLanguage
 
             uccond = new ActionPackEditCondition();
             uccond.Location = new Point(eventtype.Right+16, 0);
-            uccond.Size = new Size(200, this.Height);       // init all the panels to 0/this height, select widths
+            uccond.Size = new Size(200, 28);       // init all the panels to 0/this height, select widths
             uccond.Init(cond, ic ,toolTip);
             uccond.onAdditionalNames += () => { return func(eventtype.Text); };
 
@@ -65,7 +67,7 @@ namespace ActionLanguage
             ActionProgram.ProgramConditionClass classifier = p != null ? p.progclass : ActionProgram.ProgramConditionClass.Full;
             ucprog = new ActionPackEditProgram();
             ucprog.Location = new Point(uccond.Right+16, 0);
-            ucprog.Size = new Size(400, this.Height);       // init all the panels to 0/this height, select widths
+            ucprog.Size = new Size(400, 28);       // init all the panels to 0/this height, select widths
             ucprog.Init(actionfile, cond, cp, appfolder, ic, toolTip, classifier);
             ucprog.onEditKeys = onEditKeys;
             ucprog.onEditSay = onEditSay;

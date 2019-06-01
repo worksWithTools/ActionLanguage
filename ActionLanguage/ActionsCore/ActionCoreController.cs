@@ -45,19 +45,17 @@ namespace ActionLanguage
 
         public Variables Globals { get { return globalvariables; } }
 
-        protected System.Windows.Forms.Form form;
-
-        public System.Windows.Forms.Form Form { get { return form; } }
+        public ActionConfigFuncs ConfigFuncs { get; set; }
 
         public System.Drawing.Icon Icon { get; private set;}
 
         public bool AsyncMode { get { return actionrunasync.AsyncMode; } set { actionrunasync.AsyncMode = value; } }
         public void DebugTrace(bool ll, string file = null) { actionrunasync.DebugTrace(ll, file); }
 
-        public ActionCoreController(System.Windows.Forms.Form frm, System.Drawing.Icon ic )
+        public ActionCoreController(ActionConfigFuncs configFuncs, System.Drawing.Icon ic)
         {
             Icon = ic;
-            form = frm;
+            ConfigFuncs = configFuncs;
 
             persistentglobalvariables = new Variables();
             globalvariables = new Variables();

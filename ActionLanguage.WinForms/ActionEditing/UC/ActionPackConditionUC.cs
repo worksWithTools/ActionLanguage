@@ -45,14 +45,16 @@ namespace ActionLanguage
             cd = c;     // point to common condition.  We only change the fields, not the cd.action/actiondata, and we don't replace it.
             Icon = ic;
 
+            // layed out for 12 point. Requires a 28 pixel area to sit in
+
             panelConditionType = new ExtendedControls.ExtPanelDropDown();
             panelConditionType.Location = new Point(0, 0);
-            panelConditionType.Size = new Size(this.Width, this.Height); // outer panel aligns with this UC 
+            panelConditionType.Size = new Size(this.Width, 28); // outer panel aligns with this UC 
             panelConditionType.SelectedIndexChanged += PanelConditionType_SelectedIndexChanged;
             toolTip.SetToolTip(panelConditionType, "Use the selector (click on bottom right arrow) to select condition class type");
 
             textBoxCondition = new ExtendedControls.ExtTextBox();
-            textBoxCondition.Location = new Point(panelxmargin, panelymargin + 2);
+            textBoxCondition.Location = new Point(panelxmargin, panelymargin );
             textBoxCondition.Size = new Size(this.Width-8-panelxmargin*2, 24);    // 8 for selector
             textBoxCondition.ReadOnly = true;
             textBoxCondition.Click += Condition_Click;
@@ -65,12 +67,12 @@ namespace ActionLanguage
             toolTip.SetToolTip(buttonKeys,"Click to set the key list that associated this event with key presses");
 
             labelAlwaysTrue = new Label();
-            labelAlwaysTrue.Location = new Point(panelxmargin, panelymargin + 4);
+            labelAlwaysTrue.Location = new Point(panelxmargin, panelymargin+1);
             labelAlwaysTrue.Size = textBoxCondition.Size;
             labelAlwaysTrue.Text = "Always Action/True";
 
             labelAlwaysFalse = new Label();
-            labelAlwaysFalse.Location = new Point(panelxmargin, panelymargin + 4);
+            labelAlwaysFalse.Location = new Point(panelxmargin, panelymargin+1);
             labelAlwaysFalse.Size = textBoxCondition.Size;
             labelAlwaysFalse.Text = "Never Action/False";
 

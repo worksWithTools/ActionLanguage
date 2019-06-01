@@ -18,7 +18,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms;
+using BaseUtils;
 
 namespace ActionLanguage
 { 
@@ -26,10 +26,10 @@ namespace ActionLanguage
     {
         public override bool AllowDirectEditingOfUserData { get { return true; } }
 
-        public override bool ConfigurationMenu(Form parent, ActionCoreController cp, List<BaseUtils.TypeHelpers.PropertyNameInfo> eventvars)
+        public override bool Configure(ActionCoreController cp, List<TypeHelpers.PropertyNameInfo> eventvars, ActionConfigFuncs configFuncs)
         {
-            string promptValue = ExtendedControls.PromptSingleLine.ShowDialog(parent, "Return", UserData.ReplaceEscapeControlChars(), 
-                                "Configure Return Command" , cp.Icon, true);
+            string promptValue = configFuncs.PromptSingleLine("Return", UserData.ReplaceEscapeControlChars(),
+                                "Configure Return Command", cp.Icon, true);
 
             if (promptValue != null)
                 userdata = promptValue.EscapeControlChars();

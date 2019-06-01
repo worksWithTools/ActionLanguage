@@ -21,7 +21,6 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 using BaseUtils;
 
 // A file holds a set of conditions and programs associated with them
@@ -33,14 +32,14 @@ namespace ActionLanguage
         public ActionFile()
         {
             filevariables = new Variables();       // filevariables are only cleared on creation
-            dialogs = new Dictionary<string, ExtendedControls.ConfigurableForm>();
+            dialogs = new Dictionary<string, ActionConfigFuncs.IConfigurableForm>();
             Clear();
         }
 
         public ActionFile(string f, string n)
         {
             filevariables = new Variables();
-            dialogs = new Dictionary<string, ExtendedControls.ConfigurableForm>();
+            dialogs = new Dictionary<string, ActionConfigFuncs.IConfigurableForm>();
             Clear(f, n);
         }
 
@@ -61,7 +60,7 @@ namespace ActionLanguage
         public ActionProgramList actionprogramlist { get; private set; }                   // programs associated with this pack
         public Variables installationvariables { get; private set; }              // used to pass to the installer various options, such as disable other packs
         public Variables filevariables { get; private set; }                      // variables defined using the static.. private to this program.  Not persistent. 
-        public Dictionary<string, ExtendedControls.ConfigurableForm> dialogs;              // persistent dialogs owned by this file
+        public Dictionary<string, ActionConfigFuncs.IConfigurableForm> dialogs;              // persistent dialogs owned by this file
         public string filepath { get; private set; }                                       // where it came from
         public string name { get; private set; }                                           // its logical name
         public bool enabled { get; private set; }                                          // if enabled.

@@ -16,7 +16,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Windows.Forms;
 using BaseUtils;
 
 namespace ActionLanguage
@@ -24,29 +23,19 @@ namespace ActionLanguage
     public class ActionIfElseBase : ActionBase
     {
 
-        public override bool ConfigurationMenu(Form parent, ActionCoreController cp, List<BaseUtils.TypeHelpers.PropertyNameInfo> eventvars) //standard one used for most
+        public override bool Configure(ActionCoreController cp, List<TypeHelpers.PropertyNameInfo> eventvars, ActionConfigFuncs configFuncs)
         {
             ConditionLists jf = new ConditionLists();
             jf.Read(userdata);
-            bool ok = ConfigurationMenu(parent, cp, eventvars, ref jf);
+            bool ok = Configure(cp, eventvars, configFuncs, ref jf);
             if (ok)
                 userdata = jf.ToString();
             return ok;
         }
 
-        public bool ConfigurationMenu(Form parent, ActionCoreController cp, List<BaseUtils.TypeHelpers.PropertyNameInfo> eventvars, ref ConditionLists jf)
+        public bool Configure(ActionCoreController cp, List<TypeHelpers.PropertyNameInfo> eventvars, ActionConfigFuncs configFuncs, ref ConditionLists jf)
         {
-            ExtendedConditionsForms.ConditionFilterForm frm = new ExtendedConditionsForms.ConditionFilterForm();
-            frm.VariableNames = eventvars;
-            frm.InitCondition("Define condition", cp.Icon, jf);
-
-            if (frm.ShowDialog(parent) == DialogResult.OK)
-            {
-                jf = frm.Result;
-                return true;
-            }
-            else
-                return false;
+            return configFuncs.FilterConditions(eventvars, "Define condition", cp.Icon, ref jf);
         }
 
         public override string VerifyActionCorrect()
@@ -279,10 +268,10 @@ namespace ActionLanguage
             return (FromString(userdata) != null) ? null : "Loop command line not in correct format";
         }
 
-        public override bool ConfigurationMenu(Form parent, ActionCoreController cp, List<BaseUtils.TypeHelpers.PropertyNameInfo> eventvars)
+        public override bool Configure(ActionCoreController cp, List<TypeHelpers.PropertyNameInfo> eventvars, ActionConfigFuncs configFuncs)
         {
             List<string> l = FromString(userdata);
-            List<string> r = ExtendedControls.PromptMultiLine.ShowDialog(parent, "Configure Loop", cp.Icon,
+            List<string> r = configFuncs.PromptMultiLine("Configure Loop", cp.Icon,
                             new string[] { "Loop count", "Optional var name" }, l?.ToArray(), true);
 
             if (r != null)
@@ -391,15 +380,15 @@ namespace ActionLanguage
             return FromString(userdata, out cond, out errmsg) ? null : "ErrorIf not in correct format: \"Error string\", condition";
         }
 
-        public override bool ConfigurationMenu(Form parent, ActionCoreController cp, List<BaseUtils.TypeHelpers.PropertyNameInfo> eventvars)
+        public override bool Configure(ActionCoreController cp, List<TypeHelpers.PropertyNameInfo> eventvars, ActionConfigFuncs configFuncs)
         {
             ConditionLists cond;
             string errmsg;
             FromString(userdata, out cond, out errmsg);
 
-            if (base.ConfigurationMenu(parent, cp, eventvars, ref cond))
+            if (base.Configure(cp, eventvars, configFuncs, ref cond))
             {
-                string promptValue = ExtendedControls.PromptSingleLine.ShowDialog(parent, "Error to display", errmsg, "Configure ErrorIf Command", cp.Icon);
+                string promptValue = configFuncs.PromptSingleLine("Error to display", errmsg, "Configure ErrorIf Command", cp.Icon);
                 if (promptValue != null)
                 {
                     userdata = ToString(cond, promptValue);
@@ -496,24 +485,20 @@ namespace ActionLanguage
             return FromString(userdata, out progname, out vars, out altops) ? null : "Call not in correct format: progname (var list v=\"y\")";
         }
 
-        public override bool ConfigurationMenu(Form parent, ActionCoreController cp, List<BaseUtils.TypeHelpers.PropertyNameInfo> eventvars)
+        public override bool Configure(ActionCoreController cp, List<TypeHelpers.PropertyNameInfo> eventvars, ActionConfigFuncs configFuncs)
         {
             string progname;
             Variables cond;
             Dictionary<string, string> altops;
             FromString(UserData, out progname, out cond, out altops);
 
-            string promptValue = ExtendedControls.PromptSingleLine.ShowDialog(parent, "Program to call (use set::prog if req)", progname, "Configure Call Command", cp.Icon);
+            string promptValue = configFuncs.PromptSingleLine("Program to call (use set::prog if req)", progname, "Configure Call Command", cp.Icon);
             if (promptValue != null)
             {
-                ExtendedConditionsForms.VariablesForm avf = new ExtendedConditionsForms.VariablesForm();
-                avf.Init("Variables to pass into called program", cp.Icon, cond, showone: true, allownoexpand: true, altops: altops);
-
-                if (avf.ShowDialog(parent) == DialogResult.OK)
+                return configFuncs.SetVariables("Variables to pass into called program", cp.Icon, cond, showatleastoneentry: true, allownoexpand: true, altops: altops, resultact: (v, a, r) =>
                 {
-                    userdata = ToString(promptValue, avf.result, avf.result_altops);
-                    return true;
-                }
+                    userdata = ToString(promptValue, v, a);
+                });
             }
 
             return false;
@@ -635,12 +620,12 @@ namespace ActionLanguage
             return FromString(UserData, out mn, out st) ? null : "ForEach command line not in correct format";
         }
 
-        public override bool ConfigurationMenu(Form parent, ActionCoreController cp, List<BaseUtils.TypeHelpers.PropertyNameInfo> eventvars)
+        public override bool Configure(ActionCoreController cp, List<TypeHelpers.PropertyNameInfo> eventvars, ActionConfigFuncs configFuncs)
         {
             string mn = "", st = "";
             FromString(UserData, out mn, out st);
 
-            List<string> promptValue = ExtendedControls.PromptMultiLine.ShowDialog(parent, "ForEach:", cp.Icon,
+            List<string> promptValue = configFuncs.PromptMultiLine("ForEach:", cp.Icon,
                              new string[] { "Var Name", "Search" },
                              new string[] { mn, st },
                              false,

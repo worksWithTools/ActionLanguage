@@ -15,7 +15,6 @@
  */
 using System;
 using System.Collections.Generic;
-using System.Windows.Forms;
 using BaseUtils;
 using AudioExtensions;
 
@@ -77,14 +76,15 @@ namespace ActionLanguage
             return FromString(userdata, out saying, out vars) ? null : "Say command line not in correct format";
         }
 
-        static public string Menu(Control parent, string userdata, ActionCoreController cp)
+        static public string Configure(string userdata, ActionCoreController cp, ActionConfigFuncs configFuncs)
         {
             string saying;
             Variables vars;
             FromString(userdata, out saying, out vars);
 
-            ExtendedAudioForms.SpeechConfigure cfg = new ExtendedAudioForms.SpeechConfigure();
-            cfg.Init(cp.AudioQueueSpeech, cp.SpeechSynthesizer,
+            bool success = configFuncs.ConfigureSpeech(
+                        cp.AudioQueueSpeech,
+                        cp.SpeechSynthesizer,
                         "Set Text to say (use ; to separate randomly selectable phrases and {} to group)", "Configure Say Command", cp.Icon,
                         saying,
                         vars.Exists(waitname), vars.Exists(literalname),
@@ -94,41 +94,39 @@ namespace ActionLanguage
                         vars.GetString(voicename, "Default"),
                         vars.GetString(volumename, "Default"),
                         vars.GetString(ratename, "Default"),
-                        vars
-                        );
+                        vars,
+                        cfg =>
+                        {
+                            Variables cond = new Variables(cfg.Effects);// add on any effects variables (and may add in some previous variables, since we did not purge
+                            cond.SetOrRemove(cfg.Wait, waitname, "1");
+                            cond.SetOrRemove(cfg.Literal, literalname, "1");
+                            cond.SetOrRemove(cfg.Priority != AudioQueue.Priority.Normal, priorityname, cfg.Priority.ToString());
+                            cond.SetOrRemove(cfg.StartEvent.Length > 0, startname, cfg.StartEvent);
+                            cond.SetOrRemove(cfg.StartEvent.Length > 0, finishname, cfg.FinishEvent);
+                            cond.SetOrRemove(!cfg.VoiceName.Equals("Default", StringComparison.InvariantCultureIgnoreCase), voicename, cfg.VoiceName);
+                            cond.SetOrRemove(!cfg.Volume.Equals("Default", StringComparison.InvariantCultureIgnoreCase), volumename, cfg.Volume);
+                            cond.SetOrRemove(!cfg.Rate.Equals("Default", StringComparison.InvariantCultureIgnoreCase), ratename, cfg.Rate);
+                            userdata = ToString(cfg.SayText, cond);
+                        }
+            );
 
-            if (cfg.ShowDialog(parent.FindForm()) == DialogResult.OK)
-            {
-                Variables cond = new Variables(cfg.Effects);// add on any effects variables (and may add in some previous variables, since we did not purge
-                cond.SetOrRemove(cfg.Wait, waitname, "1");
-                cond.SetOrRemove(cfg.Literal, literalname, "1");
-                cond.SetOrRemove(cfg.Priority != AudioQueue.Priority.Normal, priorityname, cfg.Priority.ToString());
-                cond.SetOrRemove(cfg.StartEvent.Length > 0, startname, cfg.StartEvent);
-                cond.SetOrRemove(cfg.StartEvent.Length > 0, finishname, cfg.FinishEvent);
-                cond.SetOrRemove(!cfg.VoiceName.Equals("Default", StringComparison.InvariantCultureIgnoreCase), voicename, cfg.VoiceName);
-                cond.SetOrRemove(!cfg.Volume.Equals("Default", StringComparison.InvariantCultureIgnoreCase), volumename, cfg.Volume);
-                cond.SetOrRemove(!cfg.Rate.Equals("Default", StringComparison.InvariantCultureIgnoreCase), ratename, cfg.Rate);
-
-                return ToString(cfg.SayText, cond);
-            }
-
-            return null;
+            return success ? userdata : null;
         }
 
 
-        public override bool ConfigurationMenu(Form parent, ActionCoreController cp, List<BaseUtils.TypeHelpers.PropertyNameInfo> eventvars)
+        public override bool Configure(ActionCoreController cp, List<TypeHelpers.PropertyNameInfo> eventvars, ActionConfigFuncs configFuncs)
         {
-            string ud = Menu(parent, userdata, cp);
-
+            var ud = Configure(userdata, cp, configFuncs);
             if (ud != null)
             {
                 userdata = ud;
                 return true;
             }
             else
+            {
                 return false;
+            }
         }
-
 
         class AudioEvent
         {
