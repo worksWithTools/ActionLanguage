@@ -18,7 +18,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace ActionLanguage
 {
@@ -80,9 +79,15 @@ namespace ActionLanguage
         public virtual string VerifyActionCorrect() { return null; } // on load, is the action correct?
 
         public virtual bool ConfigurationMenuInUse { get { return true; } }
-        public virtual bool ConfigurationMenu(System.Windows.Forms.Form parent, ActionCoreController cp, List<BaseUtils.TypeHelpers.PropertyNameInfo> eventvars)
+
+        public virtual bool Configure(ActionCoreController cp, List<BaseUtils.TypeHelpers.PropertyNameInfo> eventvars, ActionConfigFuncs configFuncs)
         {
             return false;
+        }
+
+        public bool Configure(ActionCoreController cp, List<BaseUtils.TypeHelpers.PropertyNameInfo> eventvars)
+        {
+            return Configure(cp, eventvars, cp.ConfigFuncs);
         }
 
         public static string[] GetActionNameList()
@@ -132,6 +137,5 @@ namespace ActionLanguage
             a.LineNumber = r.LineNumber;
             return a;
         }
-        
     }
 }

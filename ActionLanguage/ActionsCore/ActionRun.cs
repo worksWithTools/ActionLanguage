@@ -18,7 +18,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 using BaseUtils;
 
 namespace ActionLanguage
@@ -39,12 +38,11 @@ namespace ActionLanguage
         private ActionFileList actionfilelist = null;
 
         private bool executing = false;         // Records is executing
-        private Timer restarttick = new Timer();
+        private ActionConfigFuncs.ITimer restarttick;
 
         public ActionRun(ActionCoreController ed, ActionFileList afl)
         {
-            restarttick.Interval = 100;
-            restarttick.Tick += Tick_Tick;
+            restarttick = ed.ConfigFuncs.CreateTimer(100, Tick_Tick);
             actioncontroller = ed;
             actionfilelist = afl;
         }
@@ -52,7 +50,7 @@ namespace ActionLanguage
         // now = true, run it immediately, else run at end of queue.  Optionally pass in handles and dialogs in case its a sub prog
 
         public void Run(bool now, ActionFile fileset, ActionProgram r, Variables inputparas,
-                                FunctionPersistentData fh = null, Dictionary<string, ExtendedControls.ConfigurableForm> d = null, bool closeatend = true)
+                                FunctionPersistentData fh = null, Dictionary<string, ActionConfigFuncs.IConfigurableForm> d = null, bool closeatend = true)
         {
             if (now)
             {
@@ -62,7 +60,7 @@ namespace ActionLanguage
                 progcurrent = new ActionProgramRun(fileset, r, inputparas, this, actioncontroller);   // now we run this.. no need to push to stack
 
                 progcurrent.PrepareToRun(new Variables(progcurrent.inputvariables, actioncontroller.Globals, fileset.filevariables),
-                                                fh == null ? new FunctionPersistentData() : fh, d == null ? new Dictionary<string, ExtendedControls.ConfigurableForm>() : d, closeatend);        // if no filehandles, make them and close at end
+                                                fh == null ? new FunctionPersistentData() : fh, d == null ? new Dictionary<string, ActionConfigFuncs.IConfigurableForm>() : d, closeatend);        // if no filehandles, make them and close at end
             }
             else
             {
@@ -141,7 +139,7 @@ namespace ActionLanguage
                         progcurrent.PrepareToRun(
                                 new Variables(progcurrent.inputvariables, actioncontroller.Globals, progcurrent.actionfile.filevariables),
                                 new FunctionPersistentData(),
-                                new Dictionary<string, ExtendedControls.ConfigurableForm>(), true); // with new file handles and close at end..
+                                new Dictionary<string, ActionConfigFuncs.IConfigurableForm>(), true); // with new file handles and close at end..
                     }
 
                     if (progcurrent.IsProgramFinished)          // reject empty programs..

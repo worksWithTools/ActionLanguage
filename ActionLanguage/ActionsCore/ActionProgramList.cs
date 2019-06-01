@@ -103,28 +103,20 @@ namespace ActionLanguage
             {
                 if (p.StoredInSubFile != null)
                 {
-                    p.EditInEditor(p.StoredInSubFile);         // Edit in the editor..
+                    p.EditInEditor(p.StoredInSubFile, configFuncs: cp.ConfigFuncs);         // Edit in the editor..
                 }
                 else
                 {
-                    ActionProgramEditForm apf = new ActionProgramEditForm();
-                    apf.EditProgram += EditProgram;
-
                     this.edoutername = outername;
                     this.cp = cp;
                     this.appfolder = appfolder;
 
                     List<BaseUtils.TypeHelpers.PropertyNameInfo> additionalfieldnames = new List<BaseUtils.TypeHelpers.PropertyNameInfo>(); // We don't have any names to contribute going thru this path
 
-                    apf.Init("Action program ", cp.Icon, cp, appfolder, additionalfieldnames, outername, p, GetActionProgramList(), "");
-
-                    System.Windows.Forms.DialogResult res = apf.ShowDialog();
-
-                    if (res == System.Windows.Forms.DialogResult.OK)
+                    cp.ConfigFuncs.EditProgram("Action program ", cp.Icon, cp, appfolder, additionalfieldnames, outername, p, GetActionProgramList(), "", callback: EditProgram, resultcb: np =>
                     {
-                        ActionProgram np = apf.GetProgram();
-                        AddOrChange(np);                // replaces or adds (if its a new name) same as rename
-                    }
+                        AddOrChange(np);
+                    });
 
                     return true;
                 }
@@ -136,7 +128,7 @@ namespace ActionLanguage
         public void EditProgram(string s)
         {
             if ( !EditProgram(s, edoutername, cp, appfolder) )
-                ExtendedControls.MessageBoxTheme.Show("Unknown program or not in this file " + s);
+                cp.ConfigFuncs.MessageBox("Unknown program or not in this file " + s);
         }
     }
 }

@@ -19,7 +19,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace ActionLanguage
 {
@@ -504,7 +503,7 @@ namespace ActionLanguage
 
         #region Editor
 
-        public bool EditInEditor(string file = null )          // edit in editor, swap to this
+        public bool EditInEditor(string file = null, ActionConfigFuncs configFuncs = null)          // edit in editor, swap to this
         {
             try
             {
@@ -529,11 +528,11 @@ namespace ActionLanguage
                     string err = apin.ReadFile(file);
                     if (err.Length>0)
                     {
-                        DialogResult dr = ExtendedControls.MessageBoxTheme.Show("Editing produced the following errors" + Environment.NewLine + Environment.NewLine + err + Environment.NewLine +
+                        string dr = configFuncs?.MessageBox("Editing produced the following errors" + Environment.NewLine + Environment.NewLine + err + Environment.NewLine +
                                             "Click Retry to correct errors, Cancel to abort editing",
-                                            "Warning", MessageBoxButtons.RetryCancel);
+                                            "Warning", "RetryCancel");
 
-                        if (dr == DialogResult.Cancel)
+                        if (dr == "Cancel")
                             return false;
                     }
                     else
@@ -545,7 +544,7 @@ namespace ActionLanguage
             }
             catch { }
 
-            ExtendedControls.MessageBoxTheme.Show("Unable to run text editor - check association for .txt files");
+            configFuncs?.MessageBox("Unable to run text editor - check association for .txt files");
             return false;
         }
 

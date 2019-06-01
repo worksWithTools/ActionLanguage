@@ -14,7 +14,6 @@
  * EDDiscovery is not affiliated with Frontier Developments plc.
  */
 using System.Collections.Generic;
-using System.Windows.Forms;
 using BaseUtils;
 using AudioExtensions;
 
@@ -73,36 +72,34 @@ namespace ActionLanguage
             return FromString(userdata, out saying, out vars) ? null : "Key command line not in correct format";
         }
 
-        static public string Menu(Form parent, System.Drawing.Icon ic, string userdata, List<string> additionalkeys, BaseUtils.IAdditionalKeyParser additionalparser)
+        public static string Configure(System.Drawing.Icon ic, string userdata, List<string> additionalkeys, IAdditionalKeyParser additionalparser, ActionConfigFuncs configFuncs)
         {
             Variables vars;
             string keys;
             FromString(userdata, out keys, out vars);
 
-            ExtendedControls.KeyForm kf = new ExtendedControls.KeyForm();
-            int defdelay = vars.Exists(DelayID) ? vars[DelayID].InvariantParseInt(DefaultDelay) : ExtendedControls.KeyForm.DefaultDelayID;
+            int defdelay = vars.Exists(DelayID) ? vars[DelayID].InvariantParseInt(DefaultDelay) : -1;
             string process = vars.Exists(ProcessID) ? vars[ProcessID] : "";
 
-            kf.Init(ic, true, " ", keys, process , defdelay:defdelay, additionalkeys:additionalkeys ,parser:additionalparser );      // process="" default, defdelay = DefaultDelayID default
-
-            if (kf.ShowDialog(parent) == DialogResult.OK)
+            string result = null;
+            bool success = configFuncs.ConfigureKeys(ic, true, " ", keys, process, defdelay: defdelay, additionalkeys: additionalkeys, parser: additionalparser, resultcb: kf =>
             {
                 Variables vlist = new Variables();
 
-                if (kf.DefaultDelay != ExtendedControls.KeyForm.DefaultDelayID)                                       // only add these into the command if set to non default
+                if (kf.DefaultDelay >= 0)                                       // only add these into the command if set to non default
                     vlist[DelayID] = kf.DefaultDelay.ToStringInvariant();
                 if (kf.ProcessSelected.Length > 0)
                     vlist[ProcessID] = kf.ProcessSelected;
 
-                return ToString(kf.KeyList, vlist);
-            }
-            else
-                return null;
+                result = ToString(kf.KeyList, vlist);
+            });
+
+            return success ? result : null;
         }
 
-        public override bool ConfigurationMenu(Form parent, ActionCoreController cp, List<BaseUtils.TypeHelpers.PropertyNameInfo> eventvars)    // override again to expand any functionality
+        public override bool Configure(ActionCoreController cp, List<TypeHelpers.PropertyNameInfo> eventvars, ActionConfigFuncs configFuncs)
         {
-            string ud = Menu(parent, cp.Icon, userdata, null, null);      // base has no additional keys/parser
+            string ud = Configure(cp.Icon, userdata, null, null, configFuncs);      // base has no additional keys/parser
             if (ud != null)
             {
                 userdata = ud;
@@ -119,7 +116,7 @@ namespace ActionLanguage
 
         static List<string> errorsreported = new List<string>();
 
-        public bool ExecuteAction(ActionProgramRun ap, BaseUtils.IAdditionalKeyParser akp )      // additional parser
+        public bool ExecuteAction(ActionProgramRun ap, IAdditionalKeyParser akp )      // additional parser
         { 
             string keys;
             Variables statementvars;
@@ -137,7 +134,7 @@ namespace ActionLanguage
                     string silentonerrors = vars.Exists(SilentOnError) ? vars[SilentOnError] : (ap.VarExist(globalvarSilentOnErrors) ? ap[globalvarSilentOnErrors] : "0");
                     string announciateonerrors = vars.Exists(AnnounciateOnError) ? vars[AnnounciateOnError] : (ap.VarExist(globalvarAnnounciateOnError) ? ap[globalvarAnnounciateOnError] : "0");
 
-                    string res = BaseUtils.EnhancedSendKeys.SendToProcess(keys, delay, shiftdelay, updelay, process, akp);
+                    string res = ap.actioncontroller.ConfigFuncs.SendKeyToProcess(keys, delay, shiftdelay, updelay, process, akp);
 
                     if (res.HasChars())
                     {

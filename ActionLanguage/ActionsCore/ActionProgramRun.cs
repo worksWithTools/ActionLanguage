@@ -31,7 +31,7 @@ namespace ActionLanguage
         private Variables currentvars;      // set up by ActionRun at invokation so they have the latest globals, see Run line 87 ish
 
         private FunctionPersistentData conditionpersistentdata;
-        public Dictionary<string, ExtendedControls.ConfigurableForm> dialogs;
+        public Dictionary<string, ActionConfigFuncs.IConfigurableForm> dialogs;
         private bool closehandlesatend;
 
         public bool ClosingHandlesAtEnd { get { return closehandlesatend; } }
@@ -92,7 +92,7 @@ namespace ActionLanguage
 
         #region Exec control
 
-        public void PrepareToRun( Variables v , FunctionPersistentData fh , Dictionary<string, ExtendedControls.ConfigurableForm> d, bool chae = true)
+        public void PrepareToRun( Variables v , FunctionPersistentData fh , Dictionary<string, ActionConfigFuncs.IConfigurableForm> d, bool chae = true)
         {
             currentvars = v;
             conditionpersistentdata = fh;
